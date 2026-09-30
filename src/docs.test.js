@@ -374,6 +374,10 @@ describe("the family's look", () => {
     expect(hash).toBe(FAMILY_CSS);
   });
 
+  it("scripts/family-template.mjs is the family's file too", () => {
+    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("908afa0484638b817aa8799fdbe02c51af6d310603a5c27793b78fd4b2207b2e");
+  });
+
   it("the README's theming table gives the stylesheets' own values", () => {
     const own = readFileSync("demo/site.css", "utf8");
     const light = css.slice(css.indexOf(":root {"), css.indexOf("@media (prefers-color-scheme: dark)"));
