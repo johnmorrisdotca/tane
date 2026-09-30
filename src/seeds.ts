@@ -7,7 +7,7 @@
  * puzzles, a weekly challenge), so that a seed drawn at random never lands on
  * one somebody would recognise.
  */
-import type { Random } from "./random.ts";
+import { hashSeed, type Random } from "./random.ts";
 
 /** The largest seed: it travels as a plain integer, so it stays a positive 32-bit signed one. */
 export const SEED_MOST = 2 ** 31 - 1;
@@ -72,4 +72,21 @@ export function drawSeed(random: Random, options: DrawSeedOptions = {}): number 
 /** A new seed for something nobody asked for by number, drawn from `Math.random`. */
 export function freshSeed(options: DrawSeedOptions = {}): number {
   return drawSeed(Math.random, options);
+}
+
+/**
+ * A seed from whatever a person typed or a link carried. A whole number from
+ * 0 to 2^32 − 1, as a number or as its digits, is that seed; any other text
+ * is hashed with `hashSeed`, so "table-7" is a seed as good as 42. Space
+ * around text is dropped first. Note that the text "42" and the number 42 are
+ * the same seed, and that `hashSeed("42")` is a different one.
+ */
+export function seedFrom(input: string | number): number {
+  if (typeof input === "number") {
+    if (!Number.isSafeInteger(input)) throw new RangeError(`tane: a seed must be a whole number or text, not ${input}`);
+    return input >>> 0;
+  }
+  const text = input.trim();
+  if (/^\d{1,10}$/.test(text) && Number(text) <= 4_294_967_295) return Number(text);
+  return hashSeed(text);
 }

@@ -1,0 +1,84 @@
+      <div class="fam-felt seed-box">
+        <label for="seed" data-say="pageSeed"></label>
+        <input id="seed" class="fam-field" data-mono="true" data-testid="seed" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="80" data-say-placeholder="pageSeedHint" />
+        <div class="seed-is" aria-live="polite">
+          <span class="fam-hint" data-say="pageSeedIs"></span>
+          <span class="fam-big" id="seed-number" data-testid="seed-number"></span>
+          <span class="fam-hint" id="seed-says" data-testid="seed-says"></span>
+        </div>
+        <div class="fam-actions">
+          <button type="button" class="fam-button" id="today" data-testid="today" data-say="pageUseToday"></button>
+          <button type="button" class="fam-button" id="fresh" data-testid="fresh" data-say="pageNewSeed"></button>
+          <button type="button" class="fam-button" data-primary="true" id="share" data-testid="share" data-say="pageCopyLink"></button>
+        </div>
+      </div>
+      __UNREVIEWED__
+      <div class="explorer">
+        <section aria-labelledby="numbers-title">
+          <h2 id="numbers-title" data-say="pageNumbers"></h2>
+          <p data-say="pageNumbersNote"></p>
+          <div class="fam-table-box">
+            <table data-testid="numbers">
+              <thead><tr><th data-number="true" data-say="pageDraw"></th><th data-say="pageValue"></th><th data-number="true" data-say="pageState"></th></tr></thead>
+              <tbody id="numbers"></tbody>
+            </table>
+          </div>
+          <div class="fam-actions">
+            <button type="button" class="fam-button" id="more" data-testid="more" data-say="pageMore"></button>
+            <span class="fam-muted" id="position" data-testid="position"></span>
+          </div>
+        </section>
+        <section aria-labelledby="shuffle-title">
+          <h2 id="shuffle-title" data-say="pageShuffle"></h2>
+          <p data-say="pageShuffleNote"></p>
+          <label class="fam-label" for="items" data-say="pageItems"></label>
+          <input id="items" class="fam-field" data-testid="items" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="400" data-say-placeholder="pageItemsHint" />
+          <span class="fam-label" data-say="pageShuffled"></span>
+          <ol class="chips" id="shuffled" data-testid="shuffled"></ol>
+          <p id="picked" data-testid="picked"></p>
+        </section>
+        <section aria-labelledby="utc-title">
+          <h2 id="utc-title" data-say="pageToday"></h2>
+          <p data-say="pageTodayNote"></p>
+          <div class="today">
+            <span class="fam-big" id="utc-seed" data-testid="utc-seed"></span>
+            <code class="fam-notation">dailySeed(new Date())</code>
+          </div>
+          <div class="today-row"><span data-say="pageChangesIn"></span><strong id="utc-left" data-testid="utc-left"></strong></div>
+        </section>
+        <section aria-labelledby="zone-title">
+          <h2 id="zone-title" data-say="pageTodayHere"></h2>
+          <p id="zone-note"></p>
+          <div class="today">
+            <span class="fam-big" id="zone-seed" data-testid="zone-seed"></span>
+            <code class="fam-notation" id="zone-code"></code>
+          </div>
+          <div class="today-row"><span data-say="pageChangesIn"></span><strong id="zone-left"></strong></div>
+        </section>
+        <section aria-labelledby="parts-title">
+          <h2 id="parts-title" data-say="pageParts"></h2>
+          <p data-say="pagePartsNote"></p>
+          <span class="fam-label" data-say="pageDice"></span>
+          <div class="chips" id="dice" data-testid="dice"></div>
+          <code class="fam-notation">mulberry32(deriveSeed(seed, "dice"))</code>
+        </section>
+        <section aria-labelledby="keep-title">
+          <h2 id="keep-title" data-say="pageKeep"></h2>
+          <p data-say="pageKeepNote"></p>
+          <div class="fam-tabs" role="tablist">
+            <button type="button" role="tab" data-form="text" data-testid="as-text" data-say="pageAsText"></button>
+            <button type="button" role="tab" data-form="json" data-testid="as-json" data-say="pageAsJson"></button>
+            <button type="button" role="tab" data-form="csv" data-testid="as-csv" data-say="pageAsCsv"></button>
+          </div>
+          <pre class="kept" id="kept" data-testid="kept" tabindex="0"></pre>
+          <div class="fam-actions">
+            <button type="button" class="fam-button" id="copy" data-testid="copy" data-say="pageCopy"></button>
+          </div>
+          <label class="fam-label" for="paste" data-say="pagePaste"></label>
+          <div class="paste">
+            <input id="paste" class="fam-field" data-mono="true" data-testid="paste" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="400" data-say-placeholder="pagePasteHint" />
+            <button type="button" class="fam-button" id="read" data-testid="read" data-say="pageRead"></button>
+          </div>
+          <span class="fam-error" id="read-error" data-testid="read-error" role="status"></span>
+        </section>
+      </div>

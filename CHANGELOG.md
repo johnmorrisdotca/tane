@@ -7,6 +7,50 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-30
+
+Nothing that was exported has changed, and every seed gives the numbers it
+always gave.
+
+### Added
+
+- **A specification.** [docs/spec.md](./docs/spec.md) says what every function
+  computes, in words a port can follow, with test vectors, also as
+  `docs/spec-vectors.json`. The tests run a second implementation, written
+  from those words, against the package. Both files ship in the package.
+- **A stream's position, kept and read back.** `counted(seed)` is a stream
+  that counts its draws; `randomAt(seed, draws)` picks a stream up at any draw
+  in one step; `stateAt` is the state there. `toJSON` and `fromJSON`, `toText`
+  and `fromText` (`tane:1:42:7`), and `toCSV` for a spreadsheet. What is read
+  is never trusted: a position that does not add up is refused.
+- `seedFrom`: a seed from whatever a person typed, a whole number as itself
+  and any other text hashed.
+- **A command line.** `tane --seed table --count 10`, `--int 1..6`,
+  `--shuffle`, `--pick`, `--sample`, `--derive`, `--today` with `--zone`,
+  `--at` a position, `--stdin`, `--json` and `--csv`, in English and Japanese,
+  on Linux, macOS and Windows. `runCli` is the same thing as a pure function.
+- **Japanese.** Every string the command line and the explorer show is in
+  `STRINGS`, in English and Japanese, listed side by side in
+  `docs/strings-ja.md`. Not yet reviewed by a native reader.
+- `VERSION`, `fillIn`, `languageOf`, and the types `StreamPosition`,
+  `SavedStream`, `CountedRandom`, `TaneStrings`, `Language`, `CliSurroundings`
+  and `CliResult`.
+- The demo is a seed explorer, in the family's look, in English and Japanese:
+  type a seed and see its first numbers, a shuffle, today's seed, and its
+  position to copy or read back.
+- Checks: the package is packed with npm, installed into an empty project and
+  used by `import`, by `require` and as a command, on Linux, macOS and Windows;
+  the README's examples are run by the tests; React, Vue, Svelte, Angular and a
+  plain page are each built from the packed tarball and opened in Chromium and
+  WebKit; and the demo is driven by taps in both.
+
+### Changed
+
+- The README follows the family's order, with a full reference, and the
+  package's description and keywords say more of what it does.
+- The exports name an `import` condition beside `default`. Both point at the
+  same file as before.
+
 ## [1.0.1] - 2026-09-30
 
 ### Fixed
@@ -34,6 +78,7 @@ produces is a breaking change, and has never been made.
 - React hooks `useDailySeed` and `useSeeded`, from `@johnmorrisdotca/tane/react`.
 - A static demo, published to GitHub Pages.
 
-[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/johnmorrisdotca/tane/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/johnmorrisdotca/tane/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/johnmorrisdotca/tane/releases/tag/v1.0.0

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { dailySeed, dayKey, nextDayStart, type DayKey } from "./daily.ts";
 import { mulberry32, type Random } from "./random.ts";
 
+/** Today, as `useDailySeed` hands it back: the day written `YYYY-MM-DD`, and its seed. */
 export type DailySeed = { readonly day: DayKey; readonly seed: number };
 
 function today(timeZone: string): DailySeed {

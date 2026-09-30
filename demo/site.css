@@ -1,0 +1,35 @@
+/* Tane's own: the seed explorer. Everything shared is in family.css, loaded before this. */
+:root { --intro-room: 11rem; --intro-room-wide: 7.25rem; }
+
+/* The seed, on the felt. */
+.seed-box { display: grid; gap: 12px; justify-items: center; text-align: center; }
+.seed-box label { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
+.seed-box .fam-field { width: min(100%, 26rem); min-height: 52px; font-size: 1.25rem; font-weight: 700; text-align: center; color: var(--ink); }
+.seed-is { display: grid; gap: 2px; min-height: 4.6rem; align-content: center; }
+.seed-is .fam-big { line-height: 1.1; overflow-wrap: anywhere; }
+.seed-is .fam-hint { overflow-wrap: anywhere; }
+.seed-box .fam-actions { justify-content: center; }
+
+/* The panels under it. */
+.explorer { display: grid; gap: 16px; margin-top: 18px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 820px) { .explorer { grid-template-columns: repeat(2, minmax(0, 1fr)); } .explorer .wide { grid-column: 1 / -1; } }
+.explorer section { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); padding: 14px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.explorer section > * { min-width: 0; max-width: 100%; }
+.explorer h2 { margin: 0; font-size: 1.05rem; }
+.explorer p { margin: 0; color: var(--muted); font-size: .9rem; }
+.explorer .fam-table-box { background: var(--page); }
+.explorer td { font-family: var(--mono); white-space: nowrap; }
+@media (max-width: 480px) { .explorer th, .explorer td { padding: 8px 7px; } .explorer td { font-size: .72rem; } .explorer th { font-size: .68rem; letter-spacing: .02em; } }
+.explorer .fam-field { width: 100%; background: var(--page); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.chips .fam-chip { background: var(--page); min-height: 36px; }
+.die { width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--felt); display: inline-grid; place-items: center; font: 700 1.1rem var(--mono); background: var(--page); }
+.today { display: grid; gap: 2px; }
+.today .fam-big { color: var(--good); font-family: var(--mono); }
+.today-row { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--rule); padding-top: 8px; font-size: .9rem; }
+.today-row strong { font-variant-numeric: tabular-nums; }
+.kept { min-height: 9.5rem; max-height: 16rem; white-space: pre; background: var(--page); user-select: all; }
+.paste { display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
+.paste .fam-field { flex: 1 1 12rem; width: auto; }
+.explorer .fam-tabs { border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
+.explorer .fam-error { min-height: 1.2em; }

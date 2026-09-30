@@ -1,22 +1,75 @@
 {
   "name": "@johnmorrisdotca/tane",
-  "version": "1.0.1",
-  "description": "Seeded random numbers and daily seeds: one seed, the same numbers in every browser and server. Shuffle, pick, weighted draws, sub-streams, seed blocks and a seed a day, typed and dependency-free.",
+  "version": "1.1.0",
+  "description": "Seeded random number generator (PRNG) for JavaScript and TypeScript: one seed, the same numbers in every browser and on every server. Seeded shuffle, pick, sample, weighted choice, sub-streams, daily seeds by time zone, saved positions and a command line. For games, daily puzzles, procedural generation and tests. Zero dependencies.",
   "keywords": [
     "random",
+    "seed",
+    "seeded",
     "seeded-random",
+    "seedable",
+    "seedrandom",
     "prng",
     "rng",
-    "mulberry32",
-    "seed",
-    "daily-seed",
-    "daily-puzzle",
-    "shuffle",
+    "pseudorandom",
+    "random-number-generator",
+    "generator",
     "deterministic",
     "reproducible",
+    "mulberry32",
+    "shuffle",
+    "seeded-shuffle",
+    "fisher-yates",
+    "knuth-shuffle",
+    "pick",
+    "sample",
+    "sampling",
+    "weighted",
+    "weighted-random",
+    "normal",
+    "gaussian",
+    "dice",
+    "deck",
+    "cards",
+    "game",
+    "games",
+    "gamedev",
+    "daily",
+    "daily-seed",
+    "daily-puzzle",
+    "daily-challenge",
+    "puzzle",
+    "wordle",
+    "procedural",
     "procedural-generation",
+    "procgen",
+    "simulation",
+    "testing",
+    "fuzz",
+    "replay",
+    "hash",
+    "string-hash",
+    "fnv-1a",
+    "sub-streams",
+    "fork",
+    "time-zone",
+    "math-random",
+    "cli",
+    "command-line",
+    "json",
+    "csv",
     "typescript",
-    "react"
+    "javascript",
+    "esm",
+    "react",
+    "hooks",
+    "vue",
+    "svelte",
+    "angular",
+    "japanese",
+    "i18n",
+    "zero-dependencies",
+    "itsutsu"
   ],
   "homepage": "https://johnmorrisdotca.github.io/tane/",
   "bugs": {
@@ -39,15 +92,21 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./react": {
       "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
       "default": "./dist/react.js"
     }
   },
   "files": [
     "dist",
+    "bin",
+    "docs/spec.md",
+    "docs/spec-vectors.json",
+    "docs/strings-ja.md",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
@@ -61,8 +120,13 @@
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.check.json",
     "test": "vitest run",
+    "test:demo": "pnpm site && playwright test",
+    "test:cli": "pnpm build && node scripts/check-cli.mjs",
+    "test:package": "pnpm build && node scripts/check-package.mjs",
+    "test:frameworks": "pnpm build && node scripts/check-frameworks.mjs",
     "check": "pnpm lint && pnpm typecheck && pnpm test",
     "site": "pnpm build && node scripts/site.mjs",
+    "docs:make": "node scripts/docs.mjs",
     "prepublishOnly": "pnpm check && pnpm build"
   },
   "peerDependencies": {
@@ -75,6 +139,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.63.0",
     "@types/react": "^19.0.0",
     "eslint": "^9.0.0",
     "react": "^19.0.0",
@@ -85,5 +150,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.11.0",
+  "bin": {
+    "tane": "bin/tane.mjs"
+  }
 }
