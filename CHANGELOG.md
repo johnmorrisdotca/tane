@@ -7,6 +7,14 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-09-30
+
+### Fixed
+
+- The exports use the `default` condition, so a CommonJS loader (such as a
+  test runner that compiles to CommonJS) finds the package as well as an ES
+  module import does.
+
 ## [1.0.0] - 2026-09-30
 
 ### Added
@@ -26,5 +34,6 @@ produces is a breaking change, and has never been made.
 - React hooks `useDailySeed` and `useSeeded`, from `@johnmorrisdotca/tane/react`.
 - A static demo, published to GitHub Pages.
 
-[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/johnmorrisdotca/tane/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/johnmorrisdotca/tane/releases/tag/v1.0.0

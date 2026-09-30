@@ -1,6 +1,6 @@
 {
   "name": "@johnmorrisdotca/tane",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Seeded random numbers and daily seeds: one seed, the same numbers in every browser and server. Shuffle, pick, weighted draws, sub-streams, seed blocks and a seed a day, typed and dependency-free.",
   "keywords": [
     "random",
@@ -39,11 +39,11 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "default": "./dist/index.js"
     },
     "./react": {
       "types": "./dist/react.d.ts",
-      "import": "./dist/react.js"
+      "default": "./dist/react.js"
     }
   },
   "files": [
