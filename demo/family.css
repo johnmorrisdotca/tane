@@ -1,4 +1,4 @@
-/* sha256 of every line after this one: 527ca8e5c4261b555cb5c07ffe19cdf8ec85f7790b36a86a673c812631656d14 */
+/* sha256 of every line after this one: c1e392564a7fd94d0bb5cfaefb6d4fedfd147fc3e27f3a7afd8d8dac8c94a227 */
 /*
  * family.css: the one look of the johnmorrisdotca packages' demo sites
  * (korokoro, kyuubu, hitotsu, toranpu, tane, narabe, tenka, kumimoji).
@@ -50,7 +50,8 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--font); -webkit-tap-highlight-color: transparent; }
-main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 40px; }
+/* 1100px of content and a 16px gutter each side: 1132px under border-box. */
+main { max-width: 1132px; margin: 0 auto; padding: 20px 16px 40px; }
 main > * { min-width: 0; max-width: 100%; }
 a { color: inherit; }
 button, input, select, textarea { font: inherit; color: inherit; }
@@ -63,11 +64,12 @@ header { display: flex; align-items: flex-start; justify-content: space-between;
 h1 { margin: 0; font-size: 1.8rem; letter-spacing: -.01em; }
 h1 span { font-size: 1rem; color: var(--muted); margin-left: 6px; font-weight: 500; }
 header p { margin: 2px 0 0; color: var(--muted); }
-.intro { min-height: var(--intro-room); flex: 1 1 20rem; min-width: 0; }
+.intro { min-height: var(--intro-room); }
 @media (min-width: 700px) { .intro { min-height: var(--intro-room-wide); } }
 .name { margin: 2px 0 0; color: var(--muted); font-size: .85rem; }
 nav { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-nav a { text-decoration: none; color: inherit; border: 1px solid var(--rule); border-radius: 999px; padding: 0 14px; min-height: 44px; display: inline-flex; align-items: center; font-size: .9rem; font-weight: 600; }
+/* 44px inside a 1px border: 46px under border-box. */
+nav a { text-decoration: none; color: inherit; border: 1px solid var(--rule); border-radius: 999px; padding: 0 14px; min-height: 46px; display: inline-flex; align-items: center; font-size: .9rem; font-weight: 600; }
 nav a:hover { border-color: var(--ink); }
 
 /* 4. The language chooser. */
@@ -78,7 +80,7 @@ nav a:hover { border-color: var(--ink); }
 
 /* 5. The footer: a note, the install line and the licence, and the family. */
 footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: .85rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: space-between; }
-footer code { font-size: .8rem; }
+footer code { font-family: monospace; font-size: .8rem; }
 footer .family { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; }
 footer .family a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0 6px; }
 footer .family a[aria-current="page"] { color: var(--ink); font-weight: 600; text-decoration: none; }

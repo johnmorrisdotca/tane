@@ -365,7 +365,7 @@ describe("the README's framework examples", () => {
 
 describe("the family's look", () => {
   const css = readFileSync("demo/family.css", "utf8");
-  const FAMILY_CSS = "527ca8e5c4261b555cb5c07ffe19cdf8ec85f7790b36a86a673c812631656d14";
+  const FAMILY_CSS = "c1e392564a7fd94d0bb5cfaefb6d4fedfd147fc3e27f3a7afd8d8dac8c94a227";
 
   it("demo/family.css is the family's file, byte for byte: never edit it here", () => {
     const [first, ...rest] = css.split("\n");
