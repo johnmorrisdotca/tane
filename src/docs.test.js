@@ -408,3 +408,83 @@ describe("the family's look", () => {
     expect(site.indexOf('href="family.css"')).toBeLessThan(site.indexOf('href="site.css"'));
   });
 });
+
+describe("the family list", () => {
+  it("names every package of the family, once, with its kana, as the demo's footer does", () => {
+    // The template lists the packages it knows; the three that came after it are here until it does.
+    const NEWER = [
+      { id: "hikidashi", name: "Hikidashi", kana: "引き出し" },
+      { id: "chizu", name: "Chizu", kana: "地図" },
+      { id: "bushu", name: "Bushu", kana: "部首" },
+    ];
+    const template = readFileSync("scripts/family-template.mjs", "utf8");
+    const known = [...template.matchAll(/\{ id: "([\w-]+)", name: "(\w+)", kana: "([^"]+)" \}/g)].map((match) => ({ id: match[1], name: match[2], kana: match[3] }));
+    const family = [...known, ...NEWER.filter((one) => !known.some((has) => has.id === one.id))];
+    const from = readme.indexOf("### The family");
+    const block = readme.slice(from, readme.indexOf("\n## ", from));
+    const listed = [...block.matchAll(/^- \[(\w+)\]\(https:\/\/github\.com\/johnmorrisdotca\/([\w-]+)\) \(([^,)]+)[,)]/gm)];
+    expect(listed.map((match) => match[2])).toEqual(family.map((one) => one.id));
+    for (const match of listed) {
+      const one = family.find((entry) => entry.id === match[2]);
+      expect([match[1], match[3]], match[2]).toEqual([one.name, one.kana]);
+    }
+    const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"];
+    expect(block).toContain(`Tane is one of ${words[family.length]} packages`);
+    expect(block).toContain("**This package is Tane.**");
+    expect(family.length).toBeGreaterThanOrEqual(19);
+  });
+});
+
+describe("the community files", () => {
+  const read = (path) => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
+
+  it("SECURITY.md and CODE_OF_CONDUCT.md are the family's master text (the shared .github repository's), a copy of which is kept in scripts/community", () => {
+    for (const file of ["SECURITY.md", "CODE_OF_CONDUCT.md"]) expect(read(file), file).toBe(read(`scripts/community/${file}`));
+  });
+
+  it("CONTRIBUTING.md carries the family's house rules and the README points to the security policy", () => {
+    const contributing = read("CONTRIBUTING.md");
+    for (const rule of ["Open an issue first", "No runtime dependencies", "kebab case", "CC0 or public domain only", "Needs Node 22 or later"]) expect(contributing, rule).toContain(rule);
+    expect(readme).toContain("[security policy](./SECURITY.md)");
+  });
+});
+
+describe("Node", () => {
+  it("is 22 or later in the package, the README, CONTRIBUTING and CI, and never 20", () => {
+    expect(pkg.engines.node).toBe(">=22");
+    expect(readme).toContain("Node 22 or later");
+    expect(readme).not.toMatch(/Node 20/);
+    expect(readFileSync("CONTRIBUTING.md", "utf8")).not.toMatch(/Node 20/);
+    expect(readFileSync(".github/workflows/ci.yml", "utf8")).toContain("node: [22, 24]");
+  });
+});
+
+describe("the release notes", () => {
+  it("are the changelog's section for the version, which the Release workflow puts on the GitHub release", async () => {
+    const { releaseNotes } = await import("../scripts/release-notes.mjs");
+    const log = "# Changelog\n\n## [Unreleased]\n\n## [1.2.0] - 2026-01-02\n\n### Added\n\n- A thing.\n\n## [1.1.0] - 2026-01-01\n\n- Older.\n\n[Unreleased]: https://example.test\n";
+    expect(releaseNotes(log, "1.2.0")).toBe("### Added\n\n- A thing.");
+    expect(releaseNotes(log, "1.1.0")).toBe("- Older.");
+    expect(releaseNotes(log, "9.9.9")).toBeNull();
+    expect(releaseNotes(log, "Unreleased")).toBeNull();
+    expect(releaseNotes(readFileSync("CHANGELOG.md", "utf8"), VERSION)?.length).toBeGreaterThan(40);
+    const workflow = readFileSync(".github/workflows/release.yml", "utf8");
+    expect(workflow).toContain("scripts/release-notes.mjs");
+    expect(workflow).not.toContain("See CHANGELOG.md.");
+  });
+});
+
+describe("the README's accessibility", () => {
+  it("says what the explorer's source does: labelled regions, a live seed, a tab list that says which is selected, an invalid paste, a status", () => {
+    const section = readme.slice(readme.indexOf("## Accessibility"), readme.indexOf("## Browser and runtime support"));
+    expect(section.length).toBeGreaterThan(400);
+    const body = readFileSync("demo/body.html", "utf8");
+    expect(body).toContain('aria-live="polite"');
+    expect(body).toContain('aria-labelledby="numbers-title"');
+    expect(body).toContain('role="tablist"');
+    expect(body).toContain('role="status"');
+    const page = readFileSync("demo/page.js", "utf8");
+    expect(page).toContain('"aria-selected"');
+    expect(page).toContain('"aria-invalid"');
+  });
+});

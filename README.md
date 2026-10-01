@@ -14,7 +14,7 @@ A seedable random number generator with the draws a game needs: shuffle, pick, s
 <p align="center"><a href="https://johnmorrisdotca.github.io/tane/"><strong>Try a seed →</strong></a> · <a href="https://johnmorrisdotca.github.io/tane/api.html">API reference</a></p>
 
 <p align="center">
-  <img src="docs/desktop.jpg" alt="The seed explorer: the words table-7 typed as a seed, the number they come to, its first five numbers, a list of names in that seed's order, and today's seed with the time until it changes" width="720">
+  <img src="docs/desktop.jpg" alt="The seed explorer, under the demo's header with its language chooser, five cloth patches and the Help switch: the words table-7 typed as a seed, the number they come to, its first five numbers, a list of names in that seed's order, and today's seed with the time until it changes" width="720">
   <img src="docs/phone.jpg" alt="The seed explorer on a phone in dark mode, in Japanese" width="220">
 </p>
 
@@ -197,7 +197,7 @@ WebKit and checked against the order the seed must give, by
   1.3 kB minified (0.7 kB gzipped) once a bundler has shaken the rest out.
   Everything, with the command line's words in two languages, is about 28 kB
   (10 kB gzipped).
-- **Where it runs.** Every current browser, Node 20 and later, Deno and Bun.
+- **Where it runs.** Every current browser, Node 22 or later, Deno and Bun.
 
 ## Architecture
 
@@ -254,26 +254,30 @@ issue and we will add you.
 
 ### The family
 
-Tane has siblings, each made for the same site, each MIT, each at
+Tane is one of nineteen packages, each made for the same site, each MIT, each at
 [github.com/johnmorrisdotca](https://github.com/johnmorrisdotca):
 
-- [Korokoro](https://github.com/johnmorrisdotca/korokoro) (コロコロ, the sound
-  of something small rolling along): fair dice for the table, with the odds of
-  every throw.
-- [Kyuubu](https://github.com/johnmorrisdotca/kyuubu) (キューブ, how Japanese
-  says "cube"): a turning cube for the browser, 2×2 to 7×7, drawn in CSS 3D.
-- [Hitotsu](https://github.com/johnmorrisdotca/hitotsu) (一つ, "one"): the
-  colour-card game, with the house rules people actually play.
-- [Toranpu](https://github.com/johnmorrisdotca/toranpu) (トランプ, a deck of
-  playing cards): a deck of playing cards and ten card games, each with a
-  computer player. Its deals are made by this generator.
-- [Narabe](https://github.com/johnmorrisdotca/narabe) (並べ, "line them up"):
-  one rules engine for forty-eight abstract board games. What its games decide
-  by chance is decided by this generator.
-- [Tenka](https://github.com/johnmorrisdotca/tenka) (天下, "under heaven"):
-  world conquest for two to six, on a map of the real world.
-- [Kumimoji](https://github.com/johnmorrisdotca/kumimoji) (組み文字, "letters
-  put together"): the crossword tile race, in English and Japanese.
+- [Korokoro](https://github.com/johnmorrisdotca/korokoro) (コロコロ, the sound of something small rolling): dice, with notation, exact odds and games.
+- [Kyuubu](https://github.com/johnmorrisdotca/kyuubu) (キューブ, how Japanese says "cube"): a turning cube for the browser, 2×2 to 7×7.
+- [Hitotsu](https://github.com/johnmorrisdotca/hitotsu) (一つ, "one"): a colour-card game, named for the call a player makes with one card left.
+- [Toranpu](https://github.com/johnmorrisdotca/toranpu) (トランプ, the everyday Japanese word for a deck of playing cards): card games as pure rules.
+- [Tane](https://github.com/johnmorrisdotca/tane) (種, a seed, the kind you plant): seeded random numbers and daily seeds.
+- [Narabe](https://github.com/johnmorrisdotca/narabe) (並べ, "line them up"): a rules engine for gomoku, Reversi, Go, checkers and many more.
+- [Tenka](https://github.com/johnmorrisdotca/tenka) (天下, "under heaven"): a world-conquest game for two to six.
+- [Kumimoji](https://github.com/johnmorrisdotca/kumimoji) (組み文字, "letters put together"): a crossword tile race in English and Japanese.
+- [Tsunagi](https://github.com/johnmorrisdotca/tsunagi) (繋ぎ, "joining"): a line-joining puzzle.
+- [Jarajara](https://github.com/johnmorrisdotca/jarajara) (ジャラジャラ, the rattle of mahjong tiles being shuffled): mahjong tiles and a matching solitaire.
+- [Suido](https://github.com/johnmorrisdotca/suido) (水道, "waterworks"): a pipe puzzle.
+- [Domino](https://github.com/johnmorrisdotca/domino) (ドミノ, the Japanese word for dominoes): dominoes and Mexican Train.
+- [Kotoba](https://github.com/johnmorrisdotca/kotoba) (言葉, "words"): word lists and word-game rules.
+- [Sugoroku](https://github.com/johnmorrisdotca/sugoroku) (双六, backgammon's Japanese name): backgammon and its variants.
+- [Kazu](https://github.com/johnmorrisdotca/kazu) (数, "number"): grid number puzzles, Sudoku and five more.
+- [Meikyuu](https://github.com/johnmorrisdotca/meikyuu) (迷宮, "labyrinth"): mazes to draw a line through.
+- [Hikidashi](https://github.com/johnmorrisdotca/hikidashi) (引き出し, "a drawer"): a drawer of small Japanese text tools: era dates, kanji numerals, readings and sentence difficulty.
+- [Chizu](https://github.com/johnmorrisdotca/chizu) (地図, "map"): maps of the world and of countries' regions, in English and Japanese, with a quiz and callouts.
+- [Bushu](https://github.com/johnmorrisdotca/bushu) (部首, "radical", the part a kanji is sorted by): find a kanji by the parts it is made of.
+
+**This package is Tane.** The demos share one header and footer, which link the family together.
 
 ## Features
 
@@ -714,9 +718,22 @@ Its 2³² seeds are also all the streams there are. That is plenty for a daily
 puzzle or a deal, and too few to draw from at random for, say, every possible
 order of a 52-card deck: a seeded shuffle reaches at most 2³² of them.
 
+## Accessibility
+
+Tane draws nothing and plays no sound, so the package has nothing to see, hear
+or focus: what you build with its numbers is as accessible as you make it.
+Its command line prints plain text, in English or Japanese.
+
+The demo page, the explorer, is the worked example. Each of its sections is a
+labelled region, the seed and the numbers it comes to are in a polite live
+region, so a screen reader hears them change, the three ways of writing a
+position down are a tab list that says which is selected, a paste field says
+when what was pasted cannot be read, and a refusal is a status message.
+`src/docs.test.js` checks these against the page's source.
+
 ## Browser and runtime support
 
-Every current browser, Node 20 and later, Deno and Bun. It needs ES2020 and
+Every current browser, Node 22 or later, Deno and Bun. It needs ES2020 and
 `Math.imul`. Time zones other than UTC use `Intl.DateTimeFormat`, which every
 one of those has. The demo is tested in Chromium and in WebKit, Safari's
 engine, at phone size with touch.
@@ -760,7 +777,10 @@ pnpm check   # lint, types and tests
 pnpm site    # build the demo into ./site, then serve it
 ```
 
-Please follow the [code of conduct](./CODE_OF_CONDUCT.md).
+Please follow the [code of conduct](./CODE_OF_CONDUCT.md). An input that makes
+the generator or a parser run for very long, or text that gets out of the
+explorer into the page, is for the [security policy](./SECURITY.md), not a
+public issue.
 
 ## Changes
 

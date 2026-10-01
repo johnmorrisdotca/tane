@@ -7,10 +7,17 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+### Added
+
+- A README Accessibility section, and the family's list of all nineteen packages, each held to its source by a test.
+- `SECURITY.md`, and a `CODE_OF_CONDUCT.md` that is the family's shared text, with the copy a test holds them to in `scripts/community`.
+
 ### Changed
 
-- **A Help switch in the demo.** Beside the language chooser in the family header, shared by every demo. Off (the default) the page is as it was; on, each option row (the seed, the items to shuffle, the form a seed is kept in, reading one back) says in one plain line what it does, in English or Japanese, and every button in it has the same words as its hover text. Kept on the device.
+- **Node 22 or later**: `engines` is `>=22`, as the README, CONTRIBUTING and CI already tested. Node 20 is end-of-life. Nothing that was exported, and no seed's numbers, has changed.
+- The GitHub release's notes will be that version's section of this changelog, not a pointer to it (`scripts/release-notes.mjs`).
 
+- **A Help switch in the demo.** Beside the language chooser in the family header, shared by every demo. Off (the default) the page is as it was; on, each option row (the seed, the items to shuffle, the form a seed is kept in, reading one back) says in one plain line what it does, in English or Japanese, and every button in it has the same words as its hover text. Kept on the device. The README's pictures are retaken with it.
 
 ## [1.1.1] - 2026-10-01
 
