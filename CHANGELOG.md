@@ -7,6 +7,15 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-10-01
+
+Nothing that was exported has changed.
+
+### Added
+
+- **An API reference page**, `api.html` on the demo site: every export of every entry point, with its signature and its doc comment, made from the source when the site is built so it cannot fall behind the code. The README and the demo's header link to it.
+- **An Architecture section in the README**: how the source is split and what each file is for, held to the real files by a test.
+
 ## [1.1.0] - 2026-09-30
 
 Nothing that was exported has changed, and every seed gives the numbers it
@@ -78,7 +87,8 @@ always gave.
 - React hooks `useDailySeed` and `useSeeded`, from `@johnmorrisdotca/tane/react`.
 - A static demo, published to GitHub Pages.
 
-[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/johnmorrisdotca/tane/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/johnmorrisdotca/tane/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/johnmorrisdotca/tane/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/johnmorrisdotca/tane/releases/tag/v1.0.0

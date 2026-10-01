@@ -7,7 +7,7 @@ const MOST_ROWS = 100;
 const ITEMS = "Ada Grace Alan Edsger Barbara Donald";
 
 // The page's words are the package's own table, under the names the shared header and footer ask for.
-const words = (lang) => ({ ...STRINGS[lang], pitch: STRINGS[lang].pagePitch, name: STRINGS[lang].pageName, nameLink: STRINGS[lang].pageNameLink, foot: STRINGS[lang].pageFoot });
+const words = (lang) => ({ ...STRINGS[lang], pageApi: lang === "en" ? "API reference" : "API（英語）", pitch: STRINGS[lang].pagePitch, name: STRINGS[lang].pageName, nameLink: STRINGS[lang].pageNameLink, foot: STRINGS[lang].pageFoot });
 const language = familyLanguage({ id: "tane", words: { en: words("en"), ja: words("ja") }, onChange: () => draw() });
 const t = () => STRINGS[language.lang];
 

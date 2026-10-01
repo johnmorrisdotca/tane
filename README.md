@@ -11,7 +11,7 @@ A seedable random number generator with the draws a game needs: shuffle, pick, s
   <img alt="TypeScript" src="https://img.shields.io/badge/types-TypeScript-3178c6">
 </p>
 
-<p align="center"><a href="https://johnmorrisdotca.github.io/tane/"><strong>Try a seed →</strong></a></p>
+<p align="center"><a href="https://johnmorrisdotca.github.io/tane/"><strong>Try a seed →</strong></a> · <a href="https://johnmorrisdotca.github.io/tane/api.html">API reference</a></p>
 
 <p align="center">
   <img src="docs/desktop.jpg" alt="The seed explorer: the words table-7 typed as a seed, the number they come to, its first five numbers, a list of names in that seed's order, and today's seed with the time until it changes" width="720">
@@ -198,6 +198,32 @@ WebKit and checked against the order the seed must give, by
   Everything, with the command line's words in two languages, is about 28 kB
   (10 kB gzipped).
 - **Where it runs.** Every current browser, Node 20 and later, Deno and Bun.
+
+## Architecture
+
+The generator, the draws and the seed handling are plain functions with no
+DOM and no dependencies, so every number is the same on every device. The
+command line is one pure function too, and the React hooks are the only part
+that needs a framework.
+
+```text
+src/
+├── index.ts    the main entry: everything below, and the command line's function, in one import
+├── random.ts   the seeded generator (mulberry32), and the ways to start and split one
+├── draws.ts    what a game draws from a stream: whole numbers, picks, shuffles, samples
+├── seeds.ts    seeds as plain numbers people pass around, and the blocks kept aside for daily and weekly seeds
+├── daily.ts    one seed a day, the same for everybody, in any time zone
+├── save.ts     a stream's position written down and read back, as text, JSON or CSV
+├── strings.ts  every word Tane says to a person, in English and Japanese
+├── cli.ts      the command line as a pure function: arguments in, text and an exit code out
+├── react.ts    the "/react" entry: hooks for today's seed and for a seeded stream
+└── version.ts  the version of this package, as package.json has it
+```
+
+Tests sit beside the code they test (`*.test.ts`), and `src/docs.test.js` runs
+the README's examples. `bin/` is the few lines that hand the command line the
+real process, `scripts/` builds the demo and checks the package as npm packs
+it, and `demo/` is the page published on GitHub Pages.
 
 ## The name
 
@@ -423,7 +449,7 @@ toCSV({ seed: 42, draws: 0 }, 2);            // the CSV below
 ```json
 {
   "format": 1,
-  "generator": "tane 1.1.0",
+  "generator": "tane 1.1.1",
   "algorithm": "mulberry32",
   "seed": 42,
   "draws": 4,
@@ -508,7 +534,7 @@ b
 $ tane --seed 42 --int 1..6 -n 5 --json
 {
   "format": 1,
-  "generator": "tane 1.1.0",
+  "generator": "tane 1.1.1",
   "seed": 42,
   "skipped": 0,
   "min": 1,
@@ -533,6 +559,8 @@ runCli(["--seed", "42", "--pick", "a", "b", "c"]);   // { code: 0, out: "b\n", e
 ```
 
 ## API
+
+The [API reference](https://johnmorrisdotca.github.io/tane/api.html) lists every export of every entry point with its signature and its doc comment. It is made from the source by `pnpm site`, so it cannot fall behind the code.
 
 Every export, by module. All of it comes from `@johnmorrisdotca/tane`, except
 the two hooks.

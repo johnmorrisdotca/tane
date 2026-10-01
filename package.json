@@ -1,6 +1,6 @@
 {
   "name": "@johnmorrisdotca/tane",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Seeded random number generator (PRNG) for JavaScript and TypeScript: one seed, the same numbers in every browser and on every server. Seeded shuffle, pick, sample, weighted choice, sub-streams, daily seeds by time zone, saved positions and a command line. For games, daily puzzles, procedural generation and tests. Zero dependencies.",
   "keywords": [
     "random",

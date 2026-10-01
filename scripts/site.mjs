@@ -2,6 +2,7 @@
 // shared header and footer and this package's own body, its two stylesheets, and the compiled library.
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 
+import { API_CSS, apiPage } from "./api.mjs";
 import { FAMILY_SCRIPT, familyFooter, familyHead, familyHeader, familyUnreviewed } from "./family-template.mjs";
 
 const id = "tane";
@@ -17,7 +18,7 @@ const page = `<!doctype html>
   </head>
   <body>
     <main>
-      ${familyHeader({ id })}
+      ${familyHeader({ id, links: [{ href: "api.html", say: "pageApi" }] })}
 ${body}      ${familyFooter({ id })}
     </main>
     <script>${FAMILY_SCRIPT}</script>
@@ -32,4 +33,7 @@ for (const file of ["family.css", "site.css", "page.js"]) cpSync(`demo/${file}`,
 cpSync("dist", "site/dist", { recursive: true });
 cpSync("docs/spec-vectors.json", "site/spec-vectors.json");
 writeFileSync("site/index.html", page);
+// The API reference, made from the source: every export of every entry point.
+writeFileSync("site/api.css", API_CSS);
+writeFileSync("site/api.html", apiPage({ id, name: "Tane", icon }));
 console.log("site/ is ready: serve it, or let the Pages workflow publish it.");
