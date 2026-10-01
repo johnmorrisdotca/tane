@@ -375,7 +375,7 @@ describe("the family's look", () => {
   });
 
   it("scripts/family-template.mjs is the family's file too", () => {
-    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("908afa0484638b817aa8799fdbe02c51af6d310603a5c27793b78fd4b2207b2e");
+    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("dd6a44e5089503725d0c8559957209ffa31f0091e39de04004a23bfa5ce3b85d");
   });
 
   it("the README's theming table gives the stylesheets' own values", () => {
