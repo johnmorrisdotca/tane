@@ -1,6 +1,6 @@
 {
   "name": "@johnmorrisdotca/tane",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Seeded random number generator (PRNG) for JavaScript and TypeScript: one seed, the same numbers in every browser and on every server. Seeded shuffle, pick, sample, weighted choice, sub-streams, daily seeds by time zone, saved positions and a command line. For games, daily puzzles, procedural generation and tests. Zero dependencies.",
   "keywords": [
     "random",
@@ -123,6 +123,7 @@
     "test:demo": "pnpm site && playwright test",
     "test:cli": "pnpm build && node scripts/check-cli.mjs",
     "test:package": "pnpm build && node scripts/check-package.mjs",
+    "family:readme": "node scripts/family-readme.mjs",
     "test:frameworks": "pnpm build && node scripts/check-frameworks.mjs",
     "check": "pnpm lint && pnpm typecheck && pnpm test",
     "site": "pnpm build && node scripts/site.mjs",

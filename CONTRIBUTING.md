@@ -57,6 +57,10 @@ pnpm dlx serve site   # or any static server
 - **`demo/family.css` and `scripts/family-template.mjs` are the family's**, the
   same in every sibling package. Do not edit them here: a test holds the
   stylesheet to its hash. What is Tane's own goes in `demo/site.css`.
+- **The list of the family in the README is made, not written.** `pnpm family:readme` writes it between its
+  markers from `scripts/family-template.mjs` (the names, the Japanese names and a line on each), and
+  `scripts/family-readme.mjs` is the same file in every package. To add a package or change a line, change the
+  template in every repository, bump `FAMILY_TEMPLATE_VERSION` and record the new hash in `src/family.test.js`.
 - One change per pull request, with a line in `CHANGELOG.md` under
   *Unreleased*.
 

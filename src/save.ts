@@ -28,7 +28,7 @@ export type StreamPosition = {
 export type SavedStream = {
   /** The shape of this object: `SAVE_FORMAT`. */
   format: typeof SAVE_FORMAT;
-  /** What wrote it, such as `"tane 1.1.1"`. For people; nothing reads it back. */
+  /** What wrote it, such as `"tane 1.2.0"`. For people; nothing reads it back. */
   generator: string;
   /** The algorithm. Always `"mulberry32"`. */
   algorithm: "mulberry32";

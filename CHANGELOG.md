@@ -7,6 +7,8 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-01
+
 ### Added
 
 - A README Accessibility section, and the family's list of all nineteen packages, each held to its source by a test.
@@ -14,7 +16,7 @@ produces is a breaking change, and has never been made.
 
 ### Changed
 
-- **Node 22 or later**: `engines` is `>=22`, as the README, CONTRIBUTING and CI already tested. Node 20 is end-of-life. Nothing that was exported, and no seed's numbers, has changed.
+- **Needs Node 22 or later; Node 20 is no longer supported.** Nothing else about the package changed: no export and no seed's numbers.
 - The GitHub release's notes will be that version's section of this changelog, not a pointer to it (`scripts/release-notes.mjs`).
 
 - **A Help switch in the demo.** Beside the language chooser in the family header, shared by every demo. Off (the default) the page is as it was; on, each option row (the seed, the items to shuffle, the form a seed is kept in, reading one back) says in one plain line what it does, in English or Japanese, and every button in it has the same words as its hover text. Kept on the device. The README's pictures are retaken with it.
@@ -99,7 +101,8 @@ always gave.
 - React hooks `useDailySeed` and `useSeeded`, from `@johnmorrisdotca/tane/react`.
 - A static demo, published to GitHub Pages.
 
-[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/johnmorrisdotca/tane/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/johnmorrisdotca/tane/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/johnmorrisdotca/tane/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/johnmorrisdotca/tane/compare/v1.0.0...v1.0.1
