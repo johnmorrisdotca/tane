@@ -1,4 +1,4 @@
-      <div class="fam-felt seed-box">
+      <div class="fam-felt seed-box" data-help-en="The seed is any whole number or any words: the same seed always gives the same numbers. Today&#x27;s uses today&#x27;s date, New seed picks one at random, and Copy link shares this seed." data-help-ja="シードは、整数でも好きな言葉でもかまいません。同じシードなら、いつも同じ数が出ます。「今日のシード」は今日の日付、「新しいシード」はランダム、「リンクをコピー」はこのシードを共有します。" data-help-after>
         <label for="seed" data-say="pageSeed"></label>
         <input id="seed" class="fam-field" data-mono="true" data-testid="seed" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="80" data-say-placeholder="pageSeedHint" />
         <div class="seed-is" aria-live="polite">
@@ -32,7 +32,7 @@
           <h2 id="shuffle-title" data-say="pageShuffle"></h2>
           <p data-say="pageShuffleNote"></p>
           <label class="fam-label" for="items" data-say="pageItems"></label>
-          <input id="items" class="fam-field" data-testid="items" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="400" data-say-placeholder="pageItemsHint" />
+          <input id="items" class="fam-field" data-testid="items" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="400" data-say-placeholder="pageItemsHint" data-help-en="Type some items, separated by spaces or commas. They are shuffled the same way every time for the same seed." data-help-ja="項目を空白またはカンマで区切って入力します。同じシードなら、いつも同じ順に並びます。" data-help-after />
           <span class="fam-label" data-say="pageShuffled"></span>
           <ol class="chips" id="shuffled" data-testid="shuffled"></ol>
           <p id="picked" data-testid="picked"></p>
@@ -65,7 +65,7 @@
         <section aria-labelledby="keep-title">
           <h2 id="keep-title" data-say="pageKeep"></h2>
           <p data-say="pageKeepNote"></p>
-          <div class="fam-tabs" role="tablist">
+          <div class="fam-tabs" role="tablist" data-help-en="Choose how the seed and its numbers are written down: as text, JSON or CSV." data-help-ja="シードとその数をどの形式で書き出すか（テキスト・JSON・CSV）を選びます。" data-help-after>
             <button type="button" role="tab" data-form="text" data-testid="as-text" data-say="pageAsText"></button>
             <button type="button" role="tab" data-form="json" data-testid="as-json" data-say="pageAsJson"></button>
             <button type="button" role="tab" data-form="csv" data-testid="as-csv" data-say="pageAsCsv"></button>
@@ -75,7 +75,7 @@
             <button type="button" class="fam-button" id="copy" data-testid="copy" data-say="pageCopy"></button>
           </div>
           <label class="fam-label" for="paste" data-say="pagePaste"></label>
-          <div class="paste">
+          <div class="paste" data-help-en="Paste a kept seed (text, JSON or CSV), then press Read to bring it back." data-help-ja="保存したシード（テキスト・JSON・CSV）を貼りつけ、読み込みボタンを押すと元に戻します。">
             <input id="paste" class="fam-field" data-mono="true" data-testid="paste" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="400" data-say-placeholder="pagePasteHint" />
             <button type="button" class="fam-button" id="read" data-testid="read" data-say="pageRead"></button>
           </div>

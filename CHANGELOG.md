@@ -7,6 +7,11 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+### Changed
+
+- **A Help switch in the demo.** Beside the language chooser in the family header, shared by every demo. Off (the default) the page is as it was; on, each option row (the seed, the items to shuffle, the form a seed is kept in, reading one back) says in one plain line what it does, in English or Japanese, and every button in it has the same words as its hover text. Kept on the device.
+
+
 ## [1.1.1] - 2026-10-01
 
 Nothing that was exported has changed.
