@@ -11,12 +11,26 @@ A seedable random number generator with the draws a game needs: shuffle, pick, s
   <img alt="TypeScript" src="https://img.shields.io/badge/types-TypeScript-3178c6">
 </p>
 
-<p align="center"><a href="https://johnmorrisdotca.github.io/tane/"><strong>Try a seed →</strong></a> · <a href="https://johnmorrisdotca.github.io/tane/api.html">API reference</a></p>
+<p align="center"><a href="https://johnmorrisdotca.github.io/tane/"><strong>Try a seed →</strong></a> · <a href="https://johnmorrisdotca.github.io/tane/api.html">API reference</a> · <a href="docs/spec.md">The specification</a></p>
 
-<p align="center">
-  <img src="docs/desktop.jpg" alt="The seed explorer, under the demo's header with its language chooser, five cloth patches and the Help switch: the words table-7 typed as a seed, the number they come to, its first five numbers, a list of names in that seed's order, and today's seed with the time until it changes" width="720">
-  <img src="docs/phone.jpg" alt="The seed explorer on a phone in dark mode, in Japanese" width="220">
-</p>
+<table align="center">
+<tr>
+<td align="center" valign="top">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/hero-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/hero-desk-light.webp" alt="The seed explorer on a desk, under the demo's header with its language chooser and cloth swatches: the words table-7 typed as a seed, the number they come to, its first five numbers with the state after each, a list of names shuffled in that seed's order, and the day's seed with the time left in it." width="720">
+</picture>
+<br><em>The seed explorer on a desk, with the seed table-7.</em>
+</td>
+<td align="center" valign="top">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/hero-phone-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/hero-phone-light.webp" alt="The seed explorer on a phone, in Japanese: the seed typed in a box, the number it comes to, and the first numbers of its stream." width="220">
+</picture>
+<br><em>The same on a phone, in Japanese, in the device's light or dark.</em>
+</td>
+</tr>
+</table>
 
 A seeded pseudo-random number generator (PRNG) for JavaScript and TypeScript,
 with the everyday draws built on it and a seed for every day.
@@ -71,7 +85,114 @@ Or with nothing to install, [try a seed in the explorer](https://johnmorrisdotca
 
 **Not for secrets.** See [Not for secrets](#not-for-secrets).
 
+## Features
+
+- **Bit-for-bit reproducible.** mulberry32 over 32-bit whole-number
+  arithmetic, so the same seed gives the same numbers in every engine. Golden
+  values are pinned in the tests and never move between versions.
+- **Specified.** [docs/spec.md](./docs/spec.md) defines every function in
+  words and gives test vectors, also as
+  [JSON](./docs/spec-vectors.json), and the tests run a second implementation
+  written from those words against the package.
+- **The draws you need.** Whole numbers, floats, coin flips, pick, shuffle (in
+  place or a copy), sampling without replacement, weighted choice and a normal
+  distribution.
+- **Seeds from anything.** `seedFrom("table-7")` turns whatever a person typed
+  into a seed; `hashSeed` is the hash under it.
+- **Sub-streams.** `deriveSeed(seed, "deck")` and `deriveSeed(seed, "dice")`
+  are unrelated streams from one seed, so adding a third part later never
+  shifts the first two. `fork` splits a stream off another.
+- **A position you can keep.** A stream's whole state is its seed and how many
+  numbers have been drawn. `counted` keeps the count, `randomAt` picks a stream
+  up at any draw in one step, and the position is written as text, JSON or CSV.
+- **Seeds that travel.** Seeds are whole numbers from 1 to 2³¹ − 1, safe in an
+  address or JSON. Keep ranges aside as *seed blocks* (the daily puzzles, a
+  weekly event) and draw fresh seeds that never land in one.
+- **One seed a day.** `dailySeed(date)` is the date as a number: 2026-09-30 is
+  20260930. UTC by default, or the midnight of any IANA time zone, with
+  calendar arithmetic that daylight saving cannot fool.
+- **A command line.** `tane --seed 42 --shuffle a b c`, `tane --today`, with
+  JSON and CSV. See [The command line](#the-command-line).
+- **English and Japanese**, for the command line and the explorer.
+
+### What's in it
+
+Each picture is a part of [the seed explorer](https://johnmorrisdotca.github.io/tane/), the demo that runs the package, taken with `pnpm screenshots:readme`, in light and dark. The seed is `table-7` and the page's clock is fixed, so the same pictures come again.
+
+<table>
+<tr>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/numbers-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/numbers-desk-light.webp" alt="A table of the first five numbers of the seed table-7, each between 0 and 1 with its draw number and the generator's state after it, and a Ten more button." width="400">
+</picture>
+<br><em><strong>A stream</strong>: the first numbers of a seed, and the state after each.</em>
+</td>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/shuffle-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/shuffle-desk-light.webp" alt="A box of names typed by the reader and the same names listed as chips in the order the seed shuffles them, with the one it picks named below." width="400">
+</picture>
+<br><em><strong>A shuffle</strong>: the same order for the same seed, everywhere.</em>
+</td>
+</tr>
+<tr>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/today-utc-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/today-utc-desk-light.webp" alt="A card headed Today's seed with the number 20261001 in large green type, the code that makes it and the time left until it changes." width="400">
+</picture>
+<br><em><strong>A seed a day</strong>: the date as a number, the same worldwide.</em>
+</td>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/today-in-a-zone-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/today-in-a-zone-desk-light.webp" alt="A card headed Today's seed where you are, by midnight in a named zone, with the number 20261001, the code dailySeed(new Date(), UTC) and the time left in the day. Here the page was taken in UTC." width="400">
+</picture>
+<br><em><strong>By a place's midnight</strong>: a day that turns over with the reader's own.</em>
+</td>
+</tr>
+<tr>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/parts-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/parts-desk-light.webp" alt="A row of dice chips showing rolls drawn from sub-streams named deck, dice and others of one seed, each unrelated to the others." width="400">
+</picture>
+<br><em><strong>Parts</strong>: sub-streams of one seed that never disturb each other.</em>
+</td>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/keep-as-json-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/keep-as-json-desk-light.webp" alt="A panel with tabs Text, JSON and CSV, the JSON tab chosen, showing a stream's position as a small JSON object with its format, generator, algorithm, seed, draws and state, and a Copy button." width="400">
+</picture>
+<br><em><strong>A position kept</strong> as text, JSON or CSV, and read back without trust.</em>
+</td>
+</tr>
+</table>
+
 ## Use it in your project
+
+### Install
+
+```sh
+npm install @johnmorrisdotca/tane
+```
+
+```sh
+pnpm add @johnmorrisdotca/tane
+```
+
+```sh
+yarn add @johnmorrisdotca/tane
+```
+
+A page with no bundler imports it from a CDN as an ES module, naming the major version so that a release that changes what you use is one you choose:
+
+```html
+<script type="module">
+  import { dailySeed, mulberry32, shuffled } from "https://cdn.jsdelivr.net/npm/@johnmorrisdotca/tane@1/dist/index.js";
+</script>
+```
 
 Tane is plain functions over plain numbers. It has no interface of its own, so
 every framework uses it the same way: make something from a seed, and show it.
@@ -114,7 +235,7 @@ wherever you serve it.
 
 ### 3. React
 
-```tsx
+```tsx no-run
 import { shuffled } from "@johnmorrisdotca/tane";
 import { useDailySeed, useSeeded } from "@johnmorrisdotca/tane/react";
 
@@ -162,7 +283,7 @@ const order = computed(() => shuffled(mulberry32(dailySeed(new Date())), props.n
 <ol>{#each order as name (name)}<li>{name}</li>{/each}</ol>
 ```
 
-```ts
+```ts no-check
 // Angular: a standalone component
 import { Component, computed, input } from "@angular/core";
 import { dailySeed, mulberry32, shuffled } from "@johnmorrisdotca/tane";
@@ -199,122 +320,167 @@ WebKit and checked against the order the seed must give, by
   (10 kB gzipped).
 - **Where it runs.** Every current browser, Node 22 or later, Deno and Bun.
 
-## Architecture
+The cookbook, with the output of each example, is under [Examples](#examples).
 
-The generator, the draws and the seed handling are plain functions with no
-DOM and no dependencies, so every number is the same on every device. The
-command line is one pure function too, and the React hooks are the only part
-that needs a framework.
+## Examples
 
-```text
-src/
-├── index.ts    the main entry: everything below, and the command line's function, in one import
-├── random.ts   the seeded generator (mulberry32), and the ways to start and split one
-├── draws.ts    what a game draws from a stream: whole numbers, picks, shuffles, samples
-├── seeds.ts    seeds as plain numbers people pass around, and the blocks kept aside for daily and weekly seeds
-├── daily.ts    one seed a day, the same for everybody, in any time zone
-├── save.ts     a stream's position written down and read back, as text, JSON or CSV
-├── strings.ts  every word Tane says to a person, in English and Japanese
-├── cli.ts      the command line as a pure function: arguments in, text and an exit code out
-├── react.ts    the "/react" entry: hooks for today's seed and for a seeded stream
-└── version.ts  the version of this package, as package.json has it
+Every TypeScript and JavaScript block that can run is type-checked against the built package and run by `pnpm test:readme`, so the output after `// →` is what the code prints. Tane is plain functions over plain numbers: nothing here needs a browser or a network.
+
+### A page with nothing else
+
+Save this as a file and open it: the order of the list is the day's, the same for everybody who opens the page today. Reload it and nothing changes; open it tomorrow and it does:
+
+```html
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today's order</title>
+<ol id="order"></ol>
+<script type="module">
+  import { dailySeed, mulberry32, shuffled } from "https://cdn.jsdelivr.net/npm/@johnmorrisdotca/tane@1/dist/index.js";
+
+  const order = shuffled(mulberry32(dailySeed(new Date())), ["Ada", "Grace", "Alan", "Edsger"]);
+  document.getElementById("order").append(...order.map((name) => Object.assign(document.createElement("li"), { textContent: name })));
+</script>
 ```
 
-Tests sit beside the code they test (`*.test.ts`), and `src/docs.test.js` runs
-the README's examples. `bin/` is the few lines that hand the command line the
-real process, `scripts/` builds the demo and checks the package as npm packs
-it, and `demo/` is the page published on GitHub Pages.
+### The same seed, the same numbers
 
-## The name
+A stream is a function you call like `Math.random`. The same seed gives the same numbers in every browser and on every server, and the numbers are specified (see [docs/spec.md](docs/spec.md)), so a port in another language agrees:
 
-*Tane* (種, たね) is the Japanese word for a seed, the kind you plant. Say it
-in two even beats: ta-ne, "tah-neh".
+```ts
+import { mulberry32, seedFrom } from "@johnmorrisdotca/tane";
 
-The same word is used for the secret behind a conjuring trick: *tane-akashi*
-(種明かし) is showing how the trick was done. That suits a package whose
-randomness has nothing up its sleeve: give it the seed and anybody can see
-exactly how the cards came to fall as they did.
+const a = mulberry32(42);
+const b = mulberry32(seedFrom("42"));    // digits are the number itself
+console.log(a(), a());                   // → 0.6011037519201636 0.44829055899754167
+console.log(b() === 0.6011037519201636); // → true
+```
 
-## Where it comes from, and where it is used
+### Deal a hand, and roll the dice
 
-Tane was built for [Itsutsu](https://itsutsu.com), a site for board games,
-puzzles, card games and dice games played at your own pace. *Itsutsu* (五つ) is
-Japanese for "five", after five in a row, the game the site began with. Every
-deal, every daily puzzle and every computer player's coin flip there comes
-from these functions, exactly as published here.
+Give each part of a game its own stream with `deriveSeed`, and the deck stays the deck however many dice are rolled, and however many parts are added later:
 
-### Used by
+```ts
+import { deriveSeed, int, mulberry32, shuffled } from "@johnmorrisdotca/tane";
 
-- [Itsutsu](https://itsutsu.com), for its daily puzzles, its deals and its
-  computer players.
+const deck = shuffled(mulberry32(deriveSeed(7, "deck")), ["A", "K", "Q", "J", "10"]);
+const dice = mulberry32(deriveSeed(7, "dice"));
+console.log(deck);                                              // → [ 'Q', 'K', '10', 'J', 'A' ]
+console.log([1, 2, 3].map(() => int(dice, 1, 6)));              // → [ 6, 6, 5 ]
+```
 
-That is the whole list so far. Using Tane in something? Open an
-[*Add my project*](https://github.com/johnmorrisdotca/tane/issues/new?template=add-my-project.md)
-issue and we will add you.
+### Choose a winner, and a raffle
 
-### The family
+`pick` takes one item, `sample` takes several with none twice, in the order drawn:
 
-<!-- family:start (made by scripts/family-readme.mjs from scripts/family-template.mjs; change those, not this) -->
-Tane is one of twenty-four packages, each made for the same site, each at
-[github.com/johnmorrisdotca](https://github.com/johnmorrisdotca). The code of every one is MIT.
+```ts
+import { mulberry32, pick, sample } from "@johnmorrisdotca/tane";
 
-- [Korokoro](https://github.com/johnmorrisdotca/korokoro) (コロコロ): dice, with notation, exact odds, real sounds and the dice of many games. [Demo](https://johnmorrisdotca.github.io/korokoro/).
-- [Kyuubu](https://github.com/johnmorrisdotca/kyuubu) (キューブ): a turning cube for the browser, 2×2 to 7×7, with record solves to replay. [Demo](https://johnmorrisdotca.github.io/kyuubu/).
-- [Hitotsu](https://github.com/johnmorrisdotca/hitotsu) (一つ): a colour-card shedding game for two to eight, with the house rules people play. [Demo](https://johnmorrisdotca.github.io/hitotsu/).
-- [Toranpu](https://github.com/johnmorrisdotca/toranpu) (トランプ): a deck of playing cards, card games with computer players, and solitaires. [Demo](https://johnmorrisdotca.github.io/toranpu/).
-- [Tane](https://github.com/johnmorrisdotca/tane) (種): seeded random numbers and daily seeds, the same in every browser and on every server. [Demo](https://johnmorrisdotca.github.io/tane/).
-- [Narabe](https://github.com/johnmorrisdotca/narabe) (並べ): one rules engine for abstract board games, from gomoku and Reversi to Go and checkers. [Demo](https://johnmorrisdotca.github.io/narabe/).
-- [Tenka](https://github.com/johnmorrisdotca/tenka) (天下): world conquest for two to six, on a map of the real world. [Demo](https://johnmorrisdotca.github.io/tenka/).
-- [Kumimoji](https://github.com/johnmorrisdotca/kumimoji) (組み文字): a crossword tile race, in English and Japanese kana. [Demo](https://johnmorrisdotca.github.io/kumimoji/).
-- [Tsunagi](https://github.com/johnmorrisdotca/tsunagi) (繋ぎ): a line-joining logic puzzle whose every level has exactly one answer. [Demo](https://johnmorrisdotca.github.io/tsunagi/).
-- [Jarajara](https://github.com/johnmorrisdotca/jarajara) (ジャラジャラ): mahjong tiles drawn as SVG, stacked layouts, and the matching solitaire Awase. [Demo](https://johnmorrisdotca.github.io/jarajara/).
-- [Suido](https://github.com/johnmorrisdotca/suido) (水道): a pipe puzzle: turn the pieces until the water reaches every drain. [Demo](https://johnmorrisdotca.github.io/suido/).
-- [Domino](https://github.com/johnmorrisdotca/domino) (ドミノ): dominoes and Mexican Train. [Demo](https://johnmorrisdotca.github.io/domino/).
-- [Kotoba](https://github.com/johnmorrisdotca/kotoba) (言葉): word lists and word-game rules in English, French, German and Japanese. [Demo](https://johnmorrisdotca.github.io/kotoba/).
-- [Sugoroku](https://github.com/johnmorrisdotca/sugoroku) (双六): backgammon and its variants, with the doubling cube and match play. [Demo](https://johnmorrisdotca.github.io/sugoroku/).
-- [Kazu](https://github.com/johnmorrisdotca/kazu) (数): grid number puzzles: Sudoku and its variants, Futoshiki and Skyscrapers. [Demo](https://johnmorrisdotca.github.io/kazu/).
-- [Meikyuu](https://github.com/johnmorrisdotca/meikyuu) (迷宮): mazes on squares, hexagons, triangles and circles, made from a seed and drawn through with a finger or the mouse. [Demo](https://johnmorrisdotca.github.io/meikyuu/).
-- [Hikidashi](https://github.com/johnmorrisdotca/hikidashi) (引き出し): a drawer of small Japanese text tools: era dates, kanji numerals, readings and sentence difficulty. [Demo](https://johnmorrisdotca.github.io/hikidashi/).
-- [Chizu](https://github.com/johnmorrisdotca/chizu) (地図): maps of the world and of countries' regions, in English and Japanese, with a quiz and callouts. [Demo](https://johnmorrisdotca.github.io/chizu/).
-- [Bushu](https://github.com/johnmorrisdotca/bushu) (部首): find a kanji by the parts it is made of. [Demo](https://johnmorrisdotca.github.io/bushu/).
-- [Tobiishi](https://github.com/johnmorrisdotca/tobiishi) (飛び石): peg solitaire with nine boards and seeded solvable challenges. [Demo](https://johnmorrisdotca.github.io/tobiishi/).
-- [Jirai](https://github.com/johnmorrisdotca/jirai) (地雷): minesweeper on shaped grids with verified no-guess boards. [Demo](https://johnmorrisdotca.github.io/jirai/).
-- [Gunjin](https://github.com/johnmorrisdotca/gunjin) (軍人): five hidden-rank strategy games with pass-the-device play. [Demo](https://johnmorrisdotca.github.io/gunjin/).
-- [Karakuri](https://github.com/johnmorrisdotca/karakuri) (からくり): eight hyper-casual puzzle games, some of them physics: draw a shield, pull pins, cut ropes, slide blocks, pour tubes. [Demo](https://johnmorrisdotca.github.io/karakuri/).
-- [Houseki](https://github.com/johnmorrisdotca/houseki) (宝石): gem and stone matching puzzles: falling triplets, stone collapse, colour chains and gem swap. [Demo](https://johnmorrisdotca.github.io/houseki/).
+const names = ["Ann", "Bo", "Cy", "Di", "Ed"];
+console.log(sample(mulberry32(5), names, 3));                    // → [ 'Di', 'Ed', 'Cy' ]
+console.log(pick(mulberry32(5), names));                         // → Di
+```
 
-**This package is Tane.** The demos of all twenty-four share one header and footer, so each links the rest.
-<!-- family:end -->
+### A loot table
 
-## Features
+`weightedPick` chooses in proportion to a weight. Over a thousand draws from one seed the shares come close to 70, 25 and 5 percent, and come to exactly the same counts on every machine:
 
-- **Bit-for-bit reproducible.** mulberry32 over 32-bit whole-number
-  arithmetic, so the same seed gives the same numbers in every engine. Golden
-  values are pinned in the tests and never move between versions.
-- **Specified.** [docs/spec.md](./docs/spec.md) defines every function in
-  words and gives test vectors, also as
-  [JSON](./docs/spec-vectors.json), and the tests run a second implementation
-  written from those words against the package.
-- **The draws you need.** Whole numbers, floats, coin flips, pick, shuffle (in
-  place or a copy), sampling without replacement, weighted choice and a normal
-  distribution.
-- **Seeds from anything.** `seedFrom("table-7")` turns whatever a person typed
-  into a seed; `hashSeed` is the hash under it.
-- **Sub-streams.** `deriveSeed(seed, "deck")` and `deriveSeed(seed, "dice")`
-  are unrelated streams from one seed, so adding a third part later never
-  shifts the first two. `fork` splits a stream off another.
-- **A position you can keep.** A stream's whole state is its seed and how many
-  numbers have been drawn. `counted` keeps the count, `randomAt` picks a stream
-  up at any draw in one step, and the position is written as text, JSON or CSV.
-- **Seeds that travel.** Seeds are whole numbers from 1 to 2³¹ − 1, safe in an
-  address or JSON. Keep ranges aside as *seed blocks* (the daily puzzles, a
-  weekly event) and draw fresh seeds that never land in one.
-- **One seed a day.** `dailySeed(date)` is the date as a number: 2026-09-30 is
-  20260930. UTC by default, or the midnight of any IANA time zone, with
-  calendar arithmetic that daylight saving cannot fool.
-- **A command line.** `tane --seed 42 --shuffle a b c`, `tane --today`, with
-  JSON and CSV. See [The command line](#the-command-line).
-- **English and Japanese**, for the command line and the explorer.
+```ts
+import { mulberry32, weightedPick } from "@johnmorrisdotca/tane";
+
+const random = mulberry32(11);
+const found = { common: 0, rare: 0, epic: 0 };
+for (let draw = 0; draw < 1000; draw += 1) found[weightedPick(random, ["common", "rare", "epic"] as const, [70, 25, 5])] += 1;
+console.log(found);                                              // → { common: 725, rare: 227, epic: 48 }
+```
+
+### The puzzle of the day, worldwide
+
+`dailySeed(date)` is the date as a number, in UTC unless a zone is named. Everybody who plays today plays the same puzzle, and a seed that is a date names its day:
+
+```ts
+import { dailySeed, dayKey, mulberry32, pick } from "@johnmorrisdotca/tane";
+
+const at = new Date("2026-10-06T10:00:00Z");
+console.log(dayKey(at), dailySeed(at));                          // → 2026-10-06 20261006
+console.log(pick(mulberry32(dailySeed(at)), ["red", "green", "blue", "gold"]));   // → gold
+console.log(dailySeed(new Date("2026-10-06T03:30:00Z"), "America/Toronto"));       // → 20261005
+```
+
+### Seeds that never meet a day
+
+Keep a range of seeds aside as a block for the daily puzzles, and draw fresh seeds that never land in it; a seed in the block names its day:
+
+```ts
+import { dayOfSeed, daySeed, freshSeed, inBlock } from "@johnmorrisdotca/tane";
+
+const DAILY = { from: 1_000_000_000, size: 100_000_000 };
+const seed = daySeed("2026-10-06", DAILY);
+console.log(seed, dayOfSeed(seed, DAILY));                       // → 1020261006 2026-10-06
+console.log(inBlock(freshSeed({ reserved: [DAILY] }), DAILY));   // → false
+```
+
+### Save a game and carry on
+
+A stream's whole state is its seed and how many numbers have been drawn, so a saved game is one line of text, and a stream can be picked up at any draw in one step:
+
+```ts
+import { counted, fromText, randomAt, toText } from "@johnmorrisdotca/tane";
+
+const random = counted(42);
+for (let draw = 0; draw < 7; draw += 1) random();
+const saved = toText(random.position());
+console.log(saved, fromText(saved));                             // → tane:1:42:7 { seed: 42, draws: 7 }
+console.log(randomAt(42, 7)() === random());                     // → true: the eighth number, in one step
+```
+
+### Numbers that are not flat
+
+`normal` draws from a bell curve (Box–Muller, two draws a number), for a height, a score or a wobble:
+
+```ts
+import { mulberry32, normal } from "@johnmorrisdotca/tane";
+
+const random = mulberry32(3);
+console.log([1, 2, 3].map(() => Math.round(normal(random, 100, 15))));   // → [ 112, 117, 89 ]
+```
+
+### From a terminal
+
+```sh
+npx @johnmorrisdotca/tane --seed 42 --shuffle a b c
+```
+
+```text
+c
+a
+b
+```
+
+```sh
+npx @johnmorrisdotca/tane --today --zone Asia/Tokyo --shuffle a b c
+```
+
+The second prints today's order by Tokyo's midnight, so its output is not fixed here. `--json` and `--csv` print the numbers in a format a script can read; the whole command line is under [The command line](#the-command-line).
+
+### The command line from code
+
+The whole command line is one pure function, `runCli`, which gives back what to print and the exit code, so a test or a server can use it without a child process:
+
+```ts
+import { runCli } from "@johnmorrisdotca/tane";
+
+console.log(runCli(["--seed", "42", "--shuffle", "a", "b", "c"]));   // → { code: 0, out: 'c\na\nb\n', err: '' }
+```
+
+### A look of your own
+
+The explorer's colours are CSS variables, and the table under [Theming](#theming) lists them with their light and dark values:
+
+```css
+:root { --page: #fbf8f1; --accent: #b5452c; }
+```
 
 ## Streams
 
@@ -460,7 +626,7 @@ toCSV({ seed: 42, draws: 0 }, 2);            // the CSV below
 ```json
 {
   "format": 1,
-  "generator": "tane 1.2.1",
+  "generator": "tane 1.2.2",
   "algorithm": "mulberry32",
   "seed": 42,
   "draws": 4,
@@ -468,7 +634,7 @@ toCSV({ seed: 42, draws: 0 }, 2);            // the CSV below
 }
 ```
 
-```csv
+```text
 draw,value,state
 1,0.6011037519201636,1831565855
 2,0.44829055899754167,3663131668
@@ -495,7 +661,7 @@ is not read back.
 npm install -g @johnmorrisdotca/tane    # then `tane`, or use npx with nothing installed
 ```
 
-```
+```text
 Usage: tane [options]
 
 Seeded random numbers: one seed, the same numbers on every machine.
@@ -545,7 +711,7 @@ b
 $ tane --seed 42 --int 1..6 -n 5 --json
 {
   "format": 1,
-  "generator": "tane 1.2.1",
+  "generator": "tane 1.2.2",
   "seed": 42,
   "skipped": 0,
   "min": 1,
@@ -569,6 +735,17 @@ import { runCli } from "@johnmorrisdotca/tane";
 runCli(["--seed", "42", "--pick", "a", "b", "c"]);   // { code: 0, out: "b\n", err: "" }
 ```
 
+## Not for secrets
+
+mulberry32 is a fast statistical generator, not a cryptographic one: its whole
+state is 32 bits and can be recovered from a few outputs. Use
+`crypto.getRandomValues` for passwords, tokens, invite codes, or a game where a
+player could profit from predicting the next card.
+
+Its 2³² seeds are also all the streams there are. That is plenty for a daily
+puzzle or a deal, and too few to draw from at random for, say, every possible
+order of a 52-card deck: a seeded shuffle reaches at most 2³² of them.
+
 ## API
 
 The [API reference](https://johnmorrisdotca.github.io/tane/api.html) lists every export of every entry point with its signature and its doc comment. It is made from the source by `pnpm site`, so it cannot fall behind the code.
@@ -576,7 +753,7 @@ The [API reference](https://johnmorrisdotca.github.io/tane/api.html) lists every
 Every export, by module. All of it comes from `@johnmorrisdotca/tane`, except
 the two hooks.
 
-### Streams
+### Stream calls
 
 | Export | What it is |
 | --- | --- |
@@ -589,7 +766,7 @@ the two hooks.
 | `deriveSeed(seed, ...labels)` | the seed of a labelled part |
 | `fork(random)` | a new stream split off another, for one draw |
 
-### Draws
+### Draw calls
 
 `below`, `int`, `float`, `chance`, `pick`, `shuffle`, `shuffled`, `sample`,
 `distinctBelow`, `weightedIndex`, `weightedPick`, `normal`: see
@@ -714,17 +891,6 @@ is refused by name.
 | Draws in a position | up to 2⁵³ − 1 | |
 | Days | the years 0000 to 9999, on the Gregorian calendar | |
 
-## Not for secrets
-
-mulberry32 is a fast statistical generator, not a cryptographic one: its whole
-state is 32 bits and can be recovered from a few outputs. Use
-`crypto.getRandomValues` for passwords, tokens, invite codes, or a game where a
-player could profit from predicting the next card.
-
-Its 2³² seeds are also all the streams there are. That is plenty for a daily
-puzzle or a deal, and too few to draw from at random for, say, every possible
-order of a 52-card deck: a seeded shuffle reaches at most 2³² of them.
-
 ## Accessibility
 
 Tane draws nothing and plays no sound, so the package has nothing to see, hear
@@ -772,6 +938,108 @@ no look.
 
 Ideas and requests are welcome in the issues.
 
+## Architecture
+
+The generator, the draws and the seed handling are plain functions with no
+DOM and no dependencies, so every number is the same on every device. The
+command line is one pure function too, and the React hooks are the only part
+that needs a framework.
+
+```text
+src/
+├── index.ts    the main entry: everything below, and the command line's function, in one import
+├── random.ts   the seeded generator (mulberry32), and the ways to start and split one
+├── draws.ts    what a game draws from a stream: whole numbers, picks, shuffles, samples
+├── seeds.ts    seeds as plain numbers people pass around, and the blocks kept aside for daily and weekly seeds
+├── daily.ts    one seed a day, the same for everybody, in any time zone
+├── save.ts     a stream's position written down and read back, as text, JSON or CSV
+├── strings.ts  every word Tane says to a person, in English and Japanese
+├── cli.ts      the command line as a pure function: arguments in, text and an exit code out
+├── react.ts    the "/react" entry: hooks for today's seed and for a seeded stream
+└── version.ts  the version of this package, as package.json has it
+```
+
+Tests sit beside the code they test (`*.test.ts`), and `src/docs.test.js` runs
+the README's examples. `bin/` is the few lines that hand the command line the
+real process, `scripts/` builds the demo and checks the package as npm packs
+it, and `demo/` is the page published on GitHub Pages.
+
+## The name
+
+*Tane* (種, たね) is the Japanese word for a seed, the kind you plant. Say it
+in two even beats: ta-ne, "tah-neh".
+
+The same word is used for the secret behind a conjuring trick: *tane-akashi*
+(種明かし) is showing how the trick was done. That suits a package whose
+randomness has nothing up its sleeve: give it the seed and anybody can see
+exactly how the cards came to fall as they did.
+
+## Where it comes from, and where it is used
+
+Tane was built for [Itsutsu](https://itsutsu.com), a site for board games,
+puzzles, card games and dice games played at your own pace. *Itsutsu* (五つ) is
+Japanese for "five", after five in a row, the game the site began with. Every
+deal, every daily puzzle and every computer player's coin flip there comes
+from these functions, exactly as published here.
+
+### Used by
+
+- [Itsutsu](https://itsutsu.com), for its daily puzzles, its deals and its
+  computer players.
+
+That is the whole list so far. Using Tane in something? Open an
+[*Add my project*](https://github.com/johnmorrisdotca/tane/issues/new?template=add-my-project.md)
+issue and we will add you.
+
+### The family
+
+<!-- family:start (made by scripts/family-readme.mjs from scripts/family-template.mjs; change those, not this) -->
+Tane is one of twenty-four packages, each made for the same site, each at
+[github.com/johnmorrisdotca](https://github.com/johnmorrisdotca). The code of every one is MIT.
+
+- [Korokoro](https://github.com/johnmorrisdotca/korokoro) (コロコロ): dice, with notation, exact odds, real sounds and the dice of many games. [Demo](https://johnmorrisdotca.github.io/korokoro/).
+- [Kyuubu](https://github.com/johnmorrisdotca/kyuubu) (キューブ): a turning cube for the browser, 2×2 to 7×7, with record solves to replay. [Demo](https://johnmorrisdotca.github.io/kyuubu/).
+- [Hitotsu](https://github.com/johnmorrisdotca/hitotsu) (一つ): a colour-card shedding game for two to eight, with the house rules people play. [Demo](https://johnmorrisdotca.github.io/hitotsu/).
+- [Toranpu](https://github.com/johnmorrisdotca/toranpu) (トランプ): a deck of playing cards, card games with computer players, and solitaires. [Demo](https://johnmorrisdotca.github.io/toranpu/).
+- [Tane](https://github.com/johnmorrisdotca/tane) (種): seeded random numbers and daily seeds, the same in every browser and on every server. [Demo](https://johnmorrisdotca.github.io/tane/).
+- [Narabe](https://github.com/johnmorrisdotca/narabe) (並べ): one rules engine for abstract board games, from gomoku and Reversi to Go and checkers. [Demo](https://johnmorrisdotca.github.io/narabe/).
+- [Tenka](https://github.com/johnmorrisdotca/tenka) (天下): world conquest for two to six, on a map of the real world. [Demo](https://johnmorrisdotca.github.io/tenka/).
+- [Kumimoji](https://github.com/johnmorrisdotca/kumimoji) (組み文字): a crossword tile race, in English and Japanese kana. [Demo](https://johnmorrisdotca.github.io/kumimoji/).
+- [Tsunagi](https://github.com/johnmorrisdotca/tsunagi) (繋ぎ): a line-joining logic puzzle whose every level has exactly one answer. [Demo](https://johnmorrisdotca.github.io/tsunagi/).
+- [Jarajara](https://github.com/johnmorrisdotca/jarajara) (ジャラジャラ): mahjong tiles drawn as SVG, stacked layouts, and the matching solitaire Awase. [Demo](https://johnmorrisdotca.github.io/jarajara/).
+- [Suido](https://github.com/johnmorrisdotca/suido) (水道): a pipe puzzle: turn the pieces until the water reaches every drain. [Demo](https://johnmorrisdotca.github.io/suido/).
+- [Domino](https://github.com/johnmorrisdotca/domino) (ドミノ): dominoes and Mexican Train. [Demo](https://johnmorrisdotca.github.io/domino/).
+- [Kotoba](https://github.com/johnmorrisdotca/kotoba) (言葉): word lists and word-game rules in English, French, German and Japanese. [Demo](https://johnmorrisdotca.github.io/kotoba/).
+- [Sugoroku](https://github.com/johnmorrisdotca/sugoroku) (双六): backgammon and its variants, with the doubling cube and match play. [Demo](https://johnmorrisdotca.github.io/sugoroku/).
+- [Kazu](https://github.com/johnmorrisdotca/kazu) (数): grid number puzzles: Sudoku and its variants, Futoshiki and Skyscrapers. [Demo](https://johnmorrisdotca.github.io/kazu/).
+- [Meikyuu](https://github.com/johnmorrisdotca/meikyuu) (迷宮): mazes on squares, hexagons, triangles and circles, made from a seed and drawn through with a finger or the mouse. [Demo](https://johnmorrisdotca.github.io/meikyuu/).
+- [Hikidashi](https://github.com/johnmorrisdotca/hikidashi) (引き出し): a drawer of small Japanese text tools: era dates, kanji numerals, readings and sentence difficulty. [Demo](https://johnmorrisdotca.github.io/hikidashi/).
+- [Chizu](https://github.com/johnmorrisdotca/chizu) (地図): maps of the world and of countries' regions, in English and Japanese, with a quiz and callouts. [Demo](https://johnmorrisdotca.github.io/chizu/).
+- [Bushu](https://github.com/johnmorrisdotca/bushu) (部首): find a kanji by the parts it is made of. [Demo](https://johnmorrisdotca.github.io/bushu/).
+- [Tobiishi](https://github.com/johnmorrisdotca/tobiishi) (飛び石): peg solitaire with nine boards and seeded solvable challenges. [Demo](https://johnmorrisdotca.github.io/tobiishi/).
+- [Jirai](https://github.com/johnmorrisdotca/jirai) (地雷): minesweeper on shaped grids with verified no-guess boards. [Demo](https://johnmorrisdotca.github.io/jirai/).
+- [Gunjin](https://github.com/johnmorrisdotca/gunjin) (軍人): five hidden-rank strategy games with pass-the-device play. [Demo](https://johnmorrisdotca.github.io/gunjin/).
+- [Karakuri](https://github.com/johnmorrisdotca/karakuri) (からくり): eight hyper-casual puzzle games, some of them physics: draw a shield, pull pins, cut ropes, slide blocks, pour tubes. [Demo](https://johnmorrisdotca.github.io/karakuri/).
+- [Houseki](https://github.com/johnmorrisdotca/houseki) (宝石): gem and stone matching puzzles: falling triplets, stone collapse, colour chains and gem swap. [Demo](https://johnmorrisdotca.github.io/houseki/).
+
+**This package is Tane.** The demos of all twenty-four share one header and footer, so each links the rest.
+<!-- family:end -->
+
+## Development
+
+```sh
+pnpm install --frozen-lockfile
+pnpm check             # lint, types and tests, including the specification's test vectors
+pnpm test:cli          # the command line, as a child process
+pnpm test:package      # pack it, install the tarball, and use it as published
+pnpm test:demo         # the explorer in real browsers
+pnpm test:frameworks   # the README's React, Vue, Svelte and Angular examples, built from the packed tarball
+pnpm test:readme       # every TypeScript and JavaScript example in this README, type-checked and run
+pnpm screenshots:readme  # retake the README's pictures into docs/images (builds the demo first)
+```
+
+The pictures are taken on the maintainer's Mac and are retaken only when the look changes; they are in `docs/images` and are not in the package that npm installs.
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md). The one rule that matters most: a
@@ -792,6 +1060,8 @@ public issue.
 ## Changes
 
 See [CHANGELOG.md](./CHANGELOG.md).
+
+The latest release is 1.2.2: the README takes the family's full layout, with pictures of the explorer and examples that are run.
 
 ## Licence
 

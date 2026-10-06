@@ -191,7 +191,7 @@ describe("the README on export and import", () => {
     expect(readme).toContain(`\`\`\`json\n${toJSON(kept)}\`\`\``);
     says("randomAt(kept.seed, kept.draws)();           // 0.17481389874592423: the fifth number, in one step");
     expect(randomAt(kept.seed, kept.draws)()).toBe(0.17481389874592423);
-    expect(readme).toContain(`\`\`\`csv\n${toCSV({ seed: 42, draws: 0 }, 2).replaceAll("\r\n", "\n")}\`\`\``);
+    expect(readme).toContain(`\`\`\`text\n${toCSV({ seed: 42, draws: 0 }, 2).replaceAll("\r\n", "\n")}\`\`\``);
   });
 
   it("the table names every field the JSON has, in order", () => {
@@ -202,7 +202,7 @@ describe("the README on export and import", () => {
 
 describe("the README on the command line", () => {
   it("prints the help as it is", () => {
-    expect(readme).toContain(`\`\`\`\n${STRINGS.en.cliUsage}\`\`\``);
+    expect(readme).toContain(`\`\`\`text\n${STRINGS.en.cliUsage}\`\`\``);
   });
 
   it("the runs it shows come out as shown", () => {
@@ -338,7 +338,8 @@ describe("docs/strings-ja.md", () => {
 
 describe("the README's framework examples", () => {
   const proof = readFileSync("scripts/check-frameworks.mjs", "utf8").replaceAll("\\`", "`");
-  const blocks = (language) => [...readme.matchAll(new RegExp(`\`\`\`${language}\\n([\\s\\S]*?)\`\`\``, "g"))].map((m) => m[1]);
+  // A fence may carry a flag after its language (`tsx no-run`, `ts no-check`): the block is the same block.
+  const blocks = (language) => [...readme.matchAll(new RegExp(`\`\`\`${language}[^\\n]*\\n([\\s\\S]*?)\`\`\``, "g"))].map((m) => m[1]);
 
   it("the Vue, Svelte and Angular components are the ones the framework check builds, to the letter", () => {
     const [vue] = blocks("vue");
@@ -356,7 +357,7 @@ describe("the README's framework examples", () => {
   });
 
   it("the plain page's script is the one opened", () => {
-    const [html] = blocks("html");
+    const html = blocks("html").find((block) => block.includes("<ol id=\"order\"></ol>") && block.includes("./node_modules/"));
     const script = html.slice(html.indexOf("<script"), html.indexOf("</script>"));
     const lines = script.split("\n").map((line) => line.trim()).filter((line) => line !== "");
     for (const line of lines.filter((text) => !text.startsWith("const order"))) expect(proof, line).toContain(line);

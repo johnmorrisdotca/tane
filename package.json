@@ -1,6 +1,6 @@
 {
   "name": "@johnmorrisdotca/tane",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Seeded random number generator (PRNG) for JavaScript and TypeScript: one seed, the same numbers in every browser and on every server. Shuffle, pick, sample, weighted choice, daily seeds and saved positions. Zero dependencies.",
   "keywords": [
     "random",
@@ -100,9 +100,6 @@
   "files": [
     "dist",
     "bin",
-    "docs/spec.md",
-    "docs/spec-vectors.json",
-    "docs/strings-ja.md",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
@@ -123,9 +120,10 @@
     "test:frameworks": "pnpm build && node scripts/check-frameworks.mjs",
     "check": "pnpm lint && pnpm typecheck && pnpm test",
     "site": "pnpm build && node scripts/site.mjs",
-    "pictures": "pnpm site && node e2e/shots.mjs docs readme",
     "docs:make": "node scripts/docs.mjs",
-    "prepublishOnly": "pnpm check && pnpm build"
+    "prepublishOnly": "pnpm check && pnpm build",
+    "screenshots:readme": "pnpm site && node scripts/readme-pictures.mjs",
+    "test:readme": "pnpm build && node scripts/check-readme-examples.mjs"
   },
   "peerDependencies": {
     "react": ">=18"
