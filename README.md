@@ -671,7 +671,7 @@ page looks.
 The demo page is themed, and is the worked example. It wears the family's
 one stylesheet, [`demo/family.css`](./demo/family.css), which is the same file
 byte for byte on every sibling's site (a test holds it to its hash), and a
-small one of its own, [`demo/site.css`](./demo/site.css). Every colour and
+small one of its own, [`demo/tane.css`](./demo/tane.css). Every colour and
 size in both is a CSS custom property on `:root`, in light and in dark:
 
 | Property | What it colours or sizes | Light | Dark |

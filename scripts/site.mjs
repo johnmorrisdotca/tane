@@ -14,7 +14,7 @@ const page = `<!doctype html>
     ${familyHead({ id, title: "Tane · seeded random numbers and daily seeds", description: "Type a seed and see its first numbers, a shuffle and today's seed: the same on every device and every server. A seeded random number generator for games, daily puzzles and tests. Free and open source.", ogTitle: "Tane 種: seeded random numbers", ogDescription: "One seed, the same numbers everywhere." })}
     <link rel="icon" href="${icon}" />
     <link rel="stylesheet" href="family.css" />
-    <link rel="stylesheet" href="site.css" />
+    <link rel="stylesheet" href="tane.css" />
   </head>
   <body>
     <main>
@@ -29,7 +29,7 @@ ${body}      ${familyFooter({ id })}
 
 rmSync("site", { recursive: true, force: true });
 mkdirSync("site", { recursive: true });
-for (const file of ["family.css", "site.css", "page.js"]) cpSync(`demo/${file}`, `site/${file}`);
+for (const file of ["family.css", "tane.css", "page.js"]) cpSync(`demo/${file}`, `site/${file}`);
 cpSync("dist", "site/dist", { recursive: true });
 cpSync("docs/spec-vectors.json", "site/spec-vectors.json");
 writeFileSync("site/index.html", page);
