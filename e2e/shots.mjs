@@ -1,5 +1,5 @@
 // Pictures of the demo for a person to look at: `node e2e/shots.mjs <folder> <name>`. Not a test.
-// `node e2e/shots.mjs docs readme` (or `pnpm pictures`) takes the two pictures the README shows, from the built demo in `site/`.
+// The README's pictures are not made here: `pnpm screenshots:readme` takes them (scripts/readme-pictures.mjs).
 import { join } from "node:path";
 import process from "node:process";
 
@@ -19,10 +19,5 @@ async function shot({ width, height = 844, colorScheme, lang, path, fullPage = t
   await page.screenshot({ path, fullPage, ...(path.endsWith(".jpg") ? { type: "jpeg", quality: 76 } : {}) });
   await context.close();
 }
-if (name === "readme") {
-  await shot({ width: 1280, height: 900, colorScheme: "light", lang: "en", path: join(folder, "desktop.jpg"), fullPage: false });
-  await shot({ width: 390, height: 844, colorScheme: "dark", lang: "ja", path: join(folder, "phone.jpg"), fullPage: false });
-} else {
   for (const width of [390, 1280]) for (const colorScheme of ["light", "dark"]) for (const lang of ["en", "ja"]) await shot({ width, colorScheme, lang, path: join(folder, `${name}-${width}-${colorScheme}-${lang}.png`) });
-}
 await browser.close();

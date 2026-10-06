@@ -7,6 +7,10 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+### Changed
+
+- Repository only: `e2e/shots.mjs` no longer takes the README's pictures (`pnpm screenshots:readme` does, since the last release) and keeps its general pictures.
+
 ## [1.2.2] - 2026-10-06
 
 Nothing that was exported has changed.
