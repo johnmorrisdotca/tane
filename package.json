@@ -1,7 +1,7 @@
 {
   "name": "@johnmorrisdotca/tane",
-  "version": "1.2.0",
-  "description": "Seeded random number generator (PRNG) for JavaScript and TypeScript: one seed, the same numbers in every browser and on every server. Seeded shuffle, pick, sample, weighted choice, sub-streams, daily seeds by time zone, saved positions and a command line. For games, daily puzzles, procedural generation and tests. Zero dependencies.",
+  "version": "1.2.1",
+  "description": "Seeded random number generator (PRNG) for JavaScript and TypeScript: one seed, the same numbers in every browser and on every server. Shuffle, pick, sample, weighted choice, daily seeds and saved positions. Zero dependencies.",
   "keywords": [
     "random",
     "seed",
@@ -80,11 +80,7 @@
     "url": "git+https://github.com/johnmorrisdotca/tane.git"
   },
   "license": "MIT",
-  "author": {
-    "name": "John Morris",
-    "email": "john@johnmorris.ca",
-    "url": "https://johnmorris.ca"
-  },
+  "author": "John Morris",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

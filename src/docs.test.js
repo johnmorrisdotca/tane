@@ -276,8 +276,8 @@ describe("package.json", () => {
     expect(pkg.keywords.length).toBeGreaterThan(30);
     expect(new Set(pkg.keywords).size).toBe(pkg.keywords.length);
     for (const word of pkg.keywords) expect(word).toBe(word.toLowerCase());
-    expect(pkg.description.length).toBeGreaterThan(200);
-    expect(pkg.description.length).toBeLessThanOrEqual(350);
+    expect(pkg.description.length).toBeGreaterThan(100);
+    expect(pkg.description.length).toBeLessThanOrEqual(250);
   });
 });
 
@@ -375,7 +375,7 @@ describe("the family's look", () => {
   });
 
   it("scripts/family-template.mjs is the family's file too", () => {
-    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("061b5ed89c345dccb6e029d5091dff0a5bbc4a9b57812fbcd0bd619038bdb7f1");
+    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("a2dc81808be980438bdef8b91f5c0bbff920a739bc50930cd4632cb017c8fa48");
   });
 
   it("the README's theming table gives the stylesheets' own values", () => {
@@ -428,7 +428,7 @@ describe("the family list", () => {
       const one = family.find((entry) => entry.id === match[2]);
       expect([match[1], match[3]], match[2]).toEqual([one.name, one.kana]);
     }
-    const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two"];
+    const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four"];
     expect(block).toContain(`Tane is one of ${words[family.length]} packages`);
     expect(block).toContain("**This package is Tane.**");
     expect(family.length).toBeGreaterThanOrEqual(19);

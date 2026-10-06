@@ -7,6 +7,20 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-10-05
+
+Nothing that was exported has changed.
+
+### Added
+
+- A test holds every `@johnmorrisdotca/tane@N` version pin in the README to this package's major version.
+
+### Changed
+
+- The family's list, in the README and in the demo's footer, names all twenty-four packages, Karakuri and Houseki included.
+- The npm description is one sentence of 250 characters or fewer, so npm and its search show it whole; it is also the repository's About text. `homepage` is the demo site and `author` is `"John Morris"`, the same in every package.
+- The GitHub Actions workflows use the current versions of the actions (checkout 7, setup-node 7, pnpm/action-setup 6; configure-pages 6, upload-pages-artifact 5 and deploy-pages 5 for Pages), which clears GitHub's Node 20 deprecation warning.
+
 ## [1.2.0] - 2026-10-01
 
 ### Added
@@ -101,7 +115,8 @@ always gave.
 - React hooks `useDailySeed` and `useSeeded`, from `@johnmorrisdotca/tane/react`.
 - A static demo, published to GitHub Pages.
 
-[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/johnmorrisdotca/tane/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/johnmorrisdotca/tane/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/johnmorrisdotca/tane/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/johnmorrisdotca/tane/compare/v1.0.1...v1.1.0
