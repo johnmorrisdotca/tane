@@ -8,6 +8,11 @@ produces is a breaking change, and has never been made.
 ## [Unreleased]
 
 
+
+### Added
+
+- Share a package-independent embed builder for option controls, preview adapters, code tabs and shareable links.
+
 ### Changed
 
 - Group the package family by kind, alphabetize each group, and include the geography packages and REST in Pieces in the shared footer and README.
