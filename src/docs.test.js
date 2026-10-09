@@ -1,3 +1,4 @@
+import { FAMILY, familyRepo } from "../scripts/family-template.mjs";
 // The documents that are made from the source, or that quote it, checked against it.
 // Plain JavaScript, so that reading files needs no Node types. `pnpm docs:make` rewrites what is made.
 import { createHash } from "node:crypto";
@@ -376,7 +377,7 @@ describe("the family's look", () => {
   });
 
   it("scripts/family-template.mjs is the family's file too", () => {
-    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("a2dc81808be980438bdef8b91f5c0bbff920a739bc50930cd4632cb017c8fa48");
+    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("e6e481a1f2ecb9702bdb87c3c27c172e7090edef0691c5f590a7eb66e4eea470");
   });
 
   it("the README's theming table gives the stylesheets' own values", () => {
@@ -412,24 +413,12 @@ describe("the family's look", () => {
 
 describe("the family list", () => {
   it("names every package of the family, once, with its kana, as the demo's footer does", () => {
-    // The template lists the packages it knows; the three that came after it are here until it does.
-    const NEWER = [
-      { id: "hikidashi", name: "Hikidashi", kana: "引き出し" },
-      { id: "chizu", name: "Chizu", kana: "地図" },
-      { id: "bushu", name: "Bushu", kana: "部首" },
-    ];
-    const template = readFileSync("scripts/family-template.mjs", "utf8");
-    const known = [...template.matchAll(/\{ id: "([\w-]+)", name: "(\w+)", kana: "([^"]+)" \}/g)].map((match) => ({ id: match[1], name: match[2], kana: match[3] }));
-    const family = [...known, ...NEWER.filter((one) => !known.some((has) => has.id === one.id))];
+    const family = FAMILY;
     const from = readme.indexOf("### The family");
     const block = readme.slice(from, readme.indexOf("\n## ", from));
-    const listed = [...block.matchAll(/^- \[(\w+)\]\(https:\/\/github\.com\/johnmorrisdotca\/([\w-]+)\) \(([^,)]+)[,)]/gm)];
-    expect(listed.map((match) => match[2])).toEqual(family.map((one) => one.id));
-    for (const match of listed) {
-      const one = family.find((entry) => entry.id === match[2]);
-      expect([match[1], match[3]], match[2]).toEqual([one.name, one.kana]);
-    }
-    const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four"];
+    expect([...block.matchAll(/^- \[/gm)]).toHaveLength(family.length);
+    for (const one of family) expect(block).toContain(`- [${one.name}](${familyRepo(one.id)}) (${one.kana}):`);
+    const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight"];
     expect(block).toContain(`Tane is one of ${words[family.length]} packages`);
     expect(block).toContain("**This package is Tane.**");
     expect(family.length).toBeGreaterThanOrEqual(19);
