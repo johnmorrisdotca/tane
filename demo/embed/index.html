@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="color-scheme" content="light dark"><title>Tane · seeded picker</title><style>html,body{margin:0;width:100%;height:100%;background:transparent;overflow:hidden}body{display:flex;align-items:center;justify-content:center;padding:8px;box-sizing:border-box}tane-picker{max-height:100%}</style></head><body><script type="module">
+import "../dist/element-define.js";
+import { parsePickerItems } from "../dist/element.js";
+import { embedDay } from "../dist/embed-day.js";
+const query=new URLSearchParams(location.search),picker=document.createElement("tane-picker");picker.setAttribute("size","medium");
+for(const[name,choices]of[["size",["small","medium","large"]],["theme",["auto","light","dark"]],["lang",["en","ja"]],["mode",["pick","shuffle","groups"]]])if(choices.includes(query.get(name)))picker.setAttribute(name,query.get(name));
+const items=query.get("items");if(items!==null&&parsePickerItems(items)!==null)picker.setAttribute("items",items);
+for(const[name,min,max]of[["width",100,2000],["count",1,200],["group-count",1,20]]){const value=query.get(name);if(value!==null&&/^\d+$/.test(value)&&Number(value)>=min&&Number(value)<=max)picker.setAttribute(name,value);}
+const seed=query.get("seed");if(seed!==null&&seed.length<=200&&!/[\u0000-\u001f]/u.test(seed))picker.setAttribute("seed",seed);
+if(query.has("daily"))try{embedDay(query.get("daily"));picker.setAttribute("daily",query.get("daily"));}catch{/* Ignore an invalid day. */}
+if(query.has("controls")&&["","true","on","1","false","off","no","0"].includes(query.get("controls").toLowerCase()))picker.setAttribute("controls",query.get("controls"));const label=query.get("label");if(label!==null&&label.length<=200)picker.setAttribute("label",label);if(query.get("lang")==="ja")document.documentElement.lang="ja";
+for(const type of["tane-load","tane-pick","tane-error"])picker.addEventListener(type,event=>{if(parent!==window)parent.postMessage({type:event.type,detail:JSON.parse(JSON.stringify(event.detail))},"*");});document.body.append(picker);
+</script></body></html>
