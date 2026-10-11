@@ -1,16 +1,14 @@
 # Changelog
 
-## Unreleased
-
-- Add the seeded picker and balanced group-maker element, shared embed builder and validated iframe route. Use native streams/draws, support reflected properties and host options, and keep item text out of composed native events and frame messages.
-
-
 All notable changes to this project are written here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/). A change to the numbers any seed
 produces is a breaking change, and has never been made.
 
 ## [Unreleased]
+
+- Add the seeded picker and balanced group-maker element, shared embed builder and validated iframe route. Use native streams/draws, support reflected properties and host options, and keep item text out of composed native events and frame messages.
+
 
 
 
@@ -22,9 +20,9 @@ produces is a breaking change, and has never been made.
 
 - Group the package family by kind, alphabetize each group, and include the geography packages and REST in Pieces in the shared footer and README.
 
-### Changed
-
 - Repository only: `e2e/shots.mjs` no longer takes the README's pictures (`pnpm screenshots:readme` does, since the last release) and keeps its general pictures.
+
+- Update the shared family description for addresses in all seven supported countries, including France and Germany.
 
 ## [1.2.2] - 2026-10-06
 

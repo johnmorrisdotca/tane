@@ -322,6 +322,17 @@ WebKit and checked against the order the seed must give, by
 
 The cookbook, with the output of each example, is under [Examples](#examples).
 
+### Embed builder
+
+[Build a seeded picker](https://johnmorrisdotca.github.io/tane/builder.html), preview picks, shuffles or balanced groups and copy element, iframe, module, React 19, Vue, Svelte, Angular, HTML or URL code. The setup link includes the item list; the embed saves nothing.
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@johnmorrisdotca/tane@1/dist/element-define.js"></script>
+<tane-picker items='["A","B","C"]' seed="42" size="small"></tane-picker>
+```
+
+Attributes reflect to properties. `items` accepts one item per line or a JSON string array; `mode` is pick/shuffle/groups, `count` sets the sample size and `group-count` sets balanced groups. A UTC `daily` date takes priority over the seed. The first draw appears on mounting; the button advances the native stream. `result` contains only item indices, while `selection` gives item text locally. Native events and frame messages carry indices, with no item names. `pick()` advances and `reset()` restarts the seed. See [the embed guide](docs/embeds.md) for host options and display settings.
+
 ## Examples
 
 Every TypeScript and JavaScript block that can run is type-checked against the built package and run by `pnpm test:readme`, so the output after `// →` is what the code prints. Tane is plain functions over plain numbers: nothing here needs a browser or a network.
@@ -1042,7 +1053,7 @@ Tane is one of twenty-eight packages, each made for the same site, each at
 
 **Geography & data**
 
-- [address-plus](https://github.com/johnmorrisdotca/address-plus) (アドレスプラス): parse and format addresses in the United States, Canada, Japan, Australia and the United Kingdom. [Demo](https://johnmorrisdotca.github.io/address-plus/).
+- [address-plus](https://github.com/johnmorrisdotca/address-plus) (アドレスプラス): parse and format addresses in the United States, Canada, Japan, Australia, France, Germany and the United Kingdom. [Demo](https://johnmorrisdotca.github.io/address-plus/).
 - [Chizu](https://github.com/johnmorrisdotca/chizu) (地図): maps of the world and of countries' regions, in English and Japanese, with a quiz and callouts. [Demo](https://johnmorrisdotca.github.io/chizu/).
 - [Hata](https://github.com/johnmorrisdotca/hata) (旗): country and regional flags as SVG, at their true proportions and keyed by ISO code. [Demo](https://johnmorrisdotca.github.io/hata/).
 - [Kuni](https://github.com/johnmorrisdotca/kuni) (国): countries and their regions, with ISO codes and names in English and Japanese. [Demo](https://johnmorrisdotca.github.io/kuni/).
@@ -1097,15 +1108,3 @@ The latest release is 1.2.2: the README takes the family's full layout, with pic
 
 [MIT](./LICENSE) © John Morris. mulberry32 is by Tommy Ettinger and in the
 public domain.
-
-
-### Embed builder
-
-[Build a seeded picker](https://johnmorrisdotca.github.io/tane/builder.html), preview picks, shuffles or balanced groups and copy element, iframe, module, React 19, Vue, Svelte, Angular, HTML or URL code. The setup link includes the item list; the embed saves nothing.
-
-```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@johnmorrisdotca/tane@1/dist/element-define.js"></script>
-<tane-picker items='["A","B","C"]' seed="42" size="small"></tane-picker>
-```
-
-Attributes reflect to properties. `items` accepts one item per line or a JSON string array; `mode` is pick/shuffle/groups, `count` sets the sample size and `group-count` sets balanced groups. A UTC `daily` date takes priority over the seed. The first draw appears on mounting; the button advances the native stream. `result` contains only item indices, while `selection` gives item text locally. Native events and frame messages carry indices, with no item names. `pick()` advances and `reset()` restarts the seed. See [the embed guide](docs/embeds.md) for host options and display settings.
