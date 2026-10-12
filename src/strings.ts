@@ -6,10 +6,29 @@
  * must keep them.
  */
 
-/** The languages Tane speaks. */
+/** The languages Tane speaks.
+ *
+ * @example
+ * ```ts
+ * import type { Language } from "@johnmorrisdotca/tane";
+ *
+ * const value: Language = "ja";
+ * console.log(value);
+ * ```
+ */
 export type Language = "en" | "ja";
 
-/** The names of the strings. Each is one line or one block of text. */
+/** The names of the strings. Each is one line or one block of text.
+ *
+ * @example
+ * ```ts
+ * import type { TaneStrings } from "@johnmorrisdotca/tane";
+ * import { STRINGS } from "@johnmorrisdotca/tane";
+ *
+ * const value: TaneStrings = STRINGS.ja;
+ * console.log(value.pageSeed);
+ * ```
+ */
 export type TaneStrings = {
   /** The command line's help, whole. */
   cliUsage: string;
@@ -77,7 +96,14 @@ export type TaneStrings = {
   pageShuffled: string;
 };
 
-/** Every string, in both languages. */
+/** Every string, in both languages.
+ *
+ * @example
+ * ```ts
+ * import { STRINGS } from "@johnmorrisdotca/tane";
+ * console.log(STRINGS.ja.pageSeed);
+ * ```
+ */
 export const STRINGS: Record<Language, TaneStrings> = {
   en: {
     cliUsage: `Usage: tane [options]
@@ -288,12 +314,33 @@ be predicted. Exit codes: 0 done, 1 what was asked for could not be done,
   },
 };
 
-/** Put values into a string's braces: `fillIn("Seed {seed}", { seed: 42 })` is "Seed 42". A brace with no value is left as it is. */
+/** Put values into a string's braces: `fillIn("Seed {seed}", { seed: 42 })` is "Seed 42". A brace with no value is left as it is.
+ *
+ * @param template - Text containing named braces to fill.
+ * @param values - Replacement values keyed by the braces in the template.
+ * @returns Put values into a string's braces: `fillIn("Seed {seed}", { seed: 42 })` is "Seed 42". A brace with no value is left as it is.
+ * @example
+ * ```ts
+ * import { fillIn } from "@johnmorrisdotca/tane";
+ *
+ * console.log(fillIn("Seed {seed}", { seed: 42 }));
+ * ```
+ */
 export function fillIn(template: string, values: Record<string, string | number>): string {
   return template.replace(/\{(\w+)\}/g, (whole, name: string) => (name in values ? String(values[name]) : whole));
 }
 
-/** The language a tag such as `ja-JP` or `en_US.UTF-8` names: Japanese for anything that starts `ja`, English otherwise. */
+/** The language a tag such as `ja-JP` or `en_US.UTF-8` names: Japanese for anything that starts `ja`, English otherwise.
+ *
+ * @param tag - The language tag to interpret.
+ * @returns The language a tag such as `ja-JP` or `en_US.UTF-8` names: Japanese for anything that starts `ja`, English otherwise.
+ * @example
+ * ```ts
+ * import { languageOf } from "@johnmorrisdotca/tane";
+ *
+ * console.log(languageOf("ja-JP"));
+ * ```
+ */
 export function languageOf(tag: string | null | undefined): Language {
   return String(tag ?? "").toLowerCase().startsWith("ja") ? "ja" : "en";
 }

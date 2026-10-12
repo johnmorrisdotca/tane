@@ -13,10 +13,26 @@ import { VERSION } from "./version.ts";
 const GOLDEN = 0x6d2b79f5;
 const UINT32_MOST = 4_294_967_295;
 
-/** The shape of the JSON and the text this package writes. It goes up only when a reader of the old shape would be wrong about the new one. */
+/** The shape of the JSON and the text this package writes. It goes up only when a reader of the old shape would be wrong about the new one.
+ *
+ * @example
+ * ```ts
+ * import { SAVE_FORMAT } from "@johnmorrisdotca/tane";
+ * console.log(SAVE_FORMAT);
+ * ```
+ */
 export const SAVE_FORMAT = 1;
 
-/** Where a stream is: the seed it started from, and how many numbers have been drawn from it. */
+/** Where a stream is: the seed it started from, and how many numbers have been drawn from it.
+ *
+ * @example
+ * ```ts
+ * import type { StreamPosition } from "@johnmorrisdotca/tane";
+ *
+ * const value: StreamPosition = { seed: 42, draws: 3 };
+ * console.log(value.draws);
+ * ```
+ */
 export type StreamPosition = {
   /** The seed the stream was made from, as an unsigned 32-bit integer. */
   readonly seed: number;
@@ -24,7 +40,17 @@ export type StreamPosition = {
   readonly draws: number;
 };
 
-/** A stream's position as `toJSON` writes it. */
+/** A stream's position as `toJSON` writes it.
+ *
+ * @example
+ * ```ts
+ * import type { SavedStream } from "@johnmorrisdotca/tane";
+ * import { savedStream } from "@johnmorrisdotca/tane";
+ *
+ * const value: SavedStream = savedStream({ seed: 42, draws: 3 });
+ * console.log(value.state);
+ * ```
+ */
 export type SavedStream = {
   /** The shape of this object: `SAVE_FORMAT`. */
   format: typeof SAVE_FORMAT;
@@ -38,7 +64,18 @@ export type SavedStream = {
   state: number;
 };
 
-/** A stream that knows where it is: call it for the next number, as any `Random`; read `seed` and `draws`, or take its `position()`. */
+/** A stream that knows where it is: call it for the next number, as any `Random`; read `seed` and `draws`, or take its `position()`.
+ *
+ * @example
+ * ```ts
+ * import type { CountedRandom } from "@johnmorrisdotca/tane";
+ * import { counted } from "@johnmorrisdotca/tane";
+ *
+ * const position = { seed: 42, draws: 3 };
+ * const value: CountedRandom = counted(42, 3);
+ * console.log(value.position());
+ * ```
+ */
 export type CountedRandom = Random & {
   /** The seed it was made from, as an unsigned 32-bit integer. */
   readonly seed: number;
@@ -62,6 +99,16 @@ function checkPosition(seed: number, draws: number): void {
  * unsigned 32-bit integer. It is what `step` hands back as `state` after that
  * many steps, worked out in one go. `mulberry32(stateAt(seed, n))` carries on
  * from the n-th draw.
+ *
+ * @param seed - The numeric seed, read as an unsigned 32-bit integer by the stream.
+ * @param draws - The nonnegative number of draws already consumed.
+ * @returns The generator's state after `draws` numbers have been taken from `seed`: an unsigned 32-bit integer. It is what `step` hands back as `state` after that many steps, worked out in one go. `mulberry32(stateAt(seed, n))` carries on from the n-th draw.
+ * @example
+ * ```ts
+ * import { stateAt } from "@johnmorrisdotca/tane";
+ *
+ * console.log(stateAt(42, 3));
+ * ```
  */
 export function stateAt(seed: number, draws = 0): number {
   checkPosition(seed, draws);
@@ -74,6 +121,16 @@ export function stateAt(seed: number, draws = 0): number {
  * A stream that starts `draws` numbers into `seed`'s: `randomAt(42, 7)()` is
  * the eighth number of `mulberry32(42)`, reached without drawing the first
  * seven. Use it to pick a stream up from a stored position.
+ *
+ * @param seed - The numeric seed, read as an unsigned 32-bit integer by the stream.
+ * @param draws - The nonnegative number of draws already consumed.
+ * @returns A stream that starts `draws` numbers into `seed`'s: `randomAt(42, 7)()` is the eighth number of `mulberry32(42)`, reached without drawing the first seven. Use it to pick a stream up from a stored position.
+ * @example
+ * ```ts
+ * import { randomAt } from "@johnmorrisdotca/tane";
+ *
+ * console.log(randomAt(42, 3)());
+ * ```
  */
 export function randomAt(seed: number, draws = 0): Random {
   return mulberry32(stateAt(seed, draws));
@@ -84,6 +141,17 @@ export function randomAt(seed: number, draws = 0): Random {
  * at any moment and picked up later: `const random = counted(42)`, draw from
  * it as from any stream, then keep `random.position()`. The numbers are those
  * of `mulberry32(seed)`, draw for draw.
+ *
+ * @param seed - The numeric seed, read as an unsigned 32-bit integer by the stream.
+ * @param draws - The nonnegative number of draws already consumed.
+ * @returns A seeded stream that counts its own draws, so that it can be written down at any moment and picked up later: `const random = counted(42)`, draw from it as from any stream, then keep `random.position()`. The numbers are those of `mulberry32(seed)`, draw for draw.
+ * @example
+ * ```ts
+ * import { counted } from "@johnmorrisdotca/tane";
+ *
+ * const position = { seed: 42, draws: 3 };
+ * console.log(counted(42, 3).position());
+ * ```
  */
 export function counted(seed: number, draws = 0): CountedRandom {
   const inner = randomAt(seed, draws);
@@ -101,13 +169,35 @@ export function counted(seed: number, draws = 0): CountedRandom {
   return random;
 }
 
-/** A position as the object `toJSON` writes: the format, the seed, the draws and the state they come to. */
+/** A position as the object `toJSON` writes: the format, the seed, the draws and the state they come to.
+ *
+ * @param position - The stream’s seed and nonnegative count of consumed draws.
+ * @returns A position as the object `toJSON` writes: the format, the seed, the draws and the state they come to.
+ * @example
+ * ```ts
+ * import { savedStream } from "@johnmorrisdotca/tane";
+ *
+ * const position = { seed: 42, draws: 3 };
+ * console.log(savedStream(position));
+ * ```
+ */
 export function savedStream(position: StreamPosition): SavedStream {
   const seed = position.seed >>> 0;
   return { format: SAVE_FORMAT, generator: `tane ${VERSION}`, algorithm: "mulberry32", seed, draws: position.draws, state: stateAt(seed, position.draws) };
 }
 
-/** A position as JSON, two spaces deep, with the format's number first. `fromJSON` reads it back. */
+/** A position as JSON, two spaces deep, with the format's number first. `fromJSON` reads it back.
+ *
+ * @param position - The stream’s seed and nonnegative count of consumed draws.
+ * @returns A position as JSON, two spaces deep, with the format's number first. `fromJSON` reads it back.
+ * @example
+ * ```ts
+ * import { toJSON } from "@johnmorrisdotca/tane";
+ *
+ * const position = { seed: 42, draws: 3 };
+ * console.log(toJSON(position));
+ * ```
+ */
 export function toJSON(position: StreamPosition): string {
   return `${JSON.stringify(savedStream(position), null, 2)}\n`;
 }
@@ -118,6 +208,16 @@ export function toJSON(position: StreamPosition): string {
  * named) must be mulberry32, and the state (when given) must be the one that
  * seed and those draws come to. Null when the text is not JSON, is not a
  * position, does not add up, or is of a later format than this version reads.
+ *
+ * @param text - Text to hash, validate or decode.
+ * @returns A position from JSON that `toJSON` wrote. Nothing in it is trusted: the seed and the draws must be whole numbers in range, the algorithm (when named) must be mulberry32, and the state (when given) must be the one that seed and those draws come to. null when the text is not JSON, is not a position, does not add up, or is of a later format than this version reads.
+ * @example
+ * ```ts
+ * import { fromJSON, toJSON } from "@johnmorrisdotca/tane";
+ *
+ * const position = { seed: 42, draws: 3 };
+ * console.log(fromJSON(toJSON(position)));
+ * ```
  */
 export function fromJSON(text: string): StreamPosition | null {
   let data: unknown;
@@ -136,13 +236,35 @@ export function fromJSON(text: string): StreamPosition | null {
   return { seed: seed as number, draws: taken as number };
 }
 
-/** A position as one line to paste into a chat or a bug report: `tane:1:42:7` is format 1, seed 42, 7 draws in. */
+/** A position as one line to paste into a chat or a bug report: `tane:1:42:7` is format 1, seed 42, 7 draws in.
+ *
+ * @param position - The stream’s seed and nonnegative count of consumed draws.
+ * @returns A position as one line to paste into a chat or a bug report: `tane:1:42:7` is format 1, seed 42, 7 draws in.
+ * @example
+ * ```ts
+ * import { toText } from "@johnmorrisdotca/tane";
+ *
+ * const position = { seed: 42, draws: 3 };
+ * console.log(toText(position));
+ * ```
+ */
 export function toText(position: StreamPosition): string {
   checkPosition(position.seed, position.draws);
   return `tane:${SAVE_FORMAT}:${position.seed >>> 0}:${position.draws}`;
 }
 
-/** A position from a line `toText` wrote, with any space around it. Null for anything else, or for a later format. */
+/** A position from a line `toText` wrote, with any space around it. Null for anything else, or for a later format.
+ *
+ * @param text - Text to hash, validate or decode.
+ * @returns A position from a line `toText` wrote, with any space around it. null for anything else, or for a later format.
+ * @example
+ * ```ts
+ * import { fromText, toText } from "@johnmorrisdotca/tane";
+ *
+ * const position = { seed: 42, draws: 3 };
+ * console.log(fromText(toText(position)));
+ * ```
+ */
 export function fromText(text: string): StreamPosition | null {
   const read = /^tane:(\d{1,3}):(\d{1,10}):(\d{1,16})$/.exec(text.trim());
   if (read === null) return null;
@@ -151,16 +273,41 @@ export function fromText(text: string): StreamPosition | null {
   return { seed, draws };
 }
 
-/** The columns of the CSV, in order. */
+/** The columns of the CSV, in order.
+ *
+ * @example
+ * ```ts
+ * import { CSV_COLUMNS } from "@johnmorrisdotca/tane";
+ * console.log(CSV_COLUMNS);
+ * ```
+ */
 export const CSV_COLUMNS = ["draw", "value", "state"] as const;
 
-/** The most rows `toCSV` writes at once. */
+/** The most rows `toCSV` writes at once.
+ *
+ * @example
+ * ```ts
+ * import { MAX_CSV_ROWS } from "@johnmorrisdotca/tane";
+ * console.log(MAX_CSV_ROWS);
+ * ```
+ */
 export const MAX_CSV_ROWS = 100_000;
 
 /**
  * The next `count` numbers from a position as CSV for a spreadsheet: a header,
  * then one row a draw, with the draw's number counted from 1, its value, and
  * the generator's state after it. Lines end CRLF, as RFC 4180 has it.
+ *
+ * @param position - The stream’s seed and nonnegative count of consumed draws.
+ * @param count - The number of items or draws requested.
+ * @returns The next `count` numbers from a position as CSV for a spreadsheet: a header, then one row a draw, with the draw's number counted from 1, its value, and the generator's state after it. Lines end CRLF, as RFC 4180 has it.
+ * @example
+ * ```ts
+ * import { toCSV } from "@johnmorrisdotca/tane";
+ *
+ * const position = { seed: 42, draws: 3 };
+ * console.log(toCSV(position, 3));
+ * ```
  */
 export function toCSV(position: StreamPosition, count: number): string {
   if (!Number.isSafeInteger(count) || count < 0 || count > MAX_CSV_ROWS) throw new RangeError(`tane: toCSV writes 0 to ${MAX_CSV_ROWS} rows, not ${count}`);

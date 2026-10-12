@@ -13,7 +13,18 @@ import { VERSION } from "./version.ts";
  * so every line of it is tested as plain data.
  */
 
-/** What the command line is run in. All of it is optional. */
+/** What the command line is run in. All of it is optional.
+ *
+ * @example
+ * ```ts
+ * import { mulberry32 } from "@johnmorrisdotca/tane";
+ * import type { CliSurroundings } from "@johnmorrisdotca/tane";
+ *
+ * const random = mulberry32(42);
+ * const value: CliSurroundings = { env: {}, locale: "en", colour: false, now: 1791720000000, random: mulberry32(42) };
+ * console.log(value.locale);
+ * ```
+ */
 export type CliSurroundings = {
   /** The environment, for the language (`LC_ALL`, `LC_MESSAGES`, `LANG`) and `NO_COLOR`. */
   env?: Record<string, string | undefined>;
@@ -29,7 +40,17 @@ export type CliSurroundings = {
   random?: () => number;
 };
 
-/** What the command line came to. */
+/** What the command line came to.
+ *
+ * @example
+ * ```ts
+ * import type { CliResult } from "@johnmorrisdotca/tane";
+ * import { runCli } from "@johnmorrisdotca/tane";
+ *
+ * const value: CliResult = runCli(["--help"]);
+ * console.log(value.code);
+ * ```
+ */
 export type CliResult = {
   /** 0 when all went well, 1 when what was asked for could not be done, 2 when the command itself was wrong. */
   code: 0 | 1 | 2;
@@ -39,10 +60,29 @@ export type CliResult = {
   err: string;
 };
 
-/** The most numbers one run prints. */
+/** The most numbers one run prints.
+ *
+ * @example
+ * ```ts
+ * import { CLI_MAX_COUNT } from "@johnmorrisdotca/tane";
+ * console.log(CLI_MAX_COUNT);
+ * ```
+ */
 export const CLI_MAX_COUNT = 10_000;
 
-/** The language the command line speaks: `--lang`, or the environment's, or the system's; Japanese for `ja…`, English for anything else. */
+/** The language the command line speaks: `--lang`, or the environment's, or the system's; Japanese for `ja…`, English for anything else.
+ *
+ * @param flag - An explicit CLI language flag, when supplied.
+ * @param env - Environment variables used to choose the CLI language.
+ * @param locale - The host locale used when no explicit language is supplied.
+ * @returns The language the command line speaks: `--lang`, or the environment's, or the system's; Japanese for `ja…`, English for anything else.
+ * @example
+ * ```ts
+ * import { cliLanguage } from "@johnmorrisdotca/tane";
+ *
+ * console.log(cliLanguage(undefined, { LANG: "ja_JP.UTF-8" }));
+ * ```
+ */
 export function cliLanguage(flag: string | undefined, env: Record<string, string | undefined> = {}, locale?: string): Language {
   const named = [flag, env.LC_ALL, env.LC_MESSAGES, env.LANG].find((value) => value !== undefined && value !== "" && value !== "C" && value !== "POSIX" && !value.startsWith("C."));
   return (named ?? locale ?? "en").toLowerCase().startsWith("ja") ? "ja" : "en";
@@ -90,6 +130,16 @@ const wholeNumber = (text: string | undefined, least: number, most: number): num
 /**
  * Run the command line. See `tane --help` for what it takes. One seed serves
  * the whole run, so the same command prints the same lines on every machine.
+ *
+ * @param args - Arguments after the command name.
+ * @param around - Host environment, locale, clock, input and random source.
+ * @returns The exit code and text for standard output and standard error.
+ * @example
+ * ```ts
+ * import { runCli } from "@johnmorrisdotca/tane";
+ *
+ * console.log(runCli(["--help"], { colour: false }).code);
+ * ```
  */
 export function runCli(args: readonly string[], around: CliSurroundings = {}): CliResult {
   const asked = sortArguments(args);
