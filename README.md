@@ -1,4 +1,4 @@
-<h1 align="center">Tane <sub>種</sub></h1>
+<h1 align="center">Tane <sub>種</sub> — Seeded random numbers for JavaScript</h1>
 
 <p align="center"><strong>Seeded random numbers: one seed, the same numbers everywhere.</strong><br>
 A seedable random number generator with the draws a game needs: shuffle, pick, sample, weighted choice, sub-streams, and a seed a day for daily puzzles. The same in every browser and on every server.</p>
@@ -9,9 +9,11 @@ A seedable random number generator with the draws a game needs: shuffle, pick, s
   <a href="./LICENSE"><img alt="MIT licence" src="https://img.shields.io/badge/licence-MIT-2f5d4a"></a>
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-0-2f5d4a">
   <img alt="TypeScript" src="https://img.shields.io/badge/types-TypeScript-3178c6">
+  <a href="https://johnmorrisdotca.github.io/tane/docs/api/main/index.html"><img alt="9.7 kB minified and gzipped" src="https://img.shields.io/badge/min%2Bgzip-9.7%20kB-2f5d4a"></a>
+  <a href="https://www.npmjs.com/package/@johnmorrisdotca/tane#provenance"><img alt="Published with npm provenance" src="https://img.shields.io/badge/npm-provenance-2f5d4a"></a>
 </p>
 
-<p align="center"><a href="https://johnmorrisdotca.github.io/tane/"><strong>Try a seed →</strong></a> · <a href="https://johnmorrisdotca.github.io/tane/api.html">API reference</a> · <a href="docs/spec.md">The specification</a></p>
+<p align="center"><a href="https://johnmorrisdotca.github.io/tane/"><strong>Try a seed →</strong></a> · <a href="https://johnmorrisdotca.github.io/tane/docs/">Documentation</a> · <a href="https://johnmorrisdotca.github.io/tane/docs/guides/getting-started.html">Getting started</a> · <a href="https://johnmorrisdotca.github.io/tane/api.html">API reference</a> · <a href="docs/spec.md">The specification</a></p>
 
 <table align="center">
 <tr>
@@ -171,6 +173,17 @@ Each picture is a part of [the seed explorer](https://johnmorrisdotca.github.io/
 </table>
 
 ## Use it in your project
+
+### Install under another name
+
+```sh
+npm install random@npm:@johnmorrisdotca/tane
+```
+
+```ts no-check
+import { seededRandom } from "random";
+console.log(seededRandom(42)());
+```
 
 ### Install
 
@@ -759,7 +772,7 @@ order of a 52-card deck: a seeded shuffle reaches at most 2³² of them.
 
 ## API
 
-The [API reference](https://johnmorrisdotca.github.io/tane/api.html) lists every export of every entry point with its signature and its doc comment. It is made from the source by `pnpm site`, so it cannot fall behind the code.
+The [documentation](https://johnmorrisdotca.github.io/tane/docs/) includes bilingual guides, local search and public signatures, parameters, return values and checked examples, built from the source by `pnpm docs:site`. The [API index](https://johnmorrisdotca.github.io/tane/api.html) keeps the existing export anchors.
 
 The optional browser entry `@johnmorrisdotca/tane/element` adds `TanePicker`, `definePicker`, `parsePickerItems` and `TANE_EMBED_OPTION_KEYS`, with the types `TanePickerMode`, `TanePickDetail` and `TanePickerOptions`. `@johnmorrisdotca/tane/element/define` registers the custom tag and reexports the element entry.
 
@@ -946,8 +959,9 @@ for fixing one.
 
 Left out on purpose: cryptographic randomness, which the platform already
 has; named distributions beyond the normal (exponential, Poisson and the
-rest), which statistics libraries do well; and any interface, since a seed has
-no look.
+rest), which statistics libraries do well. The native picker provides ready-to-use
+selection and grouping controls; broader game and puzzle screens belong to the
+host application.
 
 Ideas and requests are welcome in the issues.
 

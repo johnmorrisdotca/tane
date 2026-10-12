@@ -7,6 +7,8 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+- Add the bilingual documentation site, checked public examples, paired guides, local search and machine-readable pages.
+
 - Add the seeded picker and balanced group-maker element, shared embed builder and validated iframe route. Use native streams/draws, support reflected properties and host options, and keep item text out of composed native events and frame messages.
 
 

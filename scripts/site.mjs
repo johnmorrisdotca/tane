@@ -11,14 +11,14 @@ const body = readFileSync("demo/body.html", "utf8").replace("__UNREVIEWED__", fa
 const page = `<!doctype html>
 <html lang="en">
   <head>
-    ${familyHead({ id, title: "Tane · seeded random numbers and daily seeds", description: "Type a seed and see its first numbers, a shuffle and today's seed: the same on every device and every server. A seeded random number generator for games, daily puzzles and tests. Free and open source.", ogTitle: "Tane 種: seeded random numbers", ogDescription: "One seed, the same numbers everywhere." })}
+    ${familyHead({ id, title: "Tane 種 — Seeded random numbers for JavaScript", description: "Type a seed and see its first numbers, a shuffle and today's seed: the same on every device and every server. A seeded random number generator for games, daily puzzles and tests. Free and open source.", ogTitle: "Tane 種 — Seeded random numbers for JavaScript", ogDescription: "One seed, the same numbers everywhere." })}
     <link rel="icon" href="${icon}" />
     <link rel="stylesheet" href="family.css" />
     <link rel="stylesheet" href="tane.css" />
   </head>
   <body>
     <main>
-      ${familyHeader({ id, links: [{ href: "api.html", say: "pageApi" }] })}
+      ${familyHeader({ id, links: [{ href: "docs/index.html", say: "pageDocs" }, { href: "api.html", say: "pageApi" }] })}
 ${body}      ${familyFooter({ id })}
     </main>
     <script>${FAMILY_SCRIPT}</script>
@@ -39,7 +39,7 @@ writeFileSync("site/api.html", apiPage({ id, name: "Tane", icon }));
 console.log("site/ is ready: serve it, or let the Pages workflow publish it.");
 
 writeFileSync("site/family-embed-builder.js", `export const FAMILY_EMBED_BUILDER_WORDS = ${JSON.stringify(FAMILY_EMBED_BUILDER_WORDS)};\nexport ${familyEmbedBuilder.toString()};\n`);
-const builderParts = { builderHead: familyHead({ id, title: "Tane · build a seeded picker embed", description: "Choose a list and seed, preview picks or groups and copy the embed code." }), builderHeader: familyHeader({ id, links: [{ href: "./", say: "toGallery" }] }), unreviewed: familyUnreviewed({ id }), footer: familyFooter({ id }), script: `<script>${FAMILY_SCRIPT}</script>` };
+const builderParts = { builderHead: familyHead({ id, title: "Tane 種 — Seeded random numbers for JavaScript", description: "Choose a list and seed, preview picks or groups and copy the embed code." }), builderHeader: familyHeader({ id, links: [{ href: "./", say: "toGallery" }, { href: "docs/index.html", say: "pageDocs" }, { href: "api.html", say: "pageApi" }] }), unreviewed: familyUnreviewed({ id }), footer: familyFooter({ id }), script: `<script>${FAMILY_SCRIPT}</script>` };
 writeFileSync("site/builder.html", readFileSync("demo/builder.html", "utf8").replace(/<!-- family:([A-Za-z]+) -->/g, (_match, key) => builderParts[key]));
 cpSync("demo/embed", "site/embed", { recursive: true });
 for (const file of ["builder.js", "builder.css"]) cpSync(`demo/${file}`, `site/${file}`);

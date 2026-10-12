@@ -126,3 +126,7 @@ pnpm site             # builds the demo into ./site
   wider than the screen, nothing to tap is under 44px, and the page complained
   of nothing. The first time, `pnpm exec playwright install chromium webkit`
   fetches the browsers.
+
+## Documentation site
+
+`pnpm docs:check` checks public examples and guide links. `pnpm docs:site` builds the bilingual reference and local search. Keep summaries, parameters, return/refusal meanings and standalone examples with public exports; browser examples use `ts no-run`. Update paired guides in `docs/guides/` and `docs/guides/ja/`, and mark new Japanese for review before release. The generator and shared tests remain unchanged pilot copies.

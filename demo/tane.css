@@ -33,3 +33,6 @@
 .paste .fam-field { flex: 1 1 12rem; width: auto; }
 .explorer .fam-tabs { border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
 .explorer .fam-error { min-height: 1.2em; }
+
+/* Reserve the same navigation space in English and Japanese. */
+header nav a[data-say="pageDocs"] { inline-size: 8rem; justify-content: center; flex: none; }

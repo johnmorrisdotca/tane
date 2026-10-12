@@ -1,0 +1,30 @@
+{
+  "job": "Seeded random numbers for JavaScript",
+  "pitch": {
+    "en": "Reproduce numbers from a seed, shuffle or pick items, share a daily puzzle and resume a saved stream.",
+    "ja": "シードで同じ数列を再現し、項目を並べ替えたり選んだり、日替わりの問題を共有したり、保存した位置から再開したりできます。"
+  },
+  "name": {
+    "en": "Tane means seed in Japanese.",
+    "ja": "「種」は英語の seed に当たる日本語です。"
+  },
+  "icon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='58' rx='26' ry='34' fill='%232f5d4a'/%3E%3Cpath d='M50 26 C 50 10, 66 6, 74 10 C 70 20, 60 26, 50 26 Z' fill='%236b9a6f'/%3E%3C/svg%3E",
+  "entries": {
+    ".": {
+      "en": "Streams, draws and seeds",
+      "ja": "乱数列・抽選・シード"
+    },
+    "./react": {
+      "en": "React hooks",
+      "ja": "Reactフック"
+    },
+    "./element": {
+      "en": "Picker element",
+      "ja": "選択ツールの要素"
+    },
+    "./element/define": {
+      "en": "Register the picker",
+      "ja": "選択ツールの登録"
+    }
+  }
+}

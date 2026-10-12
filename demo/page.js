@@ -7,7 +7,7 @@ const MOST_ROWS = 100;
 const ITEMS = "Ada Grace Alan Edsger Barbara Donald";
 
 // The page's words are the package's own table, under the names the shared header and footer ask for.
-const words = (lang) => ({ ...STRINGS[lang], pageApi: lang === "en" ? "API reference" : "API（英語）", pitch: STRINGS[lang].pagePitch, name: STRINGS[lang].pageName, nameLink: STRINGS[lang].pageNameLink, foot: STRINGS[lang].pageFoot });
+const words = (lang) => ({ ...STRINGS[lang], pageDocs: lang === "ja" ? "ドキュメント" : "Docs", pageApi: lang === "en" ? "API reference" : "API（英語）", pitch: STRINGS[lang].pagePitch, name: STRINGS[lang].pageName, nameLink: STRINGS[lang].pageNameLink, foot: STRINGS[lang].pageFoot });
 const language = familyLanguage({ id: "tane", words: { en: words("en"), ja: words("ja") }, onChange: () => draw() });
 const t = () => STRINGS[language.lang];
 
@@ -44,6 +44,7 @@ const left = (until) => {
 };
 
 function draw() {
+  document.querySelector('[data-say="pageDocs"]')?.setAttribute("href", language.lang === "ja" ? "docs/ja/index.html" : "docs/index.html");
   const seed = seedFrom(state.typed);
   const position = { seed, draws: state.skip + state.shown };
   if ($("seed").value !== state.typed) $("seed").value = state.typed;
