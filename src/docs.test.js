@@ -376,7 +376,7 @@ describe("the family's look", () => {
   });
 
   it("scripts/family-template.mjs is the family's file too", () => {
-    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("a2dc81808be980438bdef8b91f5c0bbff920a739bc50930cd4632cb017c8fa48");
+    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("cee03de7990c262dddb11c080c893d7a53623c13188314bb23b6d60a086ae96c");
   });
 
   it("the README's theming table gives the stylesheets' own values", () => {
@@ -419,17 +419,17 @@ describe("the family list", () => {
       { id: "bushu", name: "Bushu", kana: "部首" },
     ];
     const template = readFileSync("scripts/family-template.mjs", "utf8");
-    const known = [...template.matchAll(/\{ id: "([\w-]+)", name: "(\w+)", kana: "([^"]+)" \}/g)].map((match) => ({ id: match[1], name: match[2], kana: match[3] }));
+    const known = [...template.matchAll(/\{ id: "([\w-]+)", name: "([\w ]+)", kana: "([^"]+)" \}/g)].map((match) => ({ id: match[1], name: match[2], kana: match[3] }));
     const family = [...known, ...NEWER.filter((one) => !known.some((has) => has.id === one.id))];
     const from = readme.indexOf("### The family");
     const block = readme.slice(from, readme.indexOf("\n## ", from));
-    const listed = [...block.matchAll(/^- \[(\w+)\]\(https:\/\/github\.com\/johnmorrisdotca\/([\w-]+)\) \(([^,)]+)[,)]/gm)];
+    const listed = [...block.matchAll(/^- \[([\w ]+)\]\(https:\/\/github\.com\/johnmorrisdotca\/([\w-]+)\) \(([^,)]+)[,)]/gm)];
     expect(listed.map((match) => match[2])).toEqual(family.map((one) => one.id));
     for (const match of listed) {
       const one = family.find((entry) => entry.id === match[2]);
       expect([match[1], match[3]], match[2]).toEqual([one.name, one.kana]);
     }
-    const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four"];
+    const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six"];
     expect(block).toContain(`Tane is one of ${words[family.length]} packages`);
     expect(block).toContain("**This package is Tane.**");
     expect(family.length).toBeGreaterThanOrEqual(19);
