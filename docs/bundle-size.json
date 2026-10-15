@@ -3,19 +3,19 @@
   "entries": {
     ".": {
       "minified": 28699,
-      "gzip": 9666
+      "gzip": 9774
     },
     "./react": {
       "minified": 31698,
-      "gzip": 10533
+      "gzip": 10541
     },
     "./element": {
       "minified": 11218,
-      "gzip": 4285
+      "gzip": 4294
     },
     "./element/define": {
       "minified": 11223,
-      "gzip": 4288
+      "gzip": 4298
     }
   }
 }

@@ -9,7 +9,7 @@ A seedable random number generator with the draws a game needs: shuffle, pick, s
   <a href="./LICENSE"><img alt="MIT licence" src="https://img.shields.io/badge/licence-MIT-2f5d4a"></a>
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-0-2f5d4a">
   <img alt="TypeScript" src="https://img.shields.io/badge/types-TypeScript-3178c6">
-  <a href="https://johnmorrisdotca.github.io/tane/docs/api/main/index.html"><img alt="9.7 kB minified and gzipped" src="https://img.shields.io/badge/min%2Bgzip-9.7%20kB-2f5d4a"></a>
+  <a href="https://johnmorrisdotca.github.io/tane/docs/api/main/index.html"><img alt="9.8 kB minified and gzipped" src="https://img.shields.io/badge/min%2Bgzip-9.8%20kB-2f5d4a"></a>
   <a href="https://www.npmjs.com/package/@johnmorrisdotca/tane#provenance"><img alt="Published with npm provenance" src="https://img.shields.io/badge/npm-provenance-2f5d4a"></a>
 </p>
 
