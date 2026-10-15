@@ -19,6 +19,7 @@ The picker and group-maker are elements with the family's standard embed attribu
 
 ### Changed
 
+- The API link in the demo's header reads "API" in English, so that the header takes the same number of rows in English and in Japanese on a phone, as the demo's test of a language change asks.
 - Synchronize documentation tooling for repository layouts, generated type references, Node entry points and repository-specific README links.
 - Keep large documentation resource catalogues on the entry index and the active resource beside core navigation, preserving every reference page; render valid default imports in HTML and Markdown.
 - Group the package family by kind, alphabetize each group, and include the geography packages and REST in Pieces in the shared footer and README.
