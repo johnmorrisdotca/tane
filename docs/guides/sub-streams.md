@@ -2,7 +2,7 @@
 title: Keep features on separate streams
 section: how-to
 order: 3
-description: Learn keep features on separate streams.
+description: Give each feature its own sequence so adding one never changes another.
 ---
 
 ## Derive by stable names

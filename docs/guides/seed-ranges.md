@@ -2,7 +2,7 @@
 title: Seed normalization and reserved ranges
 section: explanation
 order: 8
-description: Learn seed normalization and reserved ranges.
+description: Normalise seeds, tell a sequence seed from a distributable one, and reserve blocks.
 ---
 
 ## Stream seeds and allocated seeds differ

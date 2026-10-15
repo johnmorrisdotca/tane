@@ -2,7 +2,7 @@
 title: Save and resume a stream
 section: how-to
 order: 5
-description: Learn save and resume a stream.
+description: Count draws, save a position as JSON, text or CSV, and resume from it.
 ---
 
 ## Count source draws

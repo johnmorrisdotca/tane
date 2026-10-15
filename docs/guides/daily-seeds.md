@@ -2,7 +2,7 @@
 title: Make a daily puzzle
 section: how-to
 order: 4
-description: Learn make a daily puzzle.
+description: Make a daily puzzle from a calendar day in UTC or a chosen time zone, and map seeds back to dates.
 ---
 
 ## Choose the calendar explicitly

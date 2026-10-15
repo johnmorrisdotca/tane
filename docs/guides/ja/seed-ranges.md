@@ -2,12 +2,12 @@
 title: シードの正規化と予約範囲
 section: explanation
 order: 8
-description: シードの正規化と予約範囲の使い方と注意点。
+description: シードを正規化し、数列のシードと配布用のシードを区別し、範囲を予約します。
 ---
 
 ## 数列と配布用のシードは異なる
 
-mulberry32 は整数を符号なし 32 ビットとして読みます。`seedFrom`は 42 のような数値の文字列をその数値にし、それ以外をハッシュします。hashSeed("42") は別の処理です。`isSeed`は外から配布する正のシードを 1〜most、既定では 2³¹−1 で確認します。そのため、数列のシード 0 は使えても isSeed(0) は false です。
+mulberry32は整数を符号なし32ビットとして読みます。`seedFrom`は42のような数値の文字列をその数値にし、それ以外をハッシュします。hashSeed("42")は別の処理です。`isSeed`は外から配布する正のシードを1〜most、既定では2³¹−1で確認します。そのため、数列のシード0は使えてもisSeed(0)はfalseです。
 
 ```ts
 import { drawSeed, hashSeed, isSeed, mulberry32, seedFrom } from "@johnmorrisdotca/tane";
@@ -19,8 +19,8 @@ console.log(drawSeed(mulberry32(42), { most: 100, reserved: [{ from: 10, size: 5
 
 ## 予約を避けて配布する
 
-SeedBlock は from から size 個のシードです。checkBlocks は整数、重なり、上限を確認して並べます。drawSeed は予約を避け、すべて予約された範囲は拒否します。
+SeedBlockはfromからsize個のシードです。checkBlocksは整数、重なり、上限を確認して並べます。drawSeedは予約を避け、すべて予約された範囲は拒否します。
 
 ## 日付のブロック
 
-日付用には、基準日からの日数ではなく YYYYMMDD の十進数の位置を使います。その数が入る長さを取り、ランダムな配布から予約できます。[日替わり](daily-seeds.md)に逆変換とタイムゾーンの例があります。
+日付用には、基準日からの日数ではなくYYYYMMDDの十進数の位置を使います。その数が入る長さを取り、ランダムな配布から予約できます。[日替わり](daily-seeds.md)に逆変換とタイムゾーンの例があります。

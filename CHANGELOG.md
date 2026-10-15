@@ -7,27 +7,22 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
-- Synchronize documentation tooling for repository layouts, generated type references, Node entry points and repository-specific README links.
+## [1.3.0] - 2026-10-14
 
-- Keep large documentation resource catalogues on the entry index and the active resource beside core navigation, preserving every reference page; render valid default imports in HTML and Markdown.
-
-- Add the bilingual documentation site, checked public examples, paired guides, local search and machine-readable pages.
-
-- Add the seeded picker and balanced group-maker element, shared embed builder and validated iframe route. Use native streams/draws, support reflected properties and host options, and keep item text out of composed native events and frame messages.
-
-
-
+The picker and group-maker are elements with the family's standard embed attributes and a shared builder, and the package has an English and Japanese documentation site with a checked example for every export. The generator, the sequences, the saved positions and the daily seeds are unchanged.
 
 ### Added
 
+- Add the bilingual documentation site, checked public examples, paired guides, local search and machine-readable pages.
+- Add the seeded picker and balanced group-maker element, shared embed builder and validated iframe route. Use native streams/draws, support reflected properties and host options, and keep item text out of composed native events and frame messages.
 - Share a package-independent embed builder for option controls, preview adapters, code tabs and shareable links.
 
 ### Changed
 
+- Synchronize documentation tooling for repository layouts, generated type references, Node entry points and repository-specific README links.
+- Keep large documentation resource catalogues on the entry index and the active resource beside core navigation, preserving every reference page; render valid default imports in HTML and Markdown.
 - Group the package family by kind, alphabetize each group, and include the geography packages and REST in Pieces in the shared footer and README.
-
 - Repository only: `e2e/shots.mjs` no longer takes the README's pictures (`pnpm screenshots:readme` does, since the last release) and keeps its general pictures.
-
 - Update the shared family description for addresses in all seven supported countries, including France and Germany.
 
 ## [1.2.2] - 2026-10-06
@@ -155,7 +150,8 @@ always gave.
 - React hooks `useDailySeed` and `useSeeded`, from `@johnmorrisdotca/tane/react`.
 - A static demo, published to GitHub Pages.
 
-[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/johnmorrisdotca/tane/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/johnmorrisdotca/tane/compare/v1.2.2...v1.3.0
 [1.2.1]: https://github.com/johnmorrisdotca/tane/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/johnmorrisdotca/tane/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/johnmorrisdotca/tane/compare/v1.1.0...v1.1.1

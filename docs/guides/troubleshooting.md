@@ -2,7 +2,7 @@
 title: Troubleshooting & FAQ
 section: troubleshooting
 order: 9
-description: Learn troubleshooting & faq.
+description: Find out why a sequence changed, a read returns null, a call throws or a React value is stale.
 ---
 
 ## The sequence changed

@@ -2,7 +2,7 @@
 title: Shuffle, pick and weight choices
 section: how-to
 order: 2
-description: Learn shuffle, pick and weight choices.
+description: Shuffle, pick, sample and weight with the right function, and keep draws predictable.
 ---
 
 ## Use the right draw

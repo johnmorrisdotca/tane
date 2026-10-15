@@ -2,12 +2,12 @@
 title: Upgrading and coming from other generators
 section: upgrading
 order: 10
-description: Learn upgrading and coming from other generators.
+description: Stay on version 1 and move from another generator without changing existing results.
 ---
 
 ## Within version 1
 
-The specification fixes seeded results. This documentation update changes examples, guides and navigation without changing the SDK’s emitted behavior. Keep existing draw order when resuming an old position or named daily puzzle; an equivalent-looking rewrite can consume a different number of draws.
+The specification fixes seeded results. Keep existing draw order when resuming an old position or named daily puzzle; an equivalent-looking rewrite can consume a different number of draws.
 
 ## Coming from another generator
 

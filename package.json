@@ -1,6 +1,6 @@
 {
   "name": "@johnmorrisdotca/tane",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "Tane \u7a2e \u2014 Seeded random numbers for JavaScript: reproducible streams, shuffle, pick, sample, weighted choice, daily seeds and saved positions. Zero dependencies.",
   "keywords": [
     "angular",

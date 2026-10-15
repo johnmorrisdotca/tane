@@ -2,7 +2,7 @@
 title: Embed a picker and use hooks
 section: how-to
 order: 6
-description: Learn embed a picker and use hooks.
+description: Put the picker element on a page, decide what a shared link reveals, and use the React hooks.
 ---
 
 ## Mount the native picker

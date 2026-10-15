@@ -2,7 +2,7 @@
 title: Engine and compatibility
 section: explanation
 order: 7
-description: Learn engine and compatibility.
+description: See the small state of the generator, why the sequence is part of the contract, and what it is not for.
 ---
 
 ## One small state

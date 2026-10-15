@@ -2,7 +2,7 @@
 title: Getting started
 section: tutorial
 order: 1
-description: Learn getting started.
+description: Install Tane and reproduce the same sequence from one seed.
 ---
 
 Install Tane and reproduce a stream from one seed. The pure engine works in Node 22 or later and in browsers; no DOM or runtime dependency is required.
