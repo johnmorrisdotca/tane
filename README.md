@@ -650,7 +650,7 @@ toCSV({ seed: 42, draws: 0 }, 2);            // the CSV below
 ```json
 {
   "format": 1,
-  "generator": "tane 1.3.0",
+  "generator": "tane 1.3.1",
   "algorithm": "mulberry32",
   "seed": 42,
   "draws": 4,
@@ -735,7 +735,7 @@ b
 $ tane --seed 42 --int 1..6 -n 5 --json
 {
   "format": 1,
-  "generator": "tane 1.3.0",
+  "generator": "tane 1.3.1",
   "seed": 42,
   "skipped": 0,
   "min": 1,
@@ -1123,7 +1123,7 @@ public issue.
 
 See [CHANGELOG.md](./CHANGELOG.md).
 
-The latest release is 1.3.0: the seeded picker and group-maker as elements, the shared embed builder, and the documentation site with a checked example for every export.
+The latest release, 1.3.1, changes nothing a player sees.
 
 ## Licence
 
