@@ -229,7 +229,8 @@ function specStream(seed) {
     return Number(drawn.out) / TWO_32;
   };
 }
-function specMix(h) {
+function specMix(input) {
+  let h = input;
   h ^= h >> 16n;
   h = u32(h * 0x85ebca6bn);
   h ^= h >> 13n;

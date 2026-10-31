@@ -1,5 +1,6 @@
 import { expect, it } from "vitest";
 import { parsePickerItems } from "./element.ts";
+
 it("reads newline or JSON lists, preserving duplicate entries and text safety", () => {
   expect(parsePickerItems(" A\nB\n A ")).toEqual(["A", "B", "A"]);
   expect(parsePickerItems(JSON.stringify(["<img src=x>", "種"]))).toEqual(["<img src=x>", "種"]);

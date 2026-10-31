@@ -1,6 +1,5 @@
 // The seed explorer. Everything it shows is made by the package, from the seed in the box.
 import {
-  STRINGS,
   dailySeed,
   deriveSeed,
   fillIn,
@@ -12,6 +11,7 @@ import {
   nextDayStart,
   pick,
   randomAt,
+  STRINGS,
   seedFrom,
   shuffled,
   stateAt,

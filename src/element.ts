@@ -1,8 +1,9 @@
-import { mulberry32, type Random } from "./random.ts";
-import { seedFrom } from "./seeds.ts";
 import { dailySeed } from "./daily.ts";
 import { sample, shuffled, weightedIndex } from "./draws.ts";
 import { embedDay } from "./embed-day.ts";
+import { mulberry32, type Random } from "./random.ts";
+import { seedFrom } from "./seeds.ts";
+
 const ElementBase = typeof HTMLElement === "undefined" ? (class {} as typeof HTMLElement) : HTMLElement;
 const isOn = (value: string | null, fallback = true): boolean =>
   value === null ? fallback : !["off", "false", "no", "0"].includes(value.trim().toLowerCase());
@@ -245,8 +246,8 @@ export class TanePicker extends ElementBase {
   #frame(): void {
     this.style.display = "block";
     this.style.maxWidth = "100%";
-    const width = Number(this.getAttribute("width")),
-      size = this.getAttribute("size");
+    const width = Number(this.getAttribute("width"));
+    const size = this.getAttribute("size");
     const pixels =
       this.hasAttribute("width") && width > 0 && Number.isFinite(width)
         ? Math.min(width, 2000)
@@ -295,15 +296,15 @@ export class TanePicker extends ElementBase {
       throw new RangeError("Choose pick, shuffle or groups.");
     const n = (name: string, fallback: number): number =>
       this.hasAttribute(name) ? Number(this.getAttribute(name)) : fallback;
-    const count = n("count", 1),
-      groups = n("group-count", 2);
+    const count = n("count", 1);
+    const groups = n("group-count", 2);
     if (!Number.isInteger(count) || count < 1 || count > 200 || !Number.isInteger(groups) || groups < 1 || groups > 20)
       throw new RangeError("Use a whole pick count from 1–200 and group count from 1–20.");
-    const day = embedDay(this.getAttribute("daily")),
-      seed =
-        day === null
-          ? seedFrom(this.getAttribute("seed") ?? this.#options.seed ?? 1)
-          : dailySeed(new Date(`${day}T00:00:00Z`));
+    const day = embedDay(this.getAttribute("daily"));
+    const seed =
+      day === null
+        ? seedFrom(this.getAttribute("seed") ?? this.#options.seed ?? 1)
+        : dailySeed(new Date(`${day}T00:00:00Z`));
     const weights = this.#options.weights;
     if (
       weights !== undefined &&
@@ -330,14 +331,14 @@ export class TanePicker extends ElementBase {
   }
   #take(): void {
     const indices = this.#items.map((_item, index) => index);
-    let selected: number[],
-      groups: number[][] = [];
+    let selected: number[];
+    let groups: number[][] = [];
     if (this.#mode === "pick") {
       if (this.#options.weights === undefined) selected = sample(this.#stream, indices, this.#count);
       else {
         selected = [];
-        const pool = [...indices],
-          weights = [...this.#options.weights];
+        const pool = [...indices];
+        const weights = [...this.#options.weights];
         for (let i = 0; i < Math.min(this.#count, indices.length); i++) {
           const at = weightedIndex(this.#stream, weights);
           selected.push(pool.splice(at, 1)[0]!);
@@ -348,7 +349,9 @@ export class TanePicker extends ElementBase {
       selected = shuffled(this.#stream, indices);
       if (this.#mode === "groups") {
         groups = Array.from({ length: Math.min(this.#groupCount, indices.length) }, () => [] as number[]);
-        selected.forEach((index, at) => groups[at % groups.length]!.push(index));
+        selected.forEach((index, at) => {
+          groups[at % groups.length]!.push(index);
+        });
       }
     }
     this.#result = { seed: this.#hostStream ? null : this.#seed, mode: this.#mode, indices: selected, groups };
@@ -426,8 +429,8 @@ export class TanePicker extends ElementBase {
     this.#result = null;
     this.#key = "";
     this.#root = null;
-    const message = error instanceof Error ? error.message : String(error),
-      status = this.ownerDocument.createElement("p");
+    const message = error instanceof Error ? error.message : String(error);
+    const status = this.ownerDocument.createElement("p");
     status.setAttribute("role", "status");
     status.textContent = message;
     this.replaceChildren(status);

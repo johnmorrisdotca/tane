@@ -7,11 +7,12 @@
  * dependencies and no DOM; `@johnmorrisdotca/tane/react` adds two hooks, and
  * `tane` is the same thing from a terminal.
  */
-export * from "./random.ts";
-export * from "./draws.ts";
-export * from "./seeds.ts";
+
+export { CLI_MAX_COUNT, type CliResult, type CliSurroundings, cliLanguage, runCli } from "./cli.ts";
 export * from "./daily.ts";
+export * from "./draws.ts";
+export * from "./random.ts";
 export * from "./save.ts";
+export * from "./seeds.ts";
 export * from "./strings.ts";
-export { runCli, cliLanguage, CLI_MAX_COUNT, type CliResult, type CliSurroundings } from "./cli.ts";
 export { VERSION } from "./version.ts";

@@ -1,8 +1,9 @@
-import { VERSION } from "./dist/index.js";
-import { TanePicker, TANE_EMBED_OPTION_KEYS, parsePickerItems } from "./dist/element.js";
+import { parsePickerItems, TANE_EMBED_OPTION_KEYS, TanePicker } from "./dist/element.js";
 import { embedDay } from "./dist/embed-day.js";
+import { VERSION } from "./dist/index.js";
 import "./dist/element-define.js";
-import { familyEmbedBuilder, FAMILY_EMBED_BUILDER_WORDS } from "./family-embed-builder.js";
+import { FAMILY_EMBED_BUILDER_WORDS, familyEmbedBuilder } from "./family-embed-builder.js";
+
 const words = {
   en: {
     ...FAMILY_EMBED_BUILDER_WORDS.en,
@@ -139,18 +140,18 @@ const leftOut = {
 };
 let mounted;
 const page = globalThis.familyLanguage({
-    id: "tane",
-    words,
-    onChange: () => {
-      docsLink();
-      mounted?.draw();
-    },
-  }),
-  heights = {};
+  id: "tane",
+  words,
+  onChange: () => {
+    docsLink();
+    mounted?.draw();
+  },
+});
+const heights = {};
 const key = (settings) => JSON.stringify(settings);
 function problem(settings) {
-  const count = Number(settings.count ?? 1),
-    groups = Number(settings["group-count"] ?? 2);
+  const count = Number(settings.count ?? 1);
+  const groups = Number(settings["group-count"] ?? 2);
   if (!Number.isInteger(count) || count < 1 || count > 200 || !Number.isInteger(groups) || groups < 1 || groups > 20)
     return "badCounts";
   const seed = String(settings.seed ?? "1");
@@ -164,10 +165,10 @@ function problem(settings) {
   return null;
 }
 function estimatedHeight(settings) {
-  const items = parsePickerItems(settings.items ?? "A\nB\nC") ?? [],
-    mode = settings.mode ?? "pick",
-    lines = items.map((item) => Math.max(1, Math.ceil([...item].length / 14))).sort((a, b) => b - a),
-    used = mode === "pick" ? lines.slice(0, Number(settings.count ?? 1)) : lines;
+  const items = parsePickerItems(settings.items ?? "A\nB\nC") ?? [];
+  const mode = settings.mode ?? "pick";
+  const lines = items.map((item) => Math.max(1, Math.ceil([...item].length / 14))).sort((a, b) => b - a);
+  const used = mode === "pick" ? lines.slice(0, Number(settings.count ?? 1)) : lines;
   return (
     212 +
     used.reduce((sum, n) => sum + n, 0) * 29 +

@@ -15,7 +15,7 @@ import {
   toCSV,
   toJSON,
 } from "../dist/index.js";
-import { NOW, at, open, sound, state, tap, type } from "./demo.mjs";
+import { at, NOW, open, sound, state, tap, type } from "./demo.mjs";
 
 const NAMES = ["Ada", "Grace", "Alan", "Edsger", "Barbara", "Donald"];
 const first = (seed, count) => {

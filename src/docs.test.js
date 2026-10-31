@@ -1,11 +1,10 @@
-import { FAMILY, familyRepo } from "../scripts/family-template.mjs";
 // The documents that are made from the source, or that quote it, checked against it.
 // Plain JavaScript, so that reading files needs no Node types. `pnpm docs:make` rewrites what is made.
 import { createHash } from "node:crypto";
-import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import process from "node:process";
-
 import { describe, expect, it } from "vitest";
+import { FAMILY, familyRepo } from "../scripts/family-template.mjs";
 
 import * as tane from "./index.ts";
 import * as hooks from "./react.ts";
@@ -376,7 +375,7 @@ describe("package.json", () => {
 });
 
 describe("docs/strings-ja.md", () => {
-  const escape = (text) => text.replaceAll("|", "\\|").replaceAll("\n", "<br>");
+  const escapeCell = (text) => text.replaceAll("|", "\\|").replaceAll("\n", "<br>");
   const lines = [
     "# Tane's words, in English and Japanese",
     "",
@@ -390,7 +389,7 @@ describe("docs/strings-ja.md", () => {
     "| --- | --- | --- |",
     ...Object.keys(STRINGS.en)
       .filter((key) => key !== "cliUsage")
-      .map((key) => `| \`${key}\` | ${escape(STRINGS.en[key])} | ${escape(STRINGS.ja[key])} |`),
+      .map((key) => `| \`${key}\` | ${escapeCell(STRINGS.en[key])} | ${escapeCell(STRINGS.ja[key])} |`),
     "",
     "## The command line's help",
     "",

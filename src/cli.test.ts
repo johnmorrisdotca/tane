@@ -279,10 +279,10 @@ describe("the language and the colour", () => {
   });
 
   it("is bold only on a terminal that shows colour", () => {
-    const escape = String.fromCharCode(27);
-    expect(run("--today", { colour: true }).out).toContain(`${escape}[1m20261001${escape}[0m`);
-    expect(run("--today").out).not.toContain(escape);
-    expect(run("--today --no-color", { colour: true }).out).not.toContain(escape);
-    expect(run("--today", { colour: true, env: { NO_COLOR: "1" } }).out).not.toContain(escape);
+    const ansiEscape = String.fromCharCode(27);
+    expect(run("--today", { colour: true }).out).toContain(`${ansiEscape}[1m20261001${ansiEscape}[0m`);
+    expect(run("--today").out).not.toContain(ansiEscape);
+    expect(run("--today --no-color", { colour: true }).out).not.toContain(ansiEscape);
+    expect(run("--today", { colour: true, env: { NO_COLOR: "1" } }).out).not.toContain(ansiEscape);
   });
 });

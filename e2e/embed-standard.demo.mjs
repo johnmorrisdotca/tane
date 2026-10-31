@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { serve } from "./demo.mjs";
+
 test("the shared builder covers every picker option and writes all host formats", async ({ page }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
@@ -72,8 +73,8 @@ test("host names stay local, events compose with indices, and weights use the na
     const { definePicker } = await import("../dist/element.js");
     definePicker("article-picker");
     definePicker("article-picker");
-    const host = document.createElement("div"),
-      shadow = host.attachShadow({ mode: "open" });
+    const host = document.createElement("div");
+    const shadow = host.attachShadow({ mode: "open" });
     document.body.append(host);
     const picker = document.createElement("article-picker");
     picker.options = { items: ["Private Alice", "Private Bob"], seed: 42, weights: [0, 1] };
