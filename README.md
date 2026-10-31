@@ -891,7 +891,7 @@ size in both is a CSS custom property on `:root`, in light and in dark:
 | `--gold`, `--gold-ink` | a badge | `#e0b43b`, `#1f2320` | the same |
 | `--radius` | the corners of panels | `16px` | |
 | `--font`, `--mono` | the type: the system's own, and its monospace | | |
-| `--intro-room`, `--intro-room-wide` | room kept for the header's words, so that changing language moves nothing | `11rem`, `7.25rem` | |
+| `--intro-room`, `--intro-room-wide` | room kept for the header's words, so that changing language moves nothing | `12rem`, `7rem` | |
 
 The page follows the device's light or dark setting; `data-theme="light"` or
 `"dark"` on `<html>` forces one. To give a copy of the explorer another look,

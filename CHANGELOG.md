@@ -7,6 +7,10 @@ produces is a breaking change, and has never been made.
 
 ## [Unreleased]
 
+### Fixed
+
+- The demo keeps the seed box and its buttons in place when the language changes, and the Builder's code is tested against its options.
+
 ## [1.3.1] - 2026-10-31
 
 ### Changed
