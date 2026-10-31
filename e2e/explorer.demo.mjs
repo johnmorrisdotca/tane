@@ -2,7 +2,19 @@
 // take today's seed, copy a link and open it, keep a position and read it back.
 import { expect, test } from "@playwright/test";
 
-import { dailySeed, deriveSeed, hashSeed, int, mulberry32, pick, randomAt, shuffled, stateAt, toCSV, toJSON } from "../dist/index.js";
+import {
+  dailySeed,
+  deriveSeed,
+  hashSeed,
+  int,
+  mulberry32,
+  pick,
+  randomAt,
+  shuffled,
+  stateAt,
+  toCSV,
+  toJSON,
+} from "../dist/index.js";
 import { NOW, at, open, sound, state, tap, type } from "./demo.mjs";
 
 const NAMES = ["Ada", "Grace", "Alan", "Edsger", "Barbara", "Donald"];
@@ -84,7 +96,8 @@ test("the link replays the page: whoever opens it sees the same", async ({ page,
   const other = await context.newPage();
   const otherErrors = await open(other, new URL(link).search);
   const after = await sound(other, otherErrors);
-  for (const key of ["typed", "seed", "rows", "shuffled", "picked", "dice", "kept"]) expect(after[key], key).toEqual(before[key]);
+  for (const key of ["typed", "seed", "rows", "shuffled", "picked", "dice", "kept"])
+    expect(after[key], key).toEqual(before[key]);
   expect(after.seed).toBe(hashSeed("room 7"));
 });
 

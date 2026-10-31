@@ -2,7 +2,20 @@ import { describe, expect, it } from "vitest";
 
 import { shuffled } from "./draws.ts";
 import { hashSeed, mulberry32, step } from "./random.ts";
-import { CSV_COLUMNS, MAX_CSV_ROWS, SAVE_FORMAT, counted, fromJSON, fromText, randomAt, savedStream, stateAt, toCSV, toJSON, toText } from "./save.ts";
+import {
+  CSV_COLUMNS,
+  MAX_CSV_ROWS,
+  SAVE_FORMAT,
+  counted,
+  fromJSON,
+  fromText,
+  randomAt,
+  savedStream,
+  stateAt,
+  toCSV,
+  toJSON,
+  toText,
+} from "./save.ts";
 import { seedFrom } from "./seeds.ts";
 import { VERSION } from "./version.ts";
 
@@ -76,12 +89,19 @@ describe("counted", () => {
 
 describe("JSON", () => {
   it("writes the format first, and what wrote it", () => {
-    expect(toJSON({ seed: 42, draws: 7 })).toBe(`{\n  "format": 1,\n  "generator": "tane ${VERSION}",\n  "algorithm": "mulberry32",\n  "seed": 42,\n  "draws": 7,\n  "state": ${stateAt(42, 7)}\n}\n`);
+    expect(toJSON({ seed: 42, draws: 7 })).toBe(
+      `{\n  "format": 1,\n  "generator": "tane ${VERSION}",\n  "algorithm": "mulberry32",\n  "seed": 42,\n  "draws": 7,\n  "state": ${stateAt(42, 7)}\n}\n`,
+    );
     expect(savedStream({ seed: 42, draws: 7 }).format).toBe(SAVE_FORMAT);
   });
 
   it("reads back what it wrote", () => {
-    for (const position of [{ seed: 0, draws: 0 }, { seed: 42, draws: 7 }, { seed: 2 ** 32 - 1, draws: 123_456_789_012 }, { seed: 20260930, draws: 1 }]) {
+    for (const position of [
+      { seed: 0, draws: 0 },
+      { seed: 42, draws: 7 },
+      { seed: 2 ** 32 - 1, draws: 123_456_789_012 },
+      { seed: 20260930, draws: 1 },
+    ]) {
       expect(fromJSON(toJSON(position))).toEqual(position);
     }
   });
@@ -98,7 +118,24 @@ describe("JSON", () => {
   });
 
   it("refuses what is not a position", () => {
-    for (const text of ["", "not json", "null", "[]", "42", '"tane"', "{}", '{"seed":"42"}', '{"seed":1.5}', '{"seed":-1}', `{"seed":${2 ** 32}}`, '{"seed":1,"draws":-1}', '{"seed":1,"draws":1.5}', '{"seed":1,"draws":"2"}', '{"seed":1,"algorithm":"sfc32"}', '{"seed":1,"state":"x"}']) {
+    for (const text of [
+      "",
+      "not json",
+      "null",
+      "[]",
+      "42",
+      '"tane"',
+      "{}",
+      '{"seed":"42"}',
+      '{"seed":1.5}',
+      '{"seed":-1}',
+      `{"seed":${2 ** 32}}`,
+      '{"seed":1,"draws":-1}',
+      '{"seed":1,"draws":1.5}',
+      '{"seed":1,"draws":"2"}',
+      '{"seed":1,"algorithm":"sfc32"}',
+      '{"seed":1,"state":"x"}',
+    ]) {
       expect(fromJSON(text), text).toBeNull();
     }
   });
@@ -118,13 +155,30 @@ describe("text", () => {
   });
 
   it("reads back what it wrote, with space around it", () => {
-    for (const position of [{ seed: 0, draws: 0 }, { seed: 42, draws: 7 }, { seed: 2 ** 32 - 1, draws: 9_007_199_254_740_991 }]) {
+    for (const position of [
+      { seed: 0, draws: 0 },
+      { seed: 42, draws: 7 },
+      { seed: 2 ** 32 - 1, draws: 9_007_199_254_740_991 },
+    ]) {
       expect(fromText(`  ${toText(position)}\n`)).toEqual(position);
     }
   });
 
   it("refuses anything else", () => {
-    for (const text of ["", "42", "tane:1:42", "tane:2:42:7", "tane:0:42:7", "tane:1:-1:0", "tane:1:4294967296:0", "tane:1:42:9007199254740992", "tane:1:42:7:1", "seed:1:42:7", "tane:1:4.2:7", "tane:1:42:7 extra"]) {
+    for (const text of [
+      "",
+      "42",
+      "tane:1:42",
+      "tane:2:42:7",
+      "tane:0:42:7",
+      "tane:1:-1:0",
+      "tane:1:4294967296:0",
+      "tane:1:42:9007199254740992",
+      "tane:1:42:7:1",
+      "seed:1:42:7",
+      "tane:1:4.2:7",
+      "tane:1:42:7 extra",
+    ]) {
       expect(fromText(text), text).toBeNull();
     }
   });
@@ -138,12 +192,18 @@ describe("text", () => {
 describe("CSV", () => {
   it("is a header and a row a draw, ended CRLF", () => {
     expect(CSV_COLUMNS).toEqual(["draw", "value", "state"]);
-    expect(toCSV({ seed: 42, draws: 0 }, 2)).toBe("draw,value,state\r\n1,0.6011037519201636,1831565855\r\n2,0.44829055899754167,3663131668\r\n");
+    expect(toCSV({ seed: 42, draws: 0 }, 2)).toBe(
+      "draw,value,state\r\n1,0.6011037519201636,1831565855\r\n2,0.44829055899754167,3663131668\r\n",
+    );
     expect(toCSV({ seed: 42, draws: 0 }, 0)).toBe("draw,value,state\r\n");
   });
 
   it("counts on from the position, and every row is the stream's", () => {
-    const rows = toCSV({ seed: 42, draws: 3 }, 4).trimEnd().split("\r\n").slice(1).map((row) => row.split(",").map(Number));
+    const rows = toCSV({ seed: 42, draws: 3 }, 4)
+      .trimEnd()
+      .split("\r\n")
+      .slice(1)
+      .map((row) => row.split(",").map(Number));
     const all = take(mulberry32(42), 7);
     expect(rows.map((row) => row[0])).toEqual([4, 5, 6, 7]);
     expect(rows.map((row) => row[1])).toEqual(all.slice(3));

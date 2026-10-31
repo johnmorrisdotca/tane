@@ -11,7 +11,42 @@ import * as tane from "./index.ts";
 import * as hooks from "./react.ts";
 
 const { CLI_MAX_COUNT, MAX_CSV_ROWS, SEED_MOST, STRINGS, VERSION } = tane;
-const { addDays, below, chance, checkBlocks, counted, dailySeed, dayKey, dayOfSeed, daySeed, daysBetween, deriveSeed, drawSeed, float, fork, freshSeed, fromJSON, fromText, hashSeed, inBlock, int, isDayKey, isSeed, mulberry32, nextDayStart, randomAt, runCli, sample, seedFrom, shuffled, step, toCSV, toJSON, toText, weightedPick } = tane;
+const {
+  addDays,
+  below,
+  chance,
+  checkBlocks,
+  counted,
+  dailySeed,
+  dayKey,
+  dayOfSeed,
+  daySeed,
+  daysBetween,
+  deriveSeed,
+  drawSeed,
+  float,
+  fork,
+  freshSeed,
+  fromJSON,
+  fromText,
+  hashSeed,
+  inBlock,
+  int,
+  isDayKey,
+  isSeed,
+  mulberry32,
+  nextDayStart,
+  randomAt,
+  runCli,
+  sample,
+  seedFrom,
+  shuffled,
+  step,
+  toCSV,
+  toJSON,
+  toText,
+  weightedPick,
+} = tane;
 
 const readme = readFileSync("README.md", "utf8");
 const pkg = JSON.parse(readFileSync("package.json", "utf8"));
@@ -23,7 +58,13 @@ function table(heading, doc = readme) {
   if (from < 0) throw new Error(`no “${heading}”`);
   const rows = [];
   for (const line of doc.slice(from).split("\n").slice(1)) {
-    if (line.startsWith("|")) rows.push(line.split(/(?<!\\)\|/).slice(1, -1).map(cell));
+    if (line.startsWith("|"))
+      rows.push(
+        line
+          .split(/(?<!\\)\|/)
+          .slice(1, -1)
+          .map(cell),
+      );
     else if (rows.length > 0) break;
   }
   return rows.slice(2);
@@ -103,7 +144,20 @@ describe("the README on streams, draws and parts", () => {
 
   it("every draw in the table takes the draws it says", () => {
     const rows = table("## Draws");
-    expect(rows.map((row) => row[0].match(/`(\w+)\(/)[1])).toEqual(["below", "int", "float", "chance", "pick", "shuffle", "shuffled", "sample", "distinctBelow", "weightedIndex", "weightedPick", "normal"]);
+    expect(rows.map((row) => row[0].match(/`(\w+)\(/)[1])).toEqual([
+      "below",
+      "int",
+      "float",
+      "chance",
+      "pick",
+      "shuffle",
+      "shuffled",
+      "sample",
+      "distinctBelow",
+      "weightedIndex",
+      "weightedPick",
+      "normal",
+    ]);
     const items = ["a", "b", "c", "d", "e", "f", "g"];
     const calls = {
       below: [(r) => tane.below(r, 9), 1],
@@ -127,7 +181,13 @@ describe("the README on streams, draws and parts", () => {
     tane.weightedIndex(none, [0, 0]);
     expect(none.draws).toBe(0);
     expect(rows.find((row) => row[0].includes("weightedIndex"))[2]).toBe("1, or 0 when the weights sum to nothing");
-    for (const call of [() => below(mulberry32(1), 0), () => int(mulberry32(1), 2, 1), () => tane.pick(mulberry32(1), []), () => weightedPick(mulberry32(1), [], [])]) expect(call).toThrow(RangeError);
+    for (const call of [
+      () => below(mulberry32(1), 0),
+      () => int(mulberry32(1), 2, 1),
+      () => tane.pick(mulberry32(1), []),
+      () => weightedPick(mulberry32(1), [], []),
+    ])
+      expect(call).toThrow(RangeError);
   });
 
   it("parts", () => {
@@ -196,7 +256,12 @@ describe("the README on export and import", () => {
   });
 
   it("the table names every field the JSON has, in order", () => {
-    const rows = table("**Nothing read is trusted.**", readme.slice(readme.indexOf("| Field of the JSON") - 1).replace("| Field of the JSON", "**Nothing read is trusted.**\n| Field of the JSON")).map((row) => row[0].replaceAll("`", ""));
+    const rows = table(
+      "**Nothing read is trusted.**",
+      readme
+        .slice(readme.indexOf("| Field of the JSON") - 1)
+        .replace("| Field of the JSON", "**Nothing read is trusted.**\n| Field of the JSON"),
+    ).map((row) => row[0].replaceAll("`", ""));
     expect(rows).toEqual(Object.keys(JSON.parse(toJSON({ seed: 1, draws: 0 }))));
   });
 });
@@ -210,8 +275,19 @@ describe("the README on the command line", () => {
     expect(readme).toContain("$ tane --seed 42 --shuffle a b c\nc\na\nb\n");
     expect(runCli(["--seed", "42", "--shuffle", "a", "b", "c"]).out).toBe("c\na\nb\n");
     const data = JSON.parse(runCli(["--seed", "42", "--int", "1..6", "-n", "5", "--json"]).out);
-    expect(data).toEqual({ format: 1, generator: `tane ${VERSION}`, seed: 42, skipped: 0, min: 1, max: 6, integers: [4, 3, 6, 5, 2], position: "tane:1:42:5" });
-    expect(readme).toContain(`"generator": "tane ${VERSION}",\n  "seed": 42,\n  "skipped": 0,\n  "min": 1,\n  "max": 6,\n  "integers": [4, 3, 6, 5, 2],\n  "position": "tane:1:42:5"`);
+    expect(data).toEqual({
+      format: 1,
+      generator: `tane ${VERSION}`,
+      seed: 42,
+      skipped: 0,
+      min: 1,
+      max: 6,
+      integers: [4, 3, 6, 5, 2],
+      position: "tane:1:42:5",
+    });
+    expect(readme).toContain(
+      `"generator": "tane ${VERSION}",\n  "seed": 42,\n  "skipped": 0,\n  "min": 1,\n  "max": 6,\n  "integers": [4, 3, 6, 5, 2],\n  "position": "tane:1:42:5"`,
+    );
     says('runCli(["--seed", "42", "--pick", "a", "b", "c"]);   // { code: 0, out: "b\\n", err: "" }');
     expect(runCli(["--seed", "42", "--pick", "a", "b", "c"])).toEqual({ code: 0, out: "b\n", err: "" });
   });
@@ -221,13 +297,24 @@ describe("the README's reference", () => {
   const api = readme.slice(readme.indexOf("## API"), readme.indexOf("## Theming"));
 
   it("names every export, and nothing that is not one", () => {
-    const source = readdirSync("src").filter((name) => name.endsWith(".ts") && !name.includes(".test.")).map((name) => readFileSync(`src/${name}`, "utf8")).join("\n");
+    const source = readdirSync("src")
+      .filter((name) => name.endsWith(".ts") && !name.includes(".test."))
+      .map((name) => readFileSync(`src/${name}`, "utf8"))
+      .join("\n");
     const types = [...source.matchAll(/^export type (\w+)/gm)].map((m) => m[1]);
     const values = [...Object.keys(tane), ...Object.keys(hooks)];
     expect(values.length).toBeGreaterThan(50);
-    for (const name of [...values, ...types]) expect(api.includes(`\`${name}\``) || api.includes(`\`${name}(`) || api.includes(`type ${name}\``), name).toBe(true);
-    const firstCells = api.split("\n").filter((line) => line.startsWith("| `")).map((line) => line.split("|")[1]);
-    const named = new Set(firstCells.flatMap((text) => [...text.matchAll(/`(?:type )?([A-Za-z_]\w*)[`(]/g)].map((m) => m[1])));
+    for (const name of [...values, ...types])
+      expect(api.includes(`\`${name}\``) || api.includes(`\`${name}(`) || api.includes(`type ${name}\``), name).toBe(
+        true,
+      );
+    const firstCells = api
+      .split("\n")
+      .filter((line) => line.startsWith("| `"))
+      .map((line) => line.split("|")[1]);
+    const named = new Set(
+      firstCells.flatMap((text) => [...text.matchAll(/`(?:type )?([A-Za-z_]\w*)[`(]/g)].map((m) => m[1])),
+    );
     expect(named.size).toBeGreaterThan(40);
     const known = new Set([...values, ...types]);
     for (const name of named) expect(known.has(name), `the README names ${name}`).toBe(true);
@@ -267,7 +354,13 @@ describe("the version", () => {
 
 describe("package.json", () => {
   it("names built files directly, and ships what it names", () => {
-    const pointed = [pkg.main, pkg.module, pkg.types, ...Object.values(pkg.bin), ...Object.values(pkg.exports).flatMap((entry) => Object.values(entry))];
+    const pointed = [
+      pkg.main,
+      pkg.module,
+      pkg.types,
+      ...Object.values(pkg.bin),
+      ...Object.values(pkg.exports).flatMap((entry) => Object.values(entry)),
+    ];
     for (const file of pointed) expect(/^\.?\/?(dist|bin)\//.test(file), file).toBe(true);
     expect(pkg.publishConfig.exports).toBeUndefined();
     expect(pkg.dependencies).toBeUndefined();
@@ -295,7 +388,9 @@ describe("docs/strings-ja.md", () => {
     "",
     "| Name | English | Japanese |",
     "| --- | --- | --- |",
-    ...Object.keys(STRINGS.en).filter((key) => key !== "cliUsage").map((key) => `| \`${key}\` | ${escape(STRINGS.en[key])} | ${escape(STRINGS.ja[key])} |`),
+    ...Object.keys(STRINGS.en)
+      .filter((key) => key !== "cliUsage")
+      .map((key) => `| \`${key}\` | ${escape(STRINGS.en[key])} | ${escape(STRINGS.ja[key])} |`),
     "",
     "## The command line's help",
     "",
@@ -332,7 +427,11 @@ describe("docs/strings-ja.md", () => {
   it("the two helps list the same options, in the same order", () => {
     const options = (text) => [...text.matchAll(/^\s+(?:-\w, )?(--[\w-]+)/gm)].map((m) => m[1]);
     expect(options(STRINGS.ja.cliUsage)).toEqual(options(STRINGS.en.cliUsage));
-    const examples = (text) => text.split("\n").filter((line) => line.startsWith("  tane ")).map((line) => line.slice(0, 36).trimEnd());
+    const examples = (text) =>
+      text
+        .split("\n")
+        .filter((line) => line.startsWith("  tane "))
+        .map((line) => line.slice(0, 36).trimEnd());
     expect(examples(STRINGS.ja.cliUsage)).toEqual(examples(STRINGS.en.cliUsage));
   });
 });
@@ -340,7 +439,8 @@ describe("docs/strings-ja.md", () => {
 describe("the README's framework examples", () => {
   const proof = readFileSync("scripts/check-frameworks.mjs", "utf8").replaceAll("\\`", "`");
   // A fence may carry a flag after its language (`tsx no-run`, `ts no-check`): the block is the same block.
-  const blocks = (language) => [...readme.matchAll(new RegExp(`\`\`\`${language}[^\\n]*\\n([\\s\\S]*?)\`\`\``, "g"))].map((m) => m[1]);
+  const blocks = (language) =>
+    [...readme.matchAll(new RegExp(`\`\`\`${language}[^\\n]*\\n([\\s\\S]*?)\`\`\``, "g"))].map((m) => m[1]);
 
   it("the Vue, Svelte and Angular components are the ones the framework check builds, to the letter", () => {
     const [vue] = blocks("vue");
@@ -353,14 +453,21 @@ describe("the README's framework examples", () => {
 
   it("the React component is the one built, but for its types", () => {
     const [react] = blocks("tsx");
-    const untyped = react.replace("{ names }: { names: string[] }", "{ names }").replace(/ +\/\/ moves to tomorrow.*$/m, "");
+    const untyped = react
+      .replace("{ names }: { names: string[] }", "{ names }")
+      .replace(/ +\/\/ moves to tomorrow.*$/m, "");
     expect(proof).toContain(untyped.replace("export function", "export function"));
   });
 
   it("the plain page's script is the one opened", () => {
-    const html = blocks("html").find((block) => block.includes("<ol id=\"order\"></ol>") && block.includes("./node_modules/"));
+    const html = blocks("html").find(
+      (block) => block.includes('<ol id="order"></ol>') && block.includes("./node_modules/"),
+    );
     const script = html.slice(html.indexOf("<script"), html.indexOf("</script>"));
-    const lines = script.split("\n").map((line) => line.trim()).filter((line) => line !== "");
+    const lines = script
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line !== "");
     for (const line of lines.filter((text) => !text.startsWith("const order"))) expect(proof, line).toContain(line);
   });
 });
@@ -377,7 +484,9 @@ describe("the family's look", () => {
   });
 
   it("scripts/family-template.mjs is the family's file too", () => {
-    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe("fcc192026cf284303344e108b20e6181126607c670a881a6b3bf8479da26ab03");
+    expect(createHash("sha256").update(readFileSync("scripts/family-template.mjs")).digest("hex")).toBe(
+      "fcc192026cf284303344e108b20e6181126607c670a881a6b3bf8479da26ab03",
+    );
   });
 
   it("the README's theming table gives the stylesheets' own values", () => {
@@ -389,14 +498,18 @@ describe("the family's look", () => {
     let seen = 0;
     for (const line of lines) {
       if (!line.startsWith("|")) break;
-      const [names, , lightCell, darkCell] = line.split("|").slice(1, -1).map((text) => text.trim());
+      const [names, , lightCell, darkCell] = line
+        .split("|")
+        .slice(1, -1)
+        .map((text) => text.trim());
       const properties = [...names.matchAll(/`(--[\w-]+)`/g)].map((m) => m[1]);
       const lights = [...lightCell.matchAll(/`([^`]+)`/g)].map((m) => m[1]);
       const darks = [...darkCell.matchAll(/`([^`]+)`/g)].map((m) => m[1]);
       properties.forEach((property, i) => {
         seen += 1;
         expect(css.includes(`${property}:`), property).toBe(true);
-        if (lights[i] !== undefined) expect(value(property.startsWith("--intro") ? own : light, property), property).toBe(lights[i]);
+        if (lights[i] !== undefined)
+          expect(value(property.startsWith("--intro") ? own : light, property), property).toBe(lights[i]);
         if (darks[i] !== undefined) expect(value(dark, property), `${property} in the dark`).toBe(darks[i]);
         if (darkCell === "the same") expect(value(dark, property), `${property} in the dark`).toBeUndefined();
       });
@@ -406,7 +519,16 @@ describe("the family's look", () => {
 
   it("the site script uses the family's header and footer", () => {
     const site = readFileSync("scripts/site.mjs", "utf8");
-    for (const part of ["familyHead(", "familyHeader(", "familyUnreviewed(", "familyFooter(", "FAMILY_SCRIPT", 'href="family.css"', 'href="tane.css"']) expect(site).toContain(part);
+    for (const part of [
+      "familyHead(",
+      "familyHeader(",
+      "familyUnreviewed(",
+      "familyFooter(",
+      "FAMILY_SCRIPT",
+      'href="family.css"',
+      'href="tane.css"',
+    ])
+      expect(site).toContain(part);
     expect(site.indexOf('href="family.css"')).toBeLessThan(site.indexOf('href="tane.css"'));
   });
 });
@@ -418,7 +540,41 @@ describe("the family list", () => {
     const block = readme.slice(from, readme.indexOf("\n## ", from));
     expect([...block.matchAll(/^- \[/gm)]).toHaveLength(family.length);
     for (const one of family) expect(block).toContain(`- [${one.name}](${familyRepo(one.id)}) (${one.kana}):`);
-    const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine", "thirty", "thirty-one", "thirty-two"];
+    const words = [
+      "zero",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen",
+      "fifteen",
+      "sixteen",
+      "seventeen",
+      "eighteen",
+      "nineteen",
+      "twenty",
+      "twenty-one",
+      "twenty-two",
+      "twenty-three",
+      "twenty-four",
+      "twenty-five",
+      "twenty-six",
+      "twenty-seven",
+      "twenty-eight",
+      "twenty-nine",
+      "thirty",
+      "thirty-one",
+      "thirty-two",
+    ];
     expect(block).toContain(`Tane is one of ${words[family.length]} packages`);
     expect(block).toContain("**This package is Tane.**");
     expect(family.length).toBeGreaterThanOrEqual(19);
@@ -429,12 +585,20 @@ describe("the community files", () => {
   const read = (path) => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
 
   it("SECURITY.md and CODE_OF_CONDUCT.md are the family's master text (the shared .github repository's), a copy of which is kept in scripts/community", () => {
-    for (const file of ["SECURITY.md", "CODE_OF_CONDUCT.md"]) expect(read(file), file).toBe(read(`scripts/community/${file}`));
+    for (const file of ["SECURITY.md", "CODE_OF_CONDUCT.md"])
+      expect(read(file), file).toBe(read(`scripts/community/${file}`));
   });
 
   it("CONTRIBUTING.md carries the family's house rules and the README points to the security policy", () => {
     const contributing = read("CONTRIBUTING.md");
-    for (const rule of ["Open an issue first", "No runtime dependencies", "kebab case", "CC0 or public domain only", "Needs Node 22 or later"]) expect(contributing, rule).toContain(rule);
+    for (const rule of [
+      "Open an issue first",
+      "No runtime dependencies",
+      "kebab case",
+      "CC0 or public domain only",
+      "Needs Node 22 or later",
+    ])
+      expect(contributing, rule).toContain(rule);
     expect(readme).toContain("[security policy](./SECURITY.md)");
   });
 });
@@ -452,7 +616,8 @@ describe("Node", () => {
 describe("the release notes", () => {
   it("are the changelog's section for the version, which the Release workflow puts on the GitHub release", async () => {
     const { releaseNotes } = await import("../scripts/release-notes.mjs");
-    const log = "# Changelog\n\n## [Unreleased]\n\n## [1.2.0] - 2026-01-02\n\n### Added\n\n- A thing.\n\n## [1.1.0] - 2026-01-01\n\n- Older.\n\n[Unreleased]: https://example.test\n";
+    const log =
+      "# Changelog\n\n## [Unreleased]\n\n## [1.2.0] - 2026-01-02\n\n### Added\n\n- A thing.\n\n## [1.1.0] - 2026-01-01\n\n- Older.\n\n[Unreleased]: https://example.test\n";
     expect(releaseNotes(log, "1.2.0")).toBe("### Added\n\n- A thing.");
     expect(releaseNotes(log, "1.1.0")).toBe("- Older.");
     expect(releaseNotes(log, "9.9.9")).toBeNull();

@@ -31,7 +31,12 @@ function vectors() {
     note: "Made from the code by `pnpm docs:make`; see docs/spec.md. `integers` are the draws before the division by 2^32.",
     mulberry32: SEEDS.map((seed) => {
       const numbers = take(mulberry32(seed), 5);
-      return { seed, integers: numbers.map((n) => n * TWO_32), numbers, states: range(5).map((i) => stateAt(seed, i + 1)) };
+      return {
+        seed,
+        integers: numbers.map((n) => n * TWO_32),
+        numbers,
+        states: range(5).map((i) => stateAt(seed, i + 1)),
+      };
     }),
     hashSeed: TEXTS.map((text) => ({ text, codeUnits: units(text), seed: hashSeed(text) })),
     deriveSeed: [
@@ -47,7 +52,10 @@ function vectors() {
       const child = fork(parent);
       return { seed, child: take(child, 3), parentNext: parent() };
     }),
-    seedFrom: ["42", " 42 ", "0", "4294967295", "4294967296", "table", "-1"].map((input) => ({ input, seed: seedFrom(input) })),
+    seedFrom: ["42", " 42 ", "0", "4294967295", "4294967296", "table", "-1"].map((input) => ({
+      input,
+      seed: seedFrom(input),
+    })),
     below: [{ seed: 42, n: 6, values: ((r) => range(8).map(() => below(r, 6)))(mulberry32(42)) }],
     int: [
       { seed: 42, min: 1, max: 6, values: ((r) => range(8).map(() => int(r, 1, 6)))(mulberry32(42)) },
@@ -68,7 +76,13 @@ function vectors() {
       { seed: 1, count: 8, limit: 8, drawn: distinctBelow(mulberry32(1), 8, 8) },
       { seed: 20260930, count: 4, limit: 225, drawn: distinctBelow(mulberry32(20260930), 4, 225) },
     ],
-    weightedIndex: [{ seed: 42, weights: [1, 2, 3, 4], values: ((r) => range(8).map(() => weightedIndex(r, [1, 2, 3, 4])))(mulberry32(42)) }],
+    weightedIndex: [
+      {
+        seed: 42,
+        weights: [1, 2, 3, 4],
+        values: ((r) => range(8).map(() => weightedIndex(r, [1, 2, 3, 4])))(mulberry32(42)),
+      },
+    ],
     drawSeed: [
       { seed: 42, reserved: [], drawn: drawSeed(mulberry32(42)) },
       { seed: 42, reserved: [DAILY], drawn: drawSeed(mulberry32(42), { reserved: [DAILY] }) },
@@ -111,13 +125,19 @@ function tables(v) {
     "",
     "| Text | UTF-16 code units | Seed |",
     "| --- | --- | --- |",
-    ...v.hashSeed.map((row) => `| ${row.text === "" ? "(empty)" : code(row.text)} | ${row.codeUnits.length === 0 ? "none" : list(row.codeUnits)} | ${row.seed} |`),
+    ...v.hashSeed.map(
+      (row) =>
+        `| ${row.text === "" ? "(empty)" : code(row.text)} | ${row.codeUnits.length === 0 ? "none" : list(row.codeUnits)} | ${row.seed} |`,
+    ),
     "",
     "### deriveSeed",
     "",
     "| Seed | Labels | Derived |",
     "| --- | --- | --- |",
-    ...v.deriveSeed.map((row) => `| ${row.seed} | ${row.labels.length === 0 ? "none" : row.labels.map((label) => code(JSON.stringify(label))).join(", ")} | ${row.derived} |`),
+    ...v.deriveSeed.map(
+      (row) =>
+        `| ${row.seed} | ${row.labels.length === 0 ? "none" : row.labels.map((label) => code(JSON.stringify(label))).join(", ")} | ${row.derived} |`,
+    ),
     "",
     "### fork",
     "",
@@ -172,7 +192,10 @@ function tables(v) {
     "",
     "| Seed of the stream | Reserved | Drawn |",
     "| --- | --- | --- |",
-    ...v.drawSeed.map((row) => `| ${row.seed} | ${row.reserved.length === 0 ? "nothing" : row.reserved.map((b) => `${b.size} from ${b.from}`).join("; ")} | ${row.drawn} |`),
+    ...v.drawSeed.map(
+      (row) =>
+        `| ${row.seed} | ${row.reserved.length === 0 ? "nothing" : row.reserved.map((b) => `${b.size} from ${b.from}`).join("; ")} | ${row.drawn} |`,
+    ),
     "",
     "### dailySeed",
     "",
@@ -220,7 +243,8 @@ function specHash(text) {
 }
 function specDerive(seed, labels) {
   let h = specMix(u32(BigInt(seed)));
-  for (const label of labels) h = specMix(u32((h ^ specHash(typeof label === "number" ? `#${label}` : label)) + 0x9e3779b9n));
+  for (const label of labels)
+    h = specMix(u32((h ^ specHash(typeof label === "number" ? `#${label}` : label)) + 0x9e3779b9n));
   return Number(h);
 }
 function specShuffle(random, items) {
@@ -252,7 +276,9 @@ describe("the specification's vectors", () => {
   });
 
   it("the golden values the tests have always pinned are among them", () => {
-    expect(made.mulberry32.find((row) => row.seed === 42).numbers).toEqual([0.6011037519201636, 0.44829055899754167, 0.8524657934904099, 0.6697340414393693, 0.17481389874592423]);
+    expect(made.mulberry32.find((row) => row.seed === 42).numbers).toEqual([
+      0.6011037519201636, 0.44829055899754167, 0.8524657934904099, 0.6697340414393693, 0.17481389874592423,
+    ]);
     expect(made.mulberry32.find((row) => row.seed === 1).numbers[0]).toBe(0.6270739405881613);
   });
 
@@ -293,7 +319,8 @@ describe("a second implementation, written from the specification's words", () =
   it("hashes text and derives seeds the same", () => {
     for (const row of written.hashSeed) expect(Number(specHash(row.text)), row.text).toBe(row.seed);
     for (const row of written.deriveSeed) expect(specDerive(row.seed, row.labels)).toBe(row.derived);
-    for (const text of ["The quick brown fox", "日本語のシード", "a\u0000b", "😀😀"]) expect(Number(specHash(text))).toBe(hashSeed(text));
+    for (const text of ["The quick brown fox", "日本語のシード", "a\u0000b", "😀😀"])
+      expect(Number(specHash(text))).toBe(hashSeed(text));
   });
 
   it("shuffles and draws distinct numbers the same", () => {

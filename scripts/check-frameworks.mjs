@@ -9,7 +9,17 @@
 //
 // Run it before a release that names a framework. It needs the network and a few minutes.
 import { execFileSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { extname, join, resolve } from "node:path";
 import process from "node:process";
@@ -21,7 +31,13 @@ import { dailySeed, mulberry32, shuffled } from "../dist/index.js";
 const root = resolve(process.argv[2] ?? mkdtempSync(join(tmpdir(), "tane-frameworks-")));
 rmSync(root, { recursive: true, force: true });
 mkdirSync(root, { recursive: true });
-const run = (cwd, command, args) => execFileSync(command, args, { cwd, stdio: "pipe", shell: process.platform === "win32", env: { ...process.env, NG_CLI_ANALYTICS: "false" } }).toString();
+const run = (cwd, command, args) =>
+  execFileSync(command, args, {
+    cwd,
+    stdio: "pipe",
+    shell: process.platform === "win32",
+    env: { ...process.env, NG_CLI_ANALYTICS: "false" },
+  }).toString();
 const write = (dir, files) => {
   for (const [name, text] of Object.entries(files)) {
     mkdirSync(join(dir, name, ".."), { recursive: true });
@@ -30,16 +46,26 @@ const write = (dir, files) => {
 };
 
 run(process.cwd(), "npm", ["pack", "--ignore-scripts", "--pack-destination", root]);
-const tarball = join(root, readdirSync(root).find((name) => name.endsWith(".tgz")));
+const tarball = join(
+  root,
+  readdirSync(root).find((name) => name.endsWith(".tgz")),
+);
 const tane = `file:${tarball}`;
 const NAMES = ["Ada", "Grace", "Alan", "Edsger", "Barbara", "Donald"];
-const page = (script) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>tane</title></head><body><div id="app"></div>${script}</body></html>`;
+const page = (script) =>
+  `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>tane</title></head><body><div id="app"></div>${script}</body></html>`;
 
 const projects = {
   vue: {
     out: "dist",
     files: {
-      "package.json": { name: "check-vue", private: true, type: "module", dependencies: { "@johnmorrisdotca/tane": tane, vue: "^3.5.0" }, devDependencies: { vite: "^7.0.0", "@vitejs/plugin-vue": "^6.0.0" } },
+      "package.json": {
+        name: "check-vue",
+        private: true,
+        type: "module",
+        dependencies: { "@johnmorrisdotca/tane": tane, vue: "^3.5.0" },
+        devDependencies: { vite: "^7.0.0", "@vitejs/plugin-vue": "^6.0.0" },
+      },
       "vite.config.js": `import vue from "@vitejs/plugin-vue";\nexport default { base: "./", plugins: [vue()] };\n`,
       "index.html": page(`<script type="module" src="/src/main.js"></script>`),
       "src/main.js": `import { createApp } from "vue";\nimport TodaysOrder from "./TodaysOrder.vue";\ncreateApp(TodaysOrder, { names: ${JSON.stringify(NAMES)} }).mount("#app");\n`,
@@ -60,7 +86,13 @@ const order = computed(() => shuffled(mulberry32(dailySeed(new Date())), props.n
   svelte: {
     out: "dist",
     files: {
-      "package.json": { name: "check-svelte", private: true, type: "module", dependencies: { "@johnmorrisdotca/tane": tane, svelte: "^5.0.0" }, devDependencies: { vite: "^7.0.0", "@sveltejs/vite-plugin-svelte": "^6.0.0" } },
+      "package.json": {
+        name: "check-svelte",
+        private: true,
+        type: "module",
+        dependencies: { "@johnmorrisdotca/tane": tane, svelte: "^5.0.0" },
+        devDependencies: { vite: "^7.0.0", "@sveltejs/vite-plugin-svelte": "^6.0.0" },
+      },
       "vite.config.js": `import { svelte } from "@sveltejs/vite-plugin-svelte";\nexport default { base: "./", plugins: [svelte()] };\n`,
       "index.html": page(`<script type="module" src="/src/main.js"></script>`),
       "src/main.js": `import { mount } from "svelte";\nimport TodaysOrder from "./TodaysOrder.svelte";\nmount(TodaysOrder, { target: document.getElementById("app"), props: { names: ${JSON.stringify(NAMES)} } });\n`,
@@ -80,8 +112,21 @@ const order = computed(() => shuffled(mulberry32(dailySeed(new Date())), props.n
       "package.json": {
         name: "check-angular",
         private: true,
-        dependencies: { "@johnmorrisdotca/tane": tane, "@angular/common": "^20.0.0", "@angular/compiler": "^20.0.0", "@angular/core": "^20.0.0", "@angular/platform-browser": "^20.0.0", rxjs: "^7.8.0", tslib: "^2.8.0" },
-        devDependencies: { "@angular/build": "^20.0.0", "@angular/cli": "^20.0.0", "@angular/compiler-cli": "^20.0.0", typescript: "~5.8.0" },
+        dependencies: {
+          "@johnmorrisdotca/tane": tane,
+          "@angular/common": "^20.0.0",
+          "@angular/compiler": "^20.0.0",
+          "@angular/core": "^20.0.0",
+          "@angular/platform-browser": "^20.0.0",
+          rxjs: "^7.8.0",
+          tslib: "^2.8.0",
+        },
+        devDependencies: {
+          "@angular/build": "^20.0.0",
+          "@angular/cli": "^20.0.0",
+          "@angular/compiler-cli": "^20.0.0",
+          typescript: "~5.8.0",
+        },
       },
       "angular.json": {
         version: 1,
@@ -90,11 +135,35 @@ const order = computed(() => shuffled(mulberry32(dailySeed(new Date())), props.n
             projectType: "application",
             root: "",
             sourceRoot: "src",
-            architect: { build: { builder: "@angular/build:application", options: { outputPath: "dist/check-angular", index: "src/index.html", browser: "src/main.ts", tsConfig: "tsconfig.json", baseHref: "./" }, configurations: { production: {} }, defaultConfiguration: "production" } },
+            architect: {
+              build: {
+                builder: "@angular/build:application",
+                options: {
+                  outputPath: "dist/check-angular",
+                  index: "src/index.html",
+                  browser: "src/main.ts",
+                  tsConfig: "tsconfig.json",
+                  baseHref: "./",
+                },
+                configurations: { production: {} },
+                defaultConfiguration: "production",
+              },
+            },
           },
         },
       },
-      "tsconfig.json": { compilerOptions: { target: "ES2022", module: "ES2022", moduleResolution: "bundler", strict: true, experimentalDecorators: true, skipLibCheck: true, lib: ["ES2022", "dom"] }, files: ["src/main.ts"] },
+      "tsconfig.json": {
+        compilerOptions: {
+          target: "ES2022",
+          module: "ES2022",
+          moduleResolution: "bundler",
+          strict: true,
+          experimentalDecorators: true,
+          skipLibCheck: true,
+          lib: ["ES2022", "dom"],
+        },
+        files: ["src/main.ts"],
+      },
       "src/index.html": page(`<check-root></check-root>`),
       "src/todays-order.ts": `import { Component, computed, input } from "@angular/core";
 import { dailySeed, mulberry32, shuffled } from "@johnmorrisdotca/tane";
@@ -128,7 +197,13 @@ bootstrapApplication(App, { providers: [provideZonelessChangeDetection()] });
   react: {
     out: "dist",
     files: {
-      "package.json": { name: "check-react", private: true, type: "module", dependencies: { "@johnmorrisdotca/tane": tane, react: "^19.0.0", "react-dom": "^19.0.0" }, devDependencies: { vite: "^7.0.0", "@vitejs/plugin-react": "^5.0.0" } },
+      "package.json": {
+        name: "check-react",
+        private: true,
+        type: "module",
+        dependencies: { "@johnmorrisdotca/tane": tane, react: "^19.0.0", "react-dom": "^19.0.0" },
+        devDependencies: { vite: "^7.0.0", "@vitejs/plugin-react": "^5.0.0" },
+      },
       "vite.config.js": `import react from "@vitejs/plugin-react";\nexport default { base: "./", plugins: [react()] };\n`,
       "index.html": page(`<script type="module" src="/src/main.jsx"></script>`),
       "src/TodaysOrder.jsx": `import { shuffled } from "@johnmorrisdotca/tane";
@@ -185,7 +260,12 @@ for (const [name, project] of Object.entries(projects)) {
     built.push([name, join(dir, project.out)]);
     console.log(`built   ${name.padEnd(8)} in ${Math.round((Date.now() - started) / 1000)} s`);
   } catch (error) {
-    console.log(`FAILED  ${name}: ${String(error.stderr ?? error.stdout ?? error.message).split("\n").slice(-12).join("\n")}`);
+    console.log(
+      `FAILED  ${name}: ${String(error.stderr ?? error.stdout ?? error.message)
+        .split("\n")
+        .slice(-12)
+        .join("\n")}`,
+    );
     process.exitCode = 1;
   }
 }
@@ -193,8 +273,17 @@ for (const [name, project] of Object.entries(projects)) {
 // Open each built page with the clock set to a moment, and read the order off it.
 const moment = new Date("2026-10-01T03:30:00Z");
 const want = shuffled(mulberry32(dailySeed(moment)), NAMES);
-const types = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".css": "text/css", ".json": "application/json" };
-for (const [engine, launcher] of [["chromium", chromium], ["webkit", webkit]]) {
+const types = {
+  ".html": "text/html",
+  ".js": "text/javascript",
+  ".mjs": "text/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+};
+for (const [engine, launcher] of [
+  ["chromium", chromium],
+  ["webkit", webkit],
+]) {
   const browser = await launcher.launch();
   for (const [name, out] of built) {
     const context = await browser.newContext({ viewport: { width: 390, height: 800 }, timezoneId: "Asia/Tokyo" });
@@ -206,18 +295,25 @@ for (const [engine, launcher] of [["chromium", chromium], ["webkit", webkit]]) {
       let file = join(out, decodeURIComponent(new URL(route.request().url()).pathname));
       if (existsSync(file) && statSync(file).isDirectory()) file = join(file, "index.html");
       if (!existsSync(file)) return route.fulfill({ status: 404, body: "" });
-      return route.fulfill({ body: readFileSync(file), contentType: types[extname(file)] ?? "application/octet-stream" });
+      return route.fulfill({
+        body: readFileSync(file),
+        contentType: types[extname(file)] ?? "application/octet-stream",
+      });
     });
     await tab.goto("http://check.test/");
     let got = [];
     try {
-      await tab.waitForFunction((count) => document.querySelectorAll("ol li").length === count, NAMES.length, { timeout: 5000 });
+      await tab.waitForFunction((count) => document.querySelectorAll("ol li").length === count, NAMES.length, {
+        timeout: 5000,
+      });
       got = await tab.locator("ol li").allTextContents();
     } catch {
       // Nothing was drawn: reported below.
     }
     const ok = errors.length === 0 && got.map((text) => text.trim()).join() === want.join();
-    console.log(`${ok ? "showed " : "FAILED "} ${name.padEnd(8)} in ${engine}: the page shows ${got.join(" ") || "nothing"}; seed ${dailySeed(moment)} gives ${want.join(" ")}${errors.length > 0 ? ` ${errors.join("; ")}` : ""}`);
+    console.log(
+      `${ok ? "showed " : "FAILED "} ${name.padEnd(8)} in ${engine}: the page shows ${got.join(" ") || "nothing"}; seed ${dailySeed(moment)} gives ${want.join(" ")}${errors.length > 0 ? ` ${errors.join("; ")}` : ""}`,
+    );
     if (!ok) process.exitCode = 1;
     await context.close();
   }

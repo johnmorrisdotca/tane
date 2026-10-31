@@ -31,7 +31,14 @@ const formatters = new Map<string, Intl.DateTimeFormat>();
 function formatterFor(timeZone: string): Intl.DateTimeFormat {
   let formatter = formatters.get(timeZone);
   if (formatter === undefined) {
-    formatter = new Intl.DateTimeFormat("en-US", { timeZone, year: "numeric", month: "2-digit", day: "2-digit", calendar: "gregory", numberingSystem: "latn" });
+    formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      calendar: "gregory",
+      numberingSystem: "latn",
+    });
     formatters.set(timeZone, formatter);
   }
   return formatter;
@@ -181,7 +188,8 @@ export function nextDayStart(at: Date, timeZone = "UTC"): Date {
  */
 export function daySeed(day: DayKey, block: SeedBlock): number {
   const offset = Number(day.replaceAll("-", ""));
-  if (!isDayKey(day) || offset >= block.size) throw new RangeError(`tane: ${day} has no seed in a block of ${block.size}`);
+  if (!isDayKey(day) || offset >= block.size)
+    throw new RangeError(`tane: ${day} has no seed in a block of ${block.size}`);
   return block.from + offset;
 }
 

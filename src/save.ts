@@ -86,12 +86,21 @@ export type CountedRandom = Random & {
 };
 
 function isPosition(seed: unknown, draws: unknown): boolean {
-  return typeof seed === "number" && Number.isInteger(seed) && seed >= 0 && seed <= UINT32_MOST && typeof draws === "number" && Number.isSafeInteger(draws) && draws >= 0;
+  return (
+    typeof seed === "number" &&
+    Number.isInteger(seed) &&
+    seed >= 0 &&
+    seed <= UINT32_MOST &&
+    typeof draws === "number" &&
+    Number.isSafeInteger(draws) &&
+    draws >= 0
+  );
 }
 
 function checkPosition(seed: number, draws: number): void {
   if (!Number.isSafeInteger(seed)) throw new RangeError(`tane: a seed must be a whole number, not ${seed}`);
-  if (!Number.isSafeInteger(draws) || draws < 0) throw new RangeError(`tane: draws must be a whole number from 0, not ${draws}`);
+  if (!Number.isSafeInteger(draws) || draws < 0)
+    throw new RangeError(`tane: draws must be a whole number from 0, not ${draws}`);
 }
 
 /**
@@ -183,7 +192,14 @@ export function counted(seed: number, draws = 0): CountedRandom {
  */
 export function savedStream(position: StreamPosition): SavedStream {
   const seed = position.seed >>> 0;
-  return { format: SAVE_FORMAT, generator: `tane ${VERSION}`, algorithm: "mulberry32", seed, draws: position.draws, state: stateAt(seed, position.draws) };
+  return {
+    format: SAVE_FORMAT,
+    generator: `tane ${VERSION}`,
+    algorithm: "mulberry32",
+    seed,
+    draws: position.draws,
+    state: stateAt(seed, position.draws),
+  };
 }
 
 /** A position as JSON, two spaces deep, with the format's number first. `fromJSON` reads it back.
@@ -228,7 +244,11 @@ export function fromJSON(text: string): StreamPosition | null {
   }
   if (typeof data !== "object" || data === null || Array.isArray(data)) return null;
   const { format, algorithm, seed, draws, state } = data as Record<string, unknown>;
-  if (format !== undefined && (typeof format !== "number" || !Number.isInteger(format) || format < 1 || format > SAVE_FORMAT)) return null;
+  if (
+    format !== undefined &&
+    (typeof format !== "number" || !Number.isInteger(format) || format < 1 || format > SAVE_FORMAT)
+  )
+    return null;
   if (algorithm !== undefined && algorithm !== "mulberry32") return null;
   const taken = draws === undefined ? 0 : draws;
   if (!isPosition(seed, taken)) return null;
@@ -310,9 +330,11 @@ export const MAX_CSV_ROWS = 100_000;
  * ```
  */
 export function toCSV(position: StreamPosition, count: number): string {
-  if (!Number.isSafeInteger(count) || count < 0 || count > MAX_CSV_ROWS) throw new RangeError(`tane: toCSV writes 0 to ${MAX_CSV_ROWS} rows, not ${count}`);
+  if (!Number.isSafeInteger(count) || count < 0 || count > MAX_CSV_ROWS)
+    throw new RangeError(`tane: toCSV writes 0 to ${MAX_CSV_ROWS} rows, not ${count}`);
   const random = randomAt(position.seed, position.draws);
   const rows = [CSV_COLUMNS.join(",")];
-  for (let i = 1; i <= count; i += 1) rows.push(`${position.draws + i},${random()},${stateAt(position.seed, position.draws + i)}`);
+  for (let i = 1; i <= count; i += 1)
+    rows.push(`${position.draws + i},${random()},${stateAt(position.seed, position.draws + i)}`);
   return `${rows.join("\r\n")}\r\n`;
 }

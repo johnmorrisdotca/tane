@@ -25,18 +25,35 @@ const url = (lang = "en") => `/?lang=${lang}&seed=table-7`;
 const section = (id) => `section[aria-labelledby="${id}-title"]`;
 
 /** One section of the page, cropped. */
-const part = (subject, id, prepare) => ({ subject, views: ["desk"], scale: 1, url: url(), init: fixedClock, ready, target: section(id), prepare });
+const part = (subject, id, prepare) => ({
+  subject,
+  views: ["desk"],
+  scale: 1,
+  url: url(),
+  init: fixedClock,
+  ready,
+  target: section(id),
+  prepare,
+});
 
 await takePictures({
   shots: [
     // The seed explorer from the top of the page, on a desk and, in Japanese, on a phone.
-    { subject: "hero", views: ["desk", "phone"], height: 900, url: url(), init: fixedClock, ready, async prepare(page, { view }) {
-      if (view === "phone") {
-        await page.goto(`http://tane.test${url("ja")}`);
-        await page.waitForSelector(ready);
-      }
-      await page.evaluate(() => window.scrollTo(0, 0));
-    } },
+    {
+      subject: "hero",
+      views: ["desk", "phone"],
+      height: 900,
+      url: url(),
+      init: fixedClock,
+      ready,
+      async prepare(page, { view }) {
+        if (view === "phone") {
+          await page.goto(`http://tane.test${url("ja")}`);
+          await page.waitForSelector(ready);
+        }
+        await page.evaluate(() => window.scrollTo(0, 0));
+      },
+    },
     part("numbers", "numbers"),
     part("shuffle", "shuffle"),
     part("today-utc", "utc"),

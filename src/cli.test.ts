@@ -8,7 +8,8 @@ import { STRINGS } from "./strings.ts";
 import { VERSION } from "./version.ts";
 
 const NOW = Date.parse("2026-10-01T03:30:00Z");
-const run = (line: string, around = {}) => runCli(line === "" ? [] : line.split(" "), { now: NOW, random: () => 0.5, ...around });
+const run = (line: string, around = {}) =>
+  runCli(line === "" ? [] : line.split(" "), { now: NOW, random: () => 0.5, ...around });
 const lines = (text: string) => text.trimEnd().split("\n");
 const take = (random: () => number, count: number) => Array.from({ length: count }, () => random());
 
@@ -26,7 +27,26 @@ describe("the help and the version", () => {
 
   it("help names every option the command line reads", () => {
     for (const language of ["en", "ja"] as const) {
-      for (const option of ["--seed", "--count", "--skip", "--int", "--shuffle", "--pick", "--sample", "--derive", "--today", "--zone", "--at", "--stdin", "--json", "--csv", "--lang", "--no-color", "--help", "--version"]) {
+      for (const option of [
+        "--seed",
+        "--count",
+        "--skip",
+        "--int",
+        "--shuffle",
+        "--pick",
+        "--sample",
+        "--derive",
+        "--today",
+        "--zone",
+        "--at",
+        "--stdin",
+        "--json",
+        "--csv",
+        "--lang",
+        "--no-color",
+        "--help",
+        "--version",
+      ]) {
         expect(STRINGS[language].cliUsage, `${language} ${option}`).toContain(option);
       }
       for (const line of STRINGS[language].cliUsage.split("\n")) expect([...line].length, line).toBeLessThanOrEqual(80);
@@ -62,7 +82,9 @@ describe("numbers", () => {
 
   it("whole numbers in a range", () => {
     const random = mulberry32(42);
-    expect(lines(run("--seed 42 --int 1..6 -n 5").out).map(Number)).toEqual(Array.from({ length: 5 }, () => int(random, 1, 6)));
+    expect(lines(run("--seed 42 --int 1..6 -n 5").out).map(Number)).toEqual(
+      Array.from({ length: 5 }, () => int(random, 1, 6)),
+    );
     expect(lines(run("--seed 42 --int -3..3 -n 50").out).every((n) => Number(n) >= -3 && Number(n) <= 3)).toBe(true);
     expect(run("--seed 42 --int=7..7 -n 2").out).toBe("7\n7\n");
   });
@@ -103,19 +125,31 @@ describe("items", () => {
 
 describe("today and parts", () => {
   it("prints today's seed when nothing is asked for", () => {
-    expect(run("")).toEqual({ code: 0, out: "20261001  2026-10-01 (UTC)\nnext at 2026-10-02T00:00:00.000Z\n", err: "" });
+    expect(run("")).toEqual({
+      code: 0,
+      out: "20261001  2026-10-01 (UTC)\nnext at 2026-10-02T00:00:00.000Z\n",
+      err: "",
+    });
     expect(run("--today").out).toBe(run("").out);
     expect(run("--no-color").out).toBe(run("").out);
   });
 
   it("by a place's own midnight", () => {
-    expect(run("--today --zone America/Toronto").out).toBe("20260930  2026-09-30 (America/Toronto)\nnext at 2026-10-01T04:00:00.000Z\n");
+    expect(run("--today --zone America/Toronto").out).toBe(
+      "20260930  2026-09-30 (America/Toronto)\nnext at 2026-10-01T04:00:00.000Z\n",
+    );
     expect(run("--zone Asia/Tokyo").out).toBe("20261001  2026-10-01 (Asia/Tokyo)\nnext at 2026-10-01T15:00:00.000Z\n");
-    expect(run("--today --lang ja").out).toBe("20261001  2026-10-01（UTC）\n次の切り替わり: 2026-10-02T00:00:00.000Z\n");
+    expect(run("--today --lang ja").out).toBe(
+      "20261001  2026-10-01（UTC）\n次の切り替わり: 2026-10-02T00:00:00.000Z\n",
+    );
   });
 
   it("a zone the system does not know is exit code 1", () => {
-    expect(run("--today --zone Nowhere/Land")).toEqual({ code: 1, out: "", err: "tane: “Nowhere/Land” is not a time zone this system knows\n" });
+    expect(run("--today --zone Nowhere/Land")).toEqual({
+      code: 1,
+      out: "",
+      err: "tane: “Nowhere/Land” is not a time zone this system knows\n",
+    });
   });
 
   it("today's seed serves a job", () => {
@@ -126,24 +160,57 @@ describe("today and parts", () => {
   it("a part's seed, and the part's numbers", () => {
     expect(run("--seed 42 --derive deck").out).toBe(`${deriveSeed(42, "deck")}\n`);
     expect(run("--seed 42 --derive round --derive 3").out).toBe(`${deriveSeed(42, "round", "3")}\n`);
-    expect(lines(run("--seed 42 --derive deck -n 2").out).map(Number)).toEqual(take(mulberry32(deriveSeed(42, "deck")), 2));
+    expect(lines(run("--seed 42 --derive deck -n 2").out).map(Number)).toEqual(
+      take(mulberry32(deriveSeed(42, "deck")), 2),
+    );
   });
 });
 
 describe("JSON and CSV", () => {
   it("numbers as JSON, with the position they end at", () => {
     const data = JSON.parse(run("--seed table -n 3 --json").out);
-    expect(data).toEqual({ format: 1, generator: `tane ${VERSION}`, seed: hashSeed("table"), text: "table", skipped: 0, numbers: take(mulberry32(hashSeed("table")), 3), position: `tane:1:${hashSeed("table")}:3` });
+    expect(data).toEqual({
+      format: 1,
+      generator: `tane ${VERSION}`,
+      seed: hashSeed("table"),
+      text: "table",
+      skipped: 0,
+      numbers: take(mulberry32(hashSeed("table")), 3),
+      position: `tane:1:${hashSeed("table")}:3`,
+    });
     expect(run("--seed table -n 3 --json").out).toMatch(/^\{\n {2}"format": 1,/);
   });
 
   it("each job as JSON", () => {
-    expect(JSON.parse(run("--seed 42 --int 1..6 -n 2 -j").out)).toMatchObject({ seed: 42, min: 1, max: 6, integers: [4, 3], position: "tane:1:42:2" });
-    expect(JSON.parse(run("--seed 42 --shuffle a b c --json").out)).toMatchObject({ items: ["a", "b", "c"], shuffled: shuffled(mulberry32(42), ["a", "b", "c"]), position: "tane:1:42:2" });
-    expect(JSON.parse(run("--seed 42 --pick a b c --json").out)).toMatchObject({ picked: [pick(mulberry32(42), ["a", "b", "c"])], position: "tane:1:42:1" });
-    expect(JSON.parse(run("--seed 42 --sample 2 a b c --json").out)).toMatchObject({ sampled: sample(mulberry32(42), ["a", "b", "c"], 2) });
-    expect(JSON.parse(run("--today --json").out)).toEqual({ format: 1, generator: `tane ${VERSION}`, seed: 20261001, today: { day: "2026-10-01", seed: 20261001, zone: "UTC", next: "2026-10-02T00:00:00.000Z" } });
-    expect(JSON.parse(run("--seed 42 --derive deck --json").out)).toMatchObject({ seed: 42, derived: { labels: ["deck"], from: 42, seed: deriveSeed(42, "deck") } });
+    expect(JSON.parse(run("--seed 42 --int 1..6 -n 2 -j").out)).toMatchObject({
+      seed: 42,
+      min: 1,
+      max: 6,
+      integers: [4, 3],
+      position: "tane:1:42:2",
+    });
+    expect(JSON.parse(run("--seed 42 --shuffle a b c --json").out)).toMatchObject({
+      items: ["a", "b", "c"],
+      shuffled: shuffled(mulberry32(42), ["a", "b", "c"]),
+      position: "tane:1:42:2",
+    });
+    expect(JSON.parse(run("--seed 42 --pick a b c --json").out)).toMatchObject({
+      picked: [pick(mulberry32(42), ["a", "b", "c"])],
+      position: "tane:1:42:1",
+    });
+    expect(JSON.parse(run("--seed 42 --sample 2 a b c --json").out)).toMatchObject({
+      sampled: sample(mulberry32(42), ["a", "b", "c"], 2),
+    });
+    expect(JSON.parse(run("--today --json").out)).toEqual({
+      format: 1,
+      generator: `tane ${VERSION}`,
+      seed: 20261001,
+      today: { day: "2026-10-01", seed: 20261001, zone: "UTC", next: "2026-10-02T00:00:00.000Z" },
+    });
+    expect(JSON.parse(run("--seed 42 --derive deck --json").out)).toMatchObject({
+      seed: 42,
+      derived: { labels: ["deck"], from: 42, seed: deriveSeed(42, "deck") },
+    });
   });
 
   it("a seed drawn is named in the JSON, and standard error stays empty", () => {
@@ -155,14 +222,19 @@ describe("JSON and CSV", () => {
   it("CSV, ended CRLF", () => {
     expect(run("--seed 42 -n 2 --csv").out).toBe(toCSV({ seed: 42, draws: 0 }, 2));
     expect(run("--seed 42 --int 1..6 -n 2 --csv").out).toBe("draw,value\r\n1,4\r\n2,3\r\n");
-    expect(runCli(["--seed", "42", "--shuffle", "--stdin", "--csv"], { stdin: 'a, b\nsay "hi"\n' }).out).toMatch(/^place,item\r\n1,("a, b"|"say ""hi""")\r\n2,("a, b"|"say ""hi""")\r\n$/);
+    expect(runCli(["--seed", "42", "--shuffle", "--stdin", "--csv"], { stdin: 'a, b\nsay "hi"\n' }).out).toMatch(
+      /^place,item\r\n1,("a, b"|"say ""hi""")\r\n2,("a, b"|"say ""hi""")\r\n$/,
+    );
     expect(run("--today --csv").out).toBe("day,seed,zone,next\r\n2026-10-01,20261001,UTC,2026-10-02T00:00:00.000Z\r\n");
-    expect(run("--seed 42 --derive deck --csv").out).toBe(`seed,labels,derived\r\n42,deck,${deriveSeed(42, "deck")}\r\n`);
+    expect(run("--seed 42 --derive deck --csv").out).toBe(
+      `seed,labels,derived\r\n42,deck,${deriveSeed(42, "deck")}\r\n`,
+    );
   });
 });
 
 describe("what is refused", () => {
-  const wrong = (line: string, message: string) => expect(run(line), line).toEqual({ code: 2, out: "", err: `tane: ${message}\nTry \`tane --help\`.\n` });
+  const wrong = (line: string, message: string) =>
+    expect(run(line), line).toEqual({ code: 2, out: "", err: `tane: ${message}\nTry \`tane --help\`.\n` });
 
   it("a wrong command is exit code 2, with where to look", () => {
     wrong("--bogus", "unknown option --bogus");
@@ -187,7 +259,11 @@ describe("what is refused", () => {
   });
 
   it("a position that is not one is exit code 1", () => {
-    expect(run("--at 42")).toEqual({ code: 1, out: "", err: "tane: “42” is not a position. One looks like tane:1:42:7\n" });
+    expect(run("--at 42")).toEqual({
+      code: 1,
+      out: "",
+      err: "tane: “42” is not a position. One looks like tane:1:42:7\n",
+    });
   });
 });
 

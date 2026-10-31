@@ -162,7 +162,8 @@ be predicted. Exit codes: 0 done, 1 what was asked for could not be done,
     cliToday: "{seed}  {day} ({zone})",
     cliNext: "next at {time}",
     cliPositionBad: "“{part}” is not a position. One looks like tane:1:42:7",
-    pagePitch: "One seed, the same numbers everywhere. Type a seed and everything below follows it: on this device, on any other, and on a server.",
+    pagePitch:
+      "One seed, the same numbers everywhere. Type a seed and everything below follows it: on this device, on any other, and on a server.",
     pageName: "Tane is Japanese for a seed, the kind you plant.",
     pageNameLink: "About the name",
     pageSeed: "Seed",
@@ -175,13 +176,15 @@ be predicted. Exit codes: 0 done, 1 what was asked for could not be done,
     pageCopied: "Copied",
     pageCopyFailed: "Copy the address bar",
     pageNumbers: "Its first numbers",
-    pageNumbersNote: "The raw stream for this seed, each number from 0 up to but not including 1. The same in every browser and on every server.",
+    pageNumbersNote:
+      "The raw stream for this seed, each number from 0 up to but not including 1. The same in every browser and on every server.",
     pageMore: "Ten more",
     pageDraw: "Draw",
     pageValue: "Number",
     pageState: "State after",
     pageShuffle: "A seeded shuffle",
-    pageShuffleNote: "The same seed puts the same list in the same order. Share the link and whoever opens it sees this order.",
+    pageShuffleNote:
+      "The same seed puts the same list in the same order. Share the link and whoever opens it sees this order.",
     pageItems: "Items",
     pageItemsHint: "Separated by spaces or commas",
     pagePicked: "One picked: {item}",
@@ -193,7 +196,8 @@ be predicted. Exit codes: 0 done, 1 what was asked for could not be done,
     pageParts: "Separate parts, one seed",
     pagePartsNote: "A part named “dice” has a stream of its own: rolling more dice never changes the shuffle above.",
     pageKeep: "Keep it, and read it back",
-    pageKeepNote: "Where this stream has got to, written three ways. The line of text is the one to paste into a message.",
+    pageKeepNote:
+      "Where this stream has got to, written three ways. The line of text is the one to paste into a message.",
     pageAsText: "Text",
     pageAsJson: "JSON",
     pageAsCsv: "CSV",
@@ -265,7 +269,8 @@ be predicted. Exit codes: 0 done, 1 what was asked for could not be done,
     cliToday: "{seed}  {day}（{zone}）",
     cliNext: "次の切り替わり: {time}",
     cliPositionBad: "「{part}」は位置ではありません。例: tane:1:42:7",
-    pagePitch: "同じシードなら、どこでも同じ数になります。シードを入力すると、下のすべてがそれに従います。この端末でも、ほかの端末でも、サーバーでも同じです。",
+    pagePitch:
+      "同じシードなら、どこでも同じ数になります。シードを入力すると、下のすべてがそれに従います。この端末でも、ほかの端末でも、サーバーでも同じです。",
     pageName: "「種（たね）」は、植物の種を表す日本語です。",
     pageNameLink: "名前について（英語）",
     pageSeed: "シード",
@@ -278,13 +283,15 @@ be predicted. Exit codes: 0 done, 1 what was asked for could not be done,
     pageCopied: "コピーしました",
     pageCopyFailed: "アドレスバーからコピーしてください",
     pageNumbers: "最初の数",
-    pageNumbersNote: "このシードの乱数列そのものです。どの数も0以上1未満です。どのブラウザでも、どのサーバーでも同じになります。",
+    pageNumbersNote:
+      "このシードの乱数列そのものです。どの数も0以上1未満です。どのブラウザでも、どのサーバーでも同じになります。",
     pageMore: "あと10個",
     pageDraw: "順番",
     pageValue: "数",
     pageState: "引いたあとの状態",
     pageShuffle: "シードでシャッフル",
-    pageShuffleNote: "同じシードなら、同じリストは同じ順番になります。リンクを共有すると、開いた人にも同じ順番が表示されます。",
+    pageShuffleNote:
+      "同じシードなら、同じリストは同じ順番になります。リンクを共有すると、開いた人にも同じ順番が表示されます。",
     pageItems: "項目",
     pageItemsHint: "空白またはカンマで区切ります",
     pagePicked: "選ばれた1つ: {item}",
@@ -294,9 +301,11 @@ be predicted. Exit codes: 0 done, 1 what was asked for could not be done,
     pageTodayHereNote: "{zone} の午前0時で切り替わります。自分の1日に合わせて替わるパズルに使えます。",
     pageChangesIn: "切り替わりまで",
     pageParts: "1つのシードから、別々の部分",
-    pagePartsNote: "「dice」という名前の部分は、独立した乱数列です。ダイスを何回振っても、上のシャッフルは変わりません。",
+    pagePartsNote:
+      "「dice」という名前の部分は、独立した乱数列です。ダイスを何回振っても、上のシャッフルは変わりません。",
     pageKeep: "保存して、読み込む",
-    pageKeepNote: "この乱数列がどこまで進んだかを、3つの形式で書き出します。メッセージに貼るならテキストの1行が便利です。",
+    pageKeepNote:
+      "この乱数列がどこまで進んだかを、3つの形式で書き出します。メッセージに貼るならテキストの1行が便利です。",
     pageAsText: "テキスト",
     pageAsJson: "JSON",
     pageAsCsv: "CSV",
@@ -342,5 +351,9 @@ export function fillIn(template: string, values: Record<string, string | number>
  * ```
  */
 export function languageOf(tag: string | null | undefined): Language {
-  return String(tag ?? "").toLowerCase().startsWith("ja") ? "ja" : "en";
+  return String(tag ?? "")
+    .toLowerCase()
+    .startsWith("ja")
+    ? "ja"
+    : "en";
 }

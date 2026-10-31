@@ -102,7 +102,8 @@ export function checkBlocks(blocks: readonly SeedBlock[], most: number = SEED_MO
       throw new RangeError(`tane: seed block ${block.from}+${block.size} is not a range of whole numbers`);
     }
     if (block.from < end) throw new RangeError(`tane: seed block from ${block.from} overlaps the one before it`);
-    if (block.from + block.size - 1 > most) throw new RangeError(`tane: seed block from ${block.from} runs past ${most}`);
+    if (block.from + block.size - 1 > most)
+      throw new RangeError(`tane: seed block from ${block.from} runs past ${most}`);
     end = block.from + block.size;
   }
   return sorted;

@@ -14,7 +14,8 @@ describe("isSeed", () => {
   });
 
   it("refuses anything else", () => {
-    for (const value of [0, -1, SEED_MOST + 1, 1.5, Number.NaN, "5", null, undefined, {}]) expect(isSeed(value)).toBe(false);
+    for (const value of [0, -1, SEED_MOST + 1, 1.5, Number.NaN, "5", null, undefined, {}])
+      expect(isSeed(value)).toBe(false);
     expect(isSeed(11, 10)).toBe(false);
   });
 });
@@ -30,18 +31,36 @@ describe("inBlock", () => {
 
 describe("checkBlocks", () => {
   it("sorts blocks", () => {
-    expect(checkBlocks([{ from: 50, size: 5 }, { from: 10, size: 5 }])).toEqual([{ from: 10, size: 5 }, { from: 50, size: 5 }]);
+    expect(
+      checkBlocks([
+        { from: 50, size: 5 },
+        { from: 10, size: 5 },
+      ]),
+    ).toEqual([
+      { from: 10, size: 5 },
+      { from: 50, size: 5 },
+    ]);
   });
 
   it("refuses overlaps, empty blocks and blocks past the end", () => {
-    expect(() => checkBlocks([{ from: 10, size: 5 }, { from: 14, size: 5 }])).toThrow(/overlaps/);
+    expect(() =>
+      checkBlocks([
+        { from: 10, size: 5 },
+        { from: 14, size: 5 },
+      ]),
+    ).toThrow(/overlaps/);
     expect(() => checkBlocks([{ from: 10, size: 0 }])).toThrow(RangeError);
     expect(() => checkBlocks([{ from: 0, size: 3 }])).toThrow(/overlaps/);
     expect(() => checkBlocks([{ from: 8, size: 5 }], 10)).toThrow(/runs past/);
   });
 
   it("lets blocks touch", () => {
-    expect(() => checkBlocks([{ from: 10, size: 5 }, { from: 15, size: 5 }])).not.toThrow();
+    expect(() =>
+      checkBlocks([
+        { from: 10, size: 5 },
+        { from: 15, size: 5 },
+      ]),
+    ).not.toThrow();
   });
 });
 
@@ -73,7 +92,13 @@ describe("drawSeed", () => {
     const random = mulberry32(2);
     const counts = new Map<number, number>();
     for (let i = 0; i < 70_000; i += 1) {
-      const seed = drawSeed(random, { most: 10, reserved: [{ from: 3, size: 2 }, { from: 8, size: 1 }] });
+      const seed = drawSeed(random, {
+        most: 10,
+        reserved: [
+          { from: 3, size: 2 },
+          { from: 8, size: 1 },
+        ],
+      });
       counts.set(seed, (counts.get(seed) ?? 0) + 1);
     }
     expect([...counts.keys()].sort((a, b) => a - b)).toEqual([1, 2, 5, 6, 7, 9, 10]);

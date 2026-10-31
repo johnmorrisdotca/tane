@@ -1,5 +1,24 @@
 // The seed explorer. Everything it shows is made by the package, from the seed in the box.
-import { STRINGS, dailySeed, deriveSeed, fillIn, freshSeed, fromJSON, fromText, int, mulberry32, nextDayStart, pick, randomAt, seedFrom, shuffled, stateAt, toCSV, toJSON, toText } from "./dist/index.js";
+import {
+  STRINGS,
+  dailySeed,
+  deriveSeed,
+  fillIn,
+  freshSeed,
+  fromJSON,
+  fromText,
+  int,
+  mulberry32,
+  nextDayStart,
+  pick,
+  randomAt,
+  seedFrom,
+  shuffled,
+  stateAt,
+  toCSV,
+  toJSON,
+  toText,
+} from "./dist/index.js";
 
 const $ = (id) => document.getElementById(id);
 const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
@@ -7,7 +26,15 @@ const MOST_ROWS = 100;
 const ITEMS = "Ada Grace Alan Edsger Barbara Donald";
 
 // The page's words are the package's own table, under the names the shared header and footer ask for.
-const words = (lang) => ({ ...STRINGS[lang], pageDocs: lang === "ja" ? "ドキュメント" : "Docs", pageApi: lang === "en" ? "API" : "API（英語）", pitch: STRINGS[lang].pagePitch, name: STRINGS[lang].pageName, nameLink: STRINGS[lang].pageNameLink, foot: STRINGS[lang].pageFoot });
+const words = (lang) => ({
+  ...STRINGS[lang],
+  pageDocs: lang === "ja" ? "ドキュメント" : "Docs",
+  pageApi: lang === "en" ? "API" : "API（英語）",
+  pitch: STRINGS[lang].pagePitch,
+  name: STRINGS[lang].pageName,
+  nameLink: STRINGS[lang].pageNameLink,
+  foot: STRINGS[lang].pageFoot,
+});
 const language = familyLanguage({ id: "tane", words: { en: words("en"), ja: words("ja") }, onChange: () => draw() });
 const t = () => STRINGS[language.lang];
 
@@ -44,20 +71,29 @@ const left = (until) => {
 };
 
 function draw() {
-  document.querySelector('[data-say="pageDocs"]')?.setAttribute("href", language.lang === "ja" ? "docs/ja/index.html" : "docs/index.html");
+  document
+    .querySelector('[data-say="pageDocs"]')
+    ?.setAttribute("href", language.lang === "ja" ? "docs/ja/index.html" : "docs/index.html");
   const seed = seedFrom(state.typed);
   const position = { seed, draws: state.skip + state.shown };
   if ($("seed").value !== state.typed) $("seed").value = state.typed;
   if ($("items").value !== state.items) $("items").value = state.items;
   $("seed-number").textContent = seed;
-  $("seed-says").textContent = String(seed) === state.typed.trim() ? fillIn(t().pageSeedNumber, { seed }) : fillIn(t().pageSeedText, { text: state.typed.trim(), seed });
+  $("seed-says").textContent =
+    String(seed) === state.typed.trim()
+      ? fillIn(t().pageSeedNumber, { seed })
+      : fillIn(t().pageSeedText, { text: state.typed.trim(), seed });
 
   // Its numbers, from where the rows start.
   const random = randomAt(seed, state.skip);
   $("numbers").replaceChildren(
     ...Array.from({ length: state.shown }, (_, i) => {
       const row = document.createElement("tr");
-      row.append(el("td", state.skip + i + 1, { "data-number": "true" }), el("td", random()), el("td", stateAt(seed, state.skip + i + 1), { "data-number": "true" }));
+      row.append(
+        el("td", state.skip + i + 1, { "data-number": "true" }),
+        el("td", random()),
+        el("td", stateAt(seed, state.skip + i + 1), { "data-number": "true" }),
+      );
       return row;
     }),
   );
@@ -66,7 +102,9 @@ function draw() {
 
   // A shuffle and a pick, each from the seed's own start.
   const items = state.items.split(/[\s,]+/).filter((item) => item !== "");
-  $("shuffled").replaceChildren(...shuffled(mulberry32(seed), items).map((item) => el("li", item, { class: "fam-chip" })));
+  $("shuffled").replaceChildren(
+    ...shuffled(mulberry32(seed), items).map((item) => el("li", item, { class: "fam-chip" })),
+  );
   $("picked").textContent = items.length === 0 ? "" : fillIn(t().pagePicked, { item: pick(mulberry32(seed), items) });
 
   // A part of its own.
@@ -74,8 +112,14 @@ function draw() {
   $("dice").replaceChildren(...Array.from({ length: 8 }, () => el("span", int(dice, 1, 6), { class: "die" })));
 
   // The position, three ways.
-  for (const tab of document.querySelectorAll("[data-form]")) tab.setAttribute("aria-selected", String(tab.dataset.form === state.form));
-  $("kept").textContent = state.form === "text" ? toText(position) : state.form === "json" ? toJSON(position) : toCSV({ seed, draws: state.skip }, state.shown).replaceAll("\r\n", "\n");
+  for (const tab of document.querySelectorAll("[data-form]"))
+    tab.setAttribute("aria-selected", String(tab.dataset.form === state.form));
+  $("kept").textContent =
+    state.form === "text"
+      ? toText(position)
+      : state.form === "json"
+        ? toJSON(position)
+        : toCSV({ seed, draws: state.skip }, state.shown).replaceAll("\r\n", "\n");
 
   $("zone-note").textContent = fillIn(t().pageTodayHereNote, { zone: zone.replaceAll("_", " ") });
   $("zone-code").textContent = `dailySeed(new Date(), "${zone}")`;

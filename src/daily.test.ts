@@ -46,7 +46,8 @@ describe("isDayKey", () => {
   it("takes real dates only", () => {
     expect(isDayKey("2026-09-30")).toBe(true);
     expect(isDayKey("2028-02-29")).toBe(true);
-    for (const text of ["2026-02-29", "2026-13-01", "2026-9-30", "20260930", "", "2026-09-30T00:00"]) expect(isDayKey(text)).toBe(false);
+    for (const text of ["2026-02-29", "2026-13-01", "2026-9-30", "20260930", "", "2026-09-30T00:00"])
+      expect(isDayKey(text)).toBe(false);
   });
 });
 
@@ -72,10 +73,16 @@ describe("nextDayStart", () => {
   });
 
   it("is the zone's midnight, also across a change of clocks", () => {
-    expect(nextDayStart(new Date("2026-09-30T12:00:00Z"), "America/Toronto").toISOString()).toBe("2026-10-01T04:00:00.000Z");
+    expect(nextDayStart(new Date("2026-09-30T12:00:00Z"), "America/Toronto").toISOString()).toBe(
+      "2026-10-01T04:00:00.000Z",
+    );
     // Toronto leaves daylight time early on 1 November 2026; that day is 25 hours long.
-    expect(nextDayStart(new Date("2026-11-01T05:00:00Z"), "America/Toronto").toISOString()).toBe("2026-11-02T05:00:00.000Z");
-    expect(nextDayStart(new Date("2026-09-30T12:00:00Z"), "Asia/Kolkata").toISOString()).toBe("2026-09-30T18:30:00.000Z");
+    expect(nextDayStart(new Date("2026-11-01T05:00:00Z"), "America/Toronto").toISOString()).toBe(
+      "2026-11-02T05:00:00.000Z",
+    );
+    expect(nextDayStart(new Date("2026-09-30T12:00:00Z"), "Asia/Kolkata").toISOString()).toBe(
+      "2026-09-30T18:30:00.000Z",
+    );
   });
 });
 

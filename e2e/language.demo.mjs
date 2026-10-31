@@ -63,7 +63,8 @@ test.describe("in a browser set to Japanese", () => {
 
 test("changing language moves nothing below the header", async ({ page }) => {
   const errors = await open(page, "?seed=42");
-  const top = () => page.evaluate(() => Math.round(document.querySelector(".seed-box").getBoundingClientRect().top + window.scrollY));
+  const top = () =>
+    page.evaluate(() => Math.round(document.querySelector(".seed-box").getBoundingClientRect().top + window.scrollY));
   const english = await top();
   await tap(page, '[data-lang="ja"]');
   expect(await top()).toBe(english);
@@ -74,7 +75,11 @@ test("every word on the page comes from the table: nothing is left empty in eith
   const errors = await open(page, "?seed=42");
   for (const lang of ["en", "ja"]) {
     await tap(page, `[data-lang="${lang}"]`);
-    const empty = await page.evaluate(() => [...document.querySelectorAll("[data-say]")].filter((el) => el.textContent.trim() === "").map((el) => el.dataset.say));
+    const empty = await page.evaluate(() =>
+      [...document.querySelectorAll("[data-say]")]
+        .filter((el) => el.textContent.trim() === "")
+        .map((el) => el.dataset.say),
+    );
     expect(empty, lang).toEqual([]);
     await sound(page, errors);
   }

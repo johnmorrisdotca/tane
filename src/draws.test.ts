@@ -1,15 +1,31 @@
 import { describe, expect, it } from "vitest";
 
-import { below, chance, distinctBelow, float, int, normal, pick, sample, shuffle, shuffled, weightedIndex, weightedPick } from "./draws.ts";
+import {
+  below,
+  chance,
+  distinctBelow,
+  float,
+  int,
+  normal,
+  pick,
+  sample,
+  shuffle,
+  shuffled,
+  weightedIndex,
+  weightedPick,
+} from "./draws.ts";
 import { mulberry32, type Random } from "./random.ts";
 
 /** A stream that hands out the given numbers, in order, and counts what it gave. */
 function scripted(values: number[]): Random & { taken: number } {
-  const random = Object.assign(() => {
-    const value = values[random.taken % values.length]!;
-    random.taken += 1;
-    return value;
-  }, { taken: 0 });
+  const random = Object.assign(
+    () => {
+      const value = values[random.taken % values.length]!;
+      random.taken += 1;
+      return value;
+    },
+    { taken: 0 },
+  );
   return random;
 }
 
@@ -175,8 +191,12 @@ describe("a seeded sequence of mixed draws", () => {
   // Itsutsu's player projection makes these draws in this order; pinned so it renders the same numbers.
   it("pins every value", () => {
     const random = mulberry32(7);
-    expect([int(random, 1, 6), float(random, 10, 20), chance(random, 0.5), normal(random, 100, 15), weightedIndex(random, [1, 2, 3, 4])]).toEqual([
-      1, 10.61958257574588, false, 87.42141674150272, 2,
-    ]);
+    expect([
+      int(random, 1, 6),
+      float(random, 10, 20),
+      chance(random, 0.5),
+      normal(random, 100, 15),
+      weightedIndex(random, [1, 2, 3, 4]),
+    ]).toEqual([1, 10.61958257574588, false, 87.42141674150272, 2]);
   });
 });
