@@ -12,14 +12,17 @@ import {
   familyHeader,
   familyUnreviewed,
 } from "./family-template.mjs";
+import { publishThumbnails, thumbnailHead } from "./family-thumbnail.mjs";
 
 const id = "tane";
+const ALT = "Tane: a field of seeds, each placed, turned and coloured by numbers drawn from one seed.";
 const icon = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='58' rx='26' ry='34' fill='%232f5d4a'/%3E%3Cpath d='M50 26 C 50 10, 66 6, 74 10 C 70 20, 60 26, 50 26 Z' fill='%236b9a6f'/%3E%3C/svg%3E`;
 const body = readFileSync("demo/body.html", "utf8").replace("__UNREVIEWED__", familyUnreviewed({ id }));
 const page = `<!doctype html>
 <html lang="en">
   <head>
     ${familyHead({ id, title: "Tane 種 — Seeded random numbers for JavaScript", description: "Type a seed and see its first numbers, a shuffle and today's seed: the same on every device and every server. A seeded random number generator for games, daily puzzles and tests. Free and open source.", ogTitle: "Tane 種 — Seeded random numbers for JavaScript", ogDescription: "One seed, the same numbers everywhere." })}
+    ${thumbnailHead(JSON.parse(readFileSync("package.json", "utf8")), { alt: ALT })}
     <link rel="icon" href="${icon}" />
     <link rel="stylesheet" href="family.css" />
     <link rel="stylesheet" href="tane.css" />
@@ -47,6 +50,8 @@ for (const file of ["family.css", "tane.css", "page.js"]) cpSync(`demo/${file}`,
 cpSync("dist", "site/dist", { recursive: true });
 cpSync("docs/spec-vectors.json", "site/spec-vectors.json");
 writeFileSync("site/index.html", page);
+// The family's card, dark card and icon, at <site>/thumbnail.png, thumbnail-dark.png and icon.png.
+publishThumbnails(".", "site");
 // The API reference, made from the source: every export of every entry point.
 writeFileSync("site/api.css", API_CSS);
 writeFileSync("site/api.html", apiPage({ id, name: "Tane", icon }));

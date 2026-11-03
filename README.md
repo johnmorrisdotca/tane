@@ -1,3 +1,5 @@
+<p align="center"><a href="https://johnmorrisdotca.github.io/tane/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/thumbnail-dark.png"><img src="https://raw.githubusercontent.com/johnmorrisdotca/tane/main/docs/images/thumbnail.png" alt="Tane: a field of seeds, each placed, turned and coloured by numbers drawn from one seed." width="1200"></picture></a></p>
+
 <h1 align="center">Tane <sub>種</sub> — Seeded random numbers for JavaScript</h1>
 
 <p align="center"><strong>Seeded random numbers: one seed, the same numbers everywhere.</strong><br>
